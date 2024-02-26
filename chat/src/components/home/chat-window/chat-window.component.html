@@ -5,7 +5,7 @@
   </p>
 
   <b>messages</b>  connected:{{connected$ | async}}<input class="float-right" type="button" value="join" (click)="join()">
-  <div class="min-h-3/6 bg-slate-50 mb-4 ml-2 mr-2 messageWindow overflow-y-scroll">
+  <div class="min-h-3/6 bg-gray-50 mb-4 ml-2 mr-2 messageWindow overflow-y-scroll">
     <ng-container *ngFor="let msg of messages">
       <p>{{msg}}</p>
     </ng-container>
