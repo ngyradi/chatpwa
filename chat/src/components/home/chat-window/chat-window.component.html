@@ -1,13 +1,16 @@
 <div class="border-2">
-  
-<p class="text-center">
-  chat-window
-</p>
-<div class="min-h-3/6 bg-slate-50 mb-4">
-  <p>messages</p>
-</div>
 
-<input type="text" placeholder="message here" [(ngModel)]="message">
-<input type="button" value="send" (click)="sendMessage()">
+  <p class="text-center">
+    chat-window
+  </p>
+  <div class="min-h-3/6 bg-slate-50 mb-4">
+    <p>messages</p>
+    <ng-container *ngFor="let msg of messages">
+      <p>{{msg}}</p>
+    </ng-container>
+  </div>
+
+    <input type="text" placeholder="message here" [(ngModel)]="message">
+    <input type="button" value="send" (click)="sendMessage()">
 
 </div>

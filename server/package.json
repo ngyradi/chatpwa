@@ -5,15 +5,19 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node index.js",
+    "dev": "tsc && node index.js"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^20.11.20",
+    "cors": "^2.8.5",
     "http": "^0.0.1-security",
     "http-server": "^14.1.1",
     "socket.io": "^4.7.4",
+    "socket.io-server": "^1.0.0-b",
+    "ts-node": "^10.9.2",
     "tslib": "^2.6.2",
     "typescript": "^5.3.3"
   }
