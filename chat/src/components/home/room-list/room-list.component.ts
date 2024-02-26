@@ -1,27 +1,18 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { RoomFormComponent } from './room-form/room-form.component';
+import { RoomListItemComponent } from './room-list-item/room-list-item.component';
 
 @Component({
   standalone: true,
   selector: 'app-room-list',
   templateUrl: './room-list.component.html',
   styleUrls: ['./room-list.component.css'],
-  imports: [CommonModule],
+  imports: [CommonModule,RoomFormComponent, RoomListItemComponent],
 })
-export class RoomListComponent implements OnInit {
-
-  private room_name: string;
-  private room_password: string;
+export class RoomListComponent {
 
   constructor() {
-    this.room_name = "";
-    this.room_password = "";
-  }
-
-  ngOnInit() {
-  }
-
-  createRoom() {
 
   }
 

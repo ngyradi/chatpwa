@@ -1,0 +1,7 @@
+<input class="mr-2" type="text" name="chat-name" id="chat-name" placeholder="name" [(ngModel)]="roomName">
+
+<input class="mr-2" type="password" name="chat-password" id="chat-password" placeholder="password" [(ngModel)]="roomPassword">
+
+<input class="bg-slate-200" type="submit" value="create" (click)="submit()">
+
+<p class="text-red-500">{{error}}</p>
