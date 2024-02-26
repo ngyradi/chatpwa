@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const http_1 = require("http");
 const socket_io_1 = require("socket.io");
-const port = 4200;
+const port = 3000;
 const httpServer = (0, http_1.createServer)();
 let rooms;
 rooms = [];

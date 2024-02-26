@@ -13,7 +13,7 @@ export class ChatService {
 
   public connected$ = new BehaviorSubject(false);
 
-  private readonly host = "http://localhost:4200";
+  private readonly host = "http://localhost:3000";
 
   constructor() { 
     this.connected$.next(false);

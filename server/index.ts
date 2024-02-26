@@ -12,7 +12,7 @@ type ChatMessage = {
     message: string,
 }
 
-const port = 4200;
+const port = 3000;
 
 const httpServer = createServer();
 
