@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ChatMessage } from '../../../models/Chatroom';
 import { ChatService } from '../../../services/chat-service';
 import { CommonModule } from '@angular/common';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   standalone: true,
