@@ -1,16 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-
+import { CommonModule } from '@angular/common';
+import { Component, Input } from '@angular/core';
 @Component({
   standalone: true,
   selector: 'app-room-list-item',
   templateUrl: './room-list-item.component.html',
-  styleUrls: ['./room-list-item.component.css']
+  styleUrls: ['./room-list-item.component.css'],
+  imports: [CommonModule],
 })
-export class RoomListItemComponent implements OnInit {
+export class RoomListItemComponent {
+  
+  @Input() roomName: string;
 
-  constructor() { }
-
-  ngOnInit() {
+  constructor() { 
+    this.roomName = "";
   }
 
 }
