@@ -3,8 +3,8 @@
   <p class="text-center">
     chat-window
   </p>
-  <div class="min-h-3/6 bg-slate-50 mb-4">
-    <p>messages</p>
+  <div class="h-3/6 bg-slate-50 mb-4 ml-2 mr-2">
+    <b>messages</b>  {{connected$ | async}}<input class="float-right" type="button" value="join" (click)="join()">
     <ng-container *ngFor="let msg of messages">
       <p>{{msg}}</p>
     </ng-container>
