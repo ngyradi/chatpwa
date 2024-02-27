@@ -1,39 +1,46 @@
 import { Injectable } from '@angular/core';
 import { Socket, io } from 'socket.io-client'
 import { ChatRoom } from '../models/Chatroom';
-import { Observable, from } from 'rxjs';
+import { BehaviorSubject, Observable, from } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoomService {
+  public rooms$ = new BehaviorSubject<ChatRoom[]>([]);
 
-  public rooms: ChatRoom[];
-  public socket: Socket;
-  private readonly host = "http://localhost:4200";
+  private socket: Socket;
+  private readonly host = "http://localhost:3000";
 
   constructor() {
-    this.rooms = [];
     this.socket = io(this.host)
 
-    this.socket.on('new room', (data) => {
-      this.rooms.push(data);
-      console.log(this.rooms);
+    this.socket.on('connect', ()=>{
+      this.getRooms();
     })
 
-    this.socket.on('all rooms', (data) => {
-      this.rooms = data;
-      console.log(`received all rooms`)
-      console.log(this.rooms);
+    this.socket.on('all rooms', (data:ChatRoom[])=>{
+      console.log("received rooms");
+      console.log(data)
+      this.rooms$.next(data);
+    })
+
+    this.socket.on('new room', ()=>{
+      this.getRooms();
     })
   }
 
-  createRoom(name: string, password: string) {
-    this.socket.emit('create room', { name: name, password: password })
+  createRoom(name: string, password = "") {
+    name = name.trim();
+    if (name){
+      this.socket.emit('new room', {name: name, password: password});
+      console.log("create room")
+
+    }
   }
 
   getRooms(){
-    this.socket.emit('view rooms')
+    this.socket.emit('get rooms');
   }
 
 }

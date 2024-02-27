@@ -30,6 +30,8 @@ export class RoomFormComponent {
       return;
     }
     
+    console.log(this.roomName, this.roomPassword);
+
     this.error = "";
 
     //create room

@@ -4,6 +4,7 @@ import { RoomFormComponent } from './room-form/room-form.component';
 import { RoomListItemComponent } from './room-list-item/room-list-item.component';
 import { RoomService } from '../../../services/room-service.service';
 import { ChatRoom } from '../../../models/Chatroom';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -15,10 +16,10 @@ import { ChatRoom } from '../../../models/Chatroom';
 })
 export class RoomListComponent  {
 
-  rooms : ChatRoom[];
+  public rooms$ = new BehaviorSubject<ChatRoom[]>([]);
 
   constructor(private readonly roomservice: RoomService) {
-    this.rooms = this.roomservice.rooms;
+    this.rooms$ = this.roomservice.rooms$;
   }
 
 }

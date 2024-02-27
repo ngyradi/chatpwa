@@ -4,8 +4,8 @@
   <app-room-form></app-room-form>
 
   <p>chat rooms:</p>
-  <div *ngFor="let room of rooms">
-    <p>{{room.name}}</p>
+  <div *ngFor="let room of rooms$ | async">
+    <p>{{room.name}} - {{room.numPeople}}</p>
   </div>
   
 </div>
