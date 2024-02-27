@@ -5,13 +5,13 @@
   </p>
 
   <b>messages</b> connected to: {{(connectedRoom$ | async)?.name}}
-  <div class="min-h-3/6 bg-gray-50 mb-4 ml-2 mr-2 messageWindow overflow-y-scroll">
+  <div class="min-h-96 bg-gray-50 mb-4 ml-2 mr-2 messageWindow overflow-y-scroll">
     <ng-container *ngFor="let msg of messages">
       <p>{{msg.username}}: {{msg.message}}</p>
     </ng-container>
   </div>
 
-    <input type="text" placeholder="message here" [(ngModel)]="message">
-    <input type="button" value="send" (click)="sendMessage()">
+  <input type="text" placeholder="message here" [(ngModel)]="message">
+  <input type="button" value="send" (click)="sendMessage()">
 
 </div>

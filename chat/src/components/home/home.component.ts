@@ -7,13 +7,14 @@ import { PageContainerComponent } from '../page-container/page-container.compone
 import { ChatService } from '../../services/chat-service';
 import { ChatMessage, ChatRoom, User } from '../../models/Chatroom';
 import { BehaviorSubject, Subject } from 'rxjs';
+import { RouterModule } from '@angular/router';
 
 @Component({
   standalone: true,
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  imports: [CommonModule, RoomListComponent, UserListComponent, ChatWindowComponent, PageContainerComponent],
+  imports: [CommonModule, RoomListComponent, UserListComponent, ChatWindowComponent, PageContainerComponent,RouterModule],
   providers: [ChatService],
 })
 export class HomeComponent {
