@@ -38,10 +38,7 @@ export class ChatService {
 
     this.socket.on('joined', (data: ChatRoom) => {
       this.connected$.next(true);
-
       this.connectedRoom = data;
-      console.log(`connected to:`)
-      console.log(data);
     })
 
     this.socket.on('new message', (data) => {
@@ -50,11 +47,12 @@ export class ChatService {
   }
 
   sendMessage = (message: string) => {
-    console.log(message)
     this.socket.emit('new message', message);
   }
 
   joinRoom = (id?: number, password?: string) => {
+    this.connected$.next(false);
+    this.connectedRoom = undefined;
     this.socket.emit('join', { id: id, password: password });
   }
 
