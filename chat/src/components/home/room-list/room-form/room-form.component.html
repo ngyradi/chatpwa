@@ -1,13 +1,16 @@
-<input class="mr-2" type="text" name="chat-name" id="chat-name" placeholder="name" [(ngModel)]="roomName">
+<div class="grid grid-cols-3 flex">
+    <input class="mr-2" type="text" name="chat-name" id="chat-name" placeholder="name" [(ngModel)]="roomName">
 
-<input class="mr-2" type="password" name="chat-password" id="chat-password" placeholder="password" [(ngModel)]="roomPassword">
+    <input class="mr-2" type="password" name="chat-password" id="chat-password" placeholder="password"
+        [(ngModel)]="roomPassword">
 
-<select name="chat-visiblity" id="chat-visiblity">
-    <option selected>public</option>
-    <option>private</option>
-    <option>password protected</option>
-</select>
+    <select name="chat-visiblity" id="chat-visiblity">
+        <option selected value="public">public</option>
+        <option value="private">private</option>
+        <option value="protected">password protected</option>
+    </select>
 
-<input class="bg-gray-200" type="submit" value="create" (click)="submit()">
+    <input class="bg-gray-200" type="submit" value="create" (click)="submit()">
 
-<p class="text-red-500">{{error}}</p>
+    <p class="text-red-500">{{error}}</p>
+</div>

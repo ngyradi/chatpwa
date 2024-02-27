@@ -1,11 +1,13 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: [
-    "./src/**/*.{html,ts}"
-  ],
-  theme: {
-    extend: {},
+export const content = [
+  "./src/**/*.{html,ts}"
+]
+export const theme = {
+  extend: {
+    fontFamily: {
+      //'sans': ['SFMono-regular'],
+    },
   },
-  plugins: [],
 }
+export const plugins = []
 
