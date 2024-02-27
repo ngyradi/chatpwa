@@ -10,7 +10,9 @@
         <option value="protected">password protected</option>
     </select>
 
-    <input class="bg-gray-200" type="submit" value="create" (click)="submit()">
+    <span class="col-span-3">
+        <input class="bg-slate-200" type="submit" value="create" (click)="submit()">
+    </span>
 
-    <p class="text-red-500">{{error}}</p>
+    <p class="text-red-500 col-span-3">{{error}}</p>
 </div>

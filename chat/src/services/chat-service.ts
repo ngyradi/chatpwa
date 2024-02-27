@@ -57,6 +57,10 @@ export class ChatService {
     })
   }
 
+  getSocketId() {
+    return this.socket?.id;
+  }
+
   destroyConnection() {
     this.socket.disconnect();
   }
@@ -92,10 +96,6 @@ export class ChatService {
 
   sendPrivateMessage(pm: PrivateMessage) {
     console.log(pm);
-  }
-
-  getSocketId() {
-    return this.socket.id;
   }
 
 }

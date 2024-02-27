@@ -35,6 +35,7 @@ export class RoomListComponent {
   }
 
   createRoom(room: ChatRoom) {
+    this.editing = false;
     this.createRoomEvent.emit(room);
   }
 
