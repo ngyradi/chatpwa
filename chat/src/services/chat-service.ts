@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Socket, io } from 'socket.io-client'
+import { ChatMessage } from '../models/Chatroom';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
 
-  public messages: string[]
+  //public messages: string[]
+  public messages: ChatMessage[];
   public connected;
   public socket : Socket;
 

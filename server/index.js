@@ -13,21 +13,16 @@ const io = new socket_io_1.Server(httpServer, {
 });
 io.on('connection', (socket) => {
     console.log(`${socket.id} connected`);
+    //join room
     socket.on('join', (data) => {
         socket.emit('joined');
     });
+    //receive message
     socket.on('new message', (data) => {
-        let msg = socket.id + ": " + data;
+        //let msg = socket.id + ": "  + data;
         console.log(`${socket.id}: ${data}`);
+        let msg = { username: socket.id, message: data };
         io.emit('new message', msg);
-    });
-    socket.on('create room', (data) => {
-        rooms.push({ name: data.name, password: data.password });
-        console.log(`create room ${data.name}`);
-        io.emit('new room', data);
-    });
-    socket.on('view rooms', () => {
-        socket.emit('all rooms', rooms);
     });
 });
 httpServer.listen(port);

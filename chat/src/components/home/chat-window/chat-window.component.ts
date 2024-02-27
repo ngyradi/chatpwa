@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { ChatService } from '../../../services/chat-service';
 import { CommonModule } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
+import { ChatMessage } from '../../../models/Chatroom';
 
 @Component({
   standalone: true,
@@ -16,7 +17,7 @@ export class ChatWindowComponent {
 
   public connected$ = new BehaviorSubject(false);
 
-  messages: string[];
+  messages: ChatMessage[];
   message: string;
 
   constructor(private readonly chatservice: ChatService) {
