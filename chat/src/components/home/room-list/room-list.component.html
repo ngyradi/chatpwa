@@ -5,7 +5,7 @@
 
   <p>chat rooms:</p>
   <div *ngFor="let room of rooms$ | async">
-    <p>{{room.name}} - {{room.numPeople}}</p>
+    <app-room-list-item [room]="room"></app-room-list-item>
   </div>
   
 </div>

@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { ChatRoom } from '../../../../models/Chatroom';
 @Component({
   standalone: true,
   selector: 'app-room-list-item',
@@ -9,10 +10,10 @@ import { Component, Input } from '@angular/core';
 })
 export class RoomListItemComponent {
   
-  @Input() roomName: string;
+  @Input() room?: ChatRoom;
 
   constructor() { 
-    this.roomName = "";
+    
   }
 
 }

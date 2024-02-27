@@ -8,7 +8,6 @@ import { ChatMessage } from '../models/Chatroom';
 })
 export class ChatService {
 
-  //public messages: string[]
   public messages: ChatMessage[];
   public connected;
   public socket : Socket;

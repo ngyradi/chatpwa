@@ -1,3 +1,5 @@
-<p>
-  {{roomName}}
-</p>
+<ng-container *ngIf="(room)">
+  <p>
+    {{room.name}} - {{room.numPeople}}
+  </p>
+</ng-container>
