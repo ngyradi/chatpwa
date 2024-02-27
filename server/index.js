@@ -26,6 +26,7 @@ io.on('connection', (socket) => {
         socket.emit('all users', getUsernames(users));
     });
     socket.on('disconnect', () => {
+        console.log("user disconnected");
         users.delete(socket.id);
         if (connectedRoomId !== -1) {
             if (rooms[connectedRoomId]) {

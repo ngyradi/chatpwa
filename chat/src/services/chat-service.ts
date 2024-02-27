@@ -51,6 +51,10 @@ export class ChatService {
     })
   }
 
+  destroyConnection(){
+    this.socket.disconnect();
+  }
+
   sendMessage = (message: string) => {
     this.socket.emit('new message', message);
   }

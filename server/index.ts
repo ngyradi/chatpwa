@@ -53,6 +53,7 @@ io.on('connection', (socket: Socket) => {
 
 
     socket.on('disconnect', () => {
+        console.log("user disconnected");
         users.delete(socket.id);
         if (connectedRoomId !== -1) {
             if (rooms[connectedRoomId]) {

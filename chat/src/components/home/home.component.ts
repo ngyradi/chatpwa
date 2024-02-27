@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { RoomListComponent } from './room-list/room-list.component';
 import { UserListComponent } from './user-list/user-list.component';
 import { ChatWindowComponent } from './chat-window/chat-window.component';
@@ -17,7 +17,7 @@ import { RouterModule } from '@angular/router';
   imports: [CommonModule, RoomListComponent, UserListComponent, ChatWindowComponent, PageContainerComponent,RouterModule],
   providers: [ChatService],
 })
-export class HomeComponent {
+export class HomeComponent implements OnDestroy{
 
   connected$ : BehaviorSubject<boolean>;
   rooms$ : BehaviorSubject<ChatRoom[]>;
@@ -31,6 +31,9 @@ export class HomeComponent {
     this.rooms$ = this.chatService.rooms$;
     this.users = this.chatService.users$;
     this.connectedRoom$ = this.chatService.connectedRoom$;
+  }
+  ngOnDestroy(): void {
+    this.chatService.destroyConnection();
   }
 
   joinRoom(room: ChatRoom) {
