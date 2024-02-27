@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ChatRoom } from '../../../../models/Chatroom';
 import { ChatService } from '../../../../services/chat-service';
@@ -9,7 +9,6 @@ import { ChatService } from '../../../../services/chat-service';
   templateUrl: './room-form.component.html',
   styleUrls: ['./room-form.component.css'],
   imports: [FormsModule],
-  providers: [ChatService]
 })
 export class RoomFormComponent {
 
@@ -18,7 +17,9 @@ export class RoomFormComponent {
 
   error: string;
 
-  constructor(private readonly chatService : ChatService) { 
+  @Output() createRoomEvent = new EventEmitter<ChatRoom>();
+
+  constructor() { 
     this.roomName = "";
     this.roomPassword = "";
     this.error = "";
@@ -35,7 +36,7 @@ export class RoomFormComponent {
     this.error = "";
 
     //create room
-    this.chatService.createRoom(this.roomName,this.roomPassword);
+    this.createRoomEvent.emit({name: this.roomName, password: this.roomPassword});
 
     this.roomName = "";
     this.roomPassword = "";

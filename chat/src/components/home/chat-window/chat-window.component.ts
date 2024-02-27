@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ChatService } from '../../../services/chat-service';
 import { CommonModule } from '@angular/common';
@@ -11,25 +11,23 @@ import { ChatMessage } from '../../../models/Chatroom';
   templateUrl: './chat-window.component.html',
   styleUrls: ['./chat-window.component.css'],
   imports: [FormsModule, CommonModule],
-  providers: [ChatService]
 })
 export class ChatWindowComponent {
 
-  public connected$ = new BehaviorSubject(false);
+  @Input() connected$ = new BehaviorSubject(false);
+  @Output() sendMessageEvent = new EventEmitter<string>();
+  @Input() messages: ChatMessage[];
 
-  messages: ChatMessage[];
   message: string;
 
-  constructor(private readonly chatService: ChatService) {
-    this.messages = this.chatService.messages;
+  constructor() {
+    this.messages = [];
     this.message = "";
-    this.connected$ = this.chatService.connected$;
   }
 
   sendMessage() {
-    if ((this.message.trim())) {
-      this.chatService.sendMessage(this.message);
-      console.log(this.message);
+    if (this.message.trim()) {
+      this.sendMessageEvent.emit(this.message)
       this.message = "";
     }
   }

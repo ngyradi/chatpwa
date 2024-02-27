@@ -1,11 +1,11 @@
 <div>
 
   <p>create new chat room</p>
-  <app-room-form></app-room-form>
+  <app-room-form (createRoomEvent)="createRoom($event)"></app-room-form>
 
   <p>chat rooms:</p>
   <div *ngFor="let room of rooms$ | async">
-    <app-room-list-item [room]="room" (joinRoomEvent)="joinRoom(room)"></app-room-list-item>
+    <app-room-list-item [room]="room" (joinRoomEvent)="joinRoom($event)"></app-room-list-item>
   </div>
   
 </div>
