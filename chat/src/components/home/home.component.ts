@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { RoomListComponent } from './room-list/room-list.component';
 import { UserListComponent } from './user-list/user-list.component';
 import { ChatWindowComponent } from './chat-window/chat-window.component';
@@ -21,11 +21,13 @@ export class HomeComponent {
   connected$ = new BehaviorSubject(false);
   rooms$ = new BehaviorSubject<ChatRoom[]>([]);
   messages: ChatMessage[];
+  users: string[];
 
   constructor(private readonly chatService: ChatService) {
     this.messages = this.chatService.messages;
     this.connected$ = this.chatService.connected$;
     this.rooms$ = this.chatService.rooms$;
+    this.users = this.chatService.users;
   }
 
   joinRoom(room: ChatRoom) {

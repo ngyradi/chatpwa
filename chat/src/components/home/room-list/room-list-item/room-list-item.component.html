@@ -1,7 +1,14 @@
 <ng-container *ngIf="(room)">
   <div class="grid grid-cols-5">
+
     <p class="col-span-3">
-     {{room.id}} - {{room.name}} - {{room.public}}
+
+    {{room.name}}
+
+    <ng-container *ngIf="!room.public">
+      password
+      <!-- lock icon -->
+    </ng-container>
     </p>
     <p class="text-right">
       {{room.numPeople}}

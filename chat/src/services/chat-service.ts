@@ -12,20 +12,26 @@ export class ChatService {
   public connectedRoom?: ChatRoom;
   public connected$ = new BehaviorSubject(false);
   public rooms$ = new BehaviorSubject<ChatRoom[]>([]);
+  public users : string[];
 
   private socket: Socket;
 
   private readonly host = "http://localhost:3000";
 
   constructor() {
+    this.users = [];
     this.messages = [];
     this.connected$.next(false);
-    
-
     this.socket = io(this.host);
 
     this.socket.on('connect', ()=>{
+      this.socket.emit('join', {username: "test user"});
       this.getRooms();
+      this.getUsers();
+    })
+
+    this.socket.on('all users', (data)=>{
+      this.users = data;
     })
 
     this.socket.on('all rooms', (data:ChatRoom[])=>{
@@ -36,7 +42,7 @@ export class ChatService {
       this.getRooms();
     })
 
-    this.socket.on('joined', (data: ChatRoom) => {
+    this.socket.on('joinedRoom', (data: ChatRoom) => {
       this.connected$.next(true);
       this.connectedRoom = data;
     })
@@ -51,9 +57,7 @@ export class ChatService {
   }
 
   joinRoom = (id?: number, password?: string) => {
-    this.connected$.next(false);
-    this.connectedRoom = undefined;
-    this.socket.emit('join', { id: id, password: password });
+    this.socket.emit('joinRoom', { id: id, password: password });
   }
 
   createRoom(name: string, password = "") {
@@ -65,6 +69,10 @@ export class ChatService {
 
   getRooms(){
     this.socket.emit('get rooms');
+  }
+
+  getUsers(){
+    this.socket.emit('get users');
   }
 
 }

@@ -4,8 +4,8 @@ const http_1 = require("http");
 const socket_io_1 = require("socket.io");
 const port = 3000;
 const httpServer = (0, http_1.createServer)();
-let rooms;
-rooms = [];
+let rooms = [];
+let users = new Map();
 const io = new socket_io_1.Server(httpServer, {
     cors: {
         origin: "http://localhost:4200",
@@ -14,18 +14,28 @@ const io = new socket_io_1.Server(httpServer, {
 io.on('connection', (socket) => {
     console.log(`${socket.id} connected`);
     let connectedRoomId = -1;
+    //join online users
+    socket.on('join', (data) => {
+        users.set(socket.id, { username: data.username });
+        console.log(`${data.username} joined`);
+    });
+    socket.on('get users', () => {
+        console.log(`${socket.id} asked for online users`);
+        const usernames = [...users.values()];
+        socket.emit('all users', usernames);
+    });
     socket.on('disconnect', () => {
+        users.delete(socket.id);
         if (connectedRoomId !== -1) {
             if (rooms[connectedRoomId]) {
                 rooms[connectedRoomId].numPeople--;
                 io.emit('all rooms', getRoomView(rooms));
-                console.log(`${socket.id} disconnected from room: ${connectedRoomId}`);
             }
         }
     });
     //chat
     //join room
-    socket.on('join', (data) => {
+    socket.on('joinRoom', (data) => {
         console.log(`${socket.id} tried to join: ${data.id}`);
         if (data.id !== undefined && data.id !== connectedRoomId) {
             if (rooms[data.id].public) {
@@ -37,7 +47,7 @@ io.on('connection', (socket) => {
                 rooms[data.id].numPeople++;
                 let joinedRoom = rooms[data.id];
                 joinedRoom.id = data.id;
-                socket.emit('joined', joinedRoom);
+                socket.emit('joinedRoom', joinedRoom);
                 socket.join(data.id.toString());
                 connectedRoomId = data.id;
                 console.log(`${socket.id} joined ${data.id} - ${rooms[data.id].name}`);

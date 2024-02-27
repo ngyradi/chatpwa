@@ -15,11 +15,16 @@ type ChatMessage = {
     message?: string,
 }
 
+export type User = {
+    username?: string,
+}
+
 
 const port = 3000;
 const httpServer = createServer();
-let rooms: ChatRoom[];
-rooms = [];
+
+let rooms = [] as ChatRoom[];
+let users = new Map<string, User>();
 
 const io = new Server(httpServer, {
     cors: {
@@ -29,22 +34,37 @@ const io = new Server(httpServer, {
 
 io.on('connection', (socket: Socket) => {
     console.log(`${socket.id} connected`);
-
     let connectedRoomId = -1;
 
+
+    //join online users
+    socket.on('join', (data:User)=>{
+        users.set(socket.id, {username:data.username})
+        console.log(`${data.username} joined`)
+    })
+
+    socket.on('get users', ()=>{
+        console.log(`${socket.id} asked for online users`)
+
+        const usernames = [...users.values()]
+
+        socket.emit('all users', usernames);
+    })
+
+
     socket.on('disconnect', () => {
+        users.delete(socket.id);
         if (connectedRoomId !== -1) {
             if (rooms[connectedRoomId]) {
                 rooms[connectedRoomId].numPeople--;
                 io.emit('all rooms', getRoomView(rooms));
-                console.log(`${socket.id} disconnected from room: ${connectedRoomId}`)
             }
         }
     })
 
     //chat
     //join room
-    socket.on('join', (data: ChatRoom) => {
+    socket.on('joinRoom', (data: ChatRoom) => {
         console.log(`${socket.id} tried to join: ${data.id}`)
 
         if (data.id !== undefined && data.id !== connectedRoomId) {
@@ -59,7 +79,7 @@ io.on('connection', (socket: Socket) => {
 
                 let joinedRoom: ChatRoom = rooms[data.id];
                 joinedRoom.id = data.id;
-                socket.emit('joined', joinedRoom);
+                socket.emit('joinedRoom', joinedRoom);
                 socket.join(data.id.toString());
 
                 connectedRoomId = data.id;
