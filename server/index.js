@@ -13,9 +13,9 @@ const io = new socket_io_1.Server(httpServer, {
 });
 io.on('connection', (socket) => {
     console.log(`${socket.id} connected`);
-    let connectedRoomId;
+    let connectedRoomId = -1;
     socket.on('disconnect', () => {
-        if (connectedRoomId !== undefined) {
+        if (connectedRoomId !== -1) {
             if (rooms[connectedRoomId]) {
                 rooms[connectedRoomId].numPeople--;
                 io.emit('all rooms', getRoomView(rooms));
@@ -29,6 +29,11 @@ io.on('connection', (socket) => {
         console.log(`${socket.id} tried to join: ${data.id}`);
         if (data.id !== undefined && data.id !== connectedRoomId) {
             if (rooms[data.id].public) {
+                if (connectedRoomId !== -1) {
+                    socket.leave(connectedRoomId.toString());
+                    rooms[connectedRoomId].numPeople--;
+                    connectedRoomId = -1;
+                }
                 rooms[data.id].numPeople++;
                 let joinedRoom = rooms[data.id];
                 joinedRoom.id = data.id;
@@ -50,7 +55,7 @@ io.on('connection', (socket) => {
     //receive message
     socket.on('new message', (data) => {
         console.log(`${socket.id}: ${data} - ${connectedRoomId}`);
-        if (connectedRoomId !== undefined) {
+        if (connectedRoomId !== -1) {
             let msg = { username: socket.id, message: data };
             console.log(`broadcast to ${connectedRoomId}`);
             io.to(connectedRoomId.toString()).emit('new message', msg);

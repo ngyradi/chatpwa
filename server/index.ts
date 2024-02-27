@@ -15,12 +15,10 @@ type ChatMessage = {
     message?: string,
 }
 
+
 const port = 3000;
-
 const httpServer = createServer();
-
 let rooms: ChatRoom[];
-
 rooms = [];
 
 const io = new Server(httpServer, {
@@ -32,9 +30,10 @@ const io = new Server(httpServer, {
 io.on('connection', (socket: Socket) => {
     console.log(`${socket.id} connected`);
 
-    let connectedRoomId: number;
+    let connectedRoomId = -1;
+
     socket.on('disconnect', () => {
-        if (connectedRoomId !== undefined) {
+        if (connectedRoomId !== -1) {
             if (rooms[connectedRoomId]) {
                 rooms[connectedRoomId].numPeople--;
                 io.emit('all rooms', getRoomView(rooms));
@@ -50,8 +49,13 @@ io.on('connection', (socket: Socket) => {
 
         if (data.id !== undefined && data.id !== connectedRoomId) {
             if (rooms[data.id].public) {
-                rooms[data.id].numPeople++;
+                if (connectedRoomId !== -1) {
+                    socket.leave(connectedRoomId.toString());
+                    rooms[connectedRoomId].numPeople--;
+                    connectedRoomId = -1;
+                }
 
+                rooms[data.id].numPeople++;
 
                 let joinedRoom: ChatRoom = rooms[data.id];
                 joinedRoom.id = data.id;
@@ -78,7 +82,7 @@ io.on('connection', (socket: Socket) => {
     socket.on('new message', (data) => {
         console.log(`${socket.id}: ${data} - ${connectedRoomId}`);
 
-        if (connectedRoomId !== undefined) {
+        if (connectedRoomId !== -1) {
             let msg = { username: socket.id, message: data }
             console.log(`broadcast to ${connectedRoomId}`)
             io.to(connectedRoomId.toString()).emit('new message', msg);
