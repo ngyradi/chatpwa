@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { PageContainerComponent } from '../page-container/page-container.component';
 import { ChatService } from '../../services/chat-service';
 import { ChatMessage, ChatRoom, User } from '../../models/Chatroom';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -18,21 +18,22 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class HomeComponent {
 
-  connected$ = new BehaviorSubject(false);
-  rooms$ = new BehaviorSubject<ChatRoom[]>([]);
+  connected$ : BehaviorSubject<boolean>;
+  rooms$ : BehaviorSubject<ChatRoom[]>;
   messages: ChatMessage[];
   users: BehaviorSubject<User[]>;
+  connectedRoom$ : Subject<ChatRoom>;
 
   constructor(private readonly chatService: ChatService) {
     this.messages = this.chatService.messages;
     this.connected$ = this.chatService.connected$;
     this.rooms$ = this.chatService.rooms$;
     this.users = this.chatService.users$;
+    this.connectedRoom$ = this.chatService.connectedRoom$;
   }
 
   joinRoom(room: ChatRoom) {
     this.chatService.joinRoom(room.id, room.password);
-    console.log(room)
   }
 
   createRoom(room: ChatRoom) {
@@ -44,7 +45,6 @@ export class HomeComponent {
   sendMessage(message: string) {
     if ((message.trim())) {
       this.chatService.sendMessage(message);
-      console.log(message);
     }
   }
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { Socket, io } from 'socket.io-client'
 import { ChatMessage, ChatRoom, User } from '../models/Chatroom';
 
@@ -9,7 +9,7 @@ import { ChatMessage, ChatRoom, User } from '../models/Chatroom';
 export class ChatService {
 
   public messages: ChatMessage[];
-  public connectedRoom?: ChatRoom;
+  public connectedRoom$ = new Subject<ChatRoom>();
   public connected$ = new BehaviorSubject(false);
   public rooms$ = new BehaviorSubject<ChatRoom[]>([]);
   public users$ = new BehaviorSubject<User[]>([]);
@@ -31,7 +31,6 @@ export class ChatService {
 
     this.socket.on('all users', (data)=>{
       this.users$.next(data);
-      console.log(data)
     })
 
     this.socket.on('all rooms', (data:ChatRoom[])=>{
@@ -44,7 +43,7 @@ export class ChatService {
 
     this.socket.on('joinedRoom', (data: ChatRoom) => {
       this.connected$.next(true);
-      this.connectedRoom = data;
+      this.connectedRoom$.next(data);
     })
 
     this.socket.on('new message', (data) => {

@@ -5,11 +5,11 @@
   </div>
 
   <div>
-    <app-room-list (joinRoomEvent)="joinRoom($event)" (createRoomEvent)="createRoom($event)" [rooms$]="rooms$"></app-room-list>
+    <app-room-list (joinRoomEvent)="joinRoom($event)" (createRoomEvent)="createRoom($event)" [rooms$]="rooms$" [connectedRoom$]="connectedRoom$"></app-room-list>
   </div>
 
   <div class="col-span-3">
-    <app-chat-window (sendMessageEvent)="sendMessage($event)" [messages]="messages" [connected$]="connected$"></app-chat-window>
+    <app-chat-window (sendMessageEvent)="sendMessage($event)" [messages]="messages" [connectedRoom$]="connectedRoom$"></app-chat-window>
   </div>
 
   <div>

@@ -1,9 +1,8 @@
-import { Component, EventEmitter, Input, Output, input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ChatService } from '../../../services/chat-service';
 import { CommonModule } from '@angular/common';
-import { BehaviorSubject } from 'rxjs';
-import { ChatMessage } from '../../../models/Chatroom';
+import { ChatMessage, ChatRoom } from '../../../models/Chatroom';
+import { Subject } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -14,7 +13,7 @@ import { ChatMessage } from '../../../models/Chatroom';
 })
 export class ChatWindowComponent {
 
-  @Input() connected$ = new BehaviorSubject(false);
+  @Input() connectedRoom$? : Subject<ChatRoom>;
   @Output() sendMessageEvent = new EventEmitter<string>();
   @Input() messages: ChatMessage[];
 

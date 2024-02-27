@@ -38,15 +38,15 @@ io.on('connection', (socket: Socket) => {
 
 
     //join online users
-    socket.on('join', (data:User)=>{
-        users.set(socket.id, {username:data.username})
+    socket.on('join', (data: User) => {
+        users.set(socket.id, { username: data.username })
         console.log(`${data.username} joined`)
 
         const usernames = [...users.values()]
         io.emit('all users', usernames);
     })
 
-    socket.on('get users', ()=>{
+    socket.on('get users', () => {
         console.log(`${socket.id} asked for online users`)
         socket.emit('all users', getUsernames(users));
     })
@@ -69,13 +69,13 @@ io.on('connection', (socket: Socket) => {
         console.log(`${socket.id} tried to join: ${data.id}`)
 
         if (data.id !== undefined && data.id !== connectedRoomId) {
-            if (rooms[data.id].public) {
-                if (connectedRoomId !== -1) {
-                    socket.leave(connectedRoomId.toString());
-                    rooms[connectedRoomId].numPeople--;
-                    connectedRoomId = -1;
-                }
+            if (connectedRoomId !== -1) {
+                socket.leave(connectedRoomId.toString());
+                rooms[connectedRoomId].numPeople--;
+                connectedRoomId = -1;
+            }
 
+            if (rooms[data.id].public || (rooms[data.id].password === data.password)) {
                 rooms[data.id].numPeople++;
 
                 let joinedRoom: ChatRoom = rooms[data.id];
@@ -101,9 +101,8 @@ io.on('connection', (socket: Socket) => {
 
     //receive message
     socket.on('new message', (data) => {
-        console.log(`${socket.id}: ${data} - ${connectedRoomId}`);
-
         if (connectedRoomId !== -1) {
+            console.log(`${socket.id}: ${data} - ${connectedRoomId}`);
             let msg = { username: socket.id, message: data }
             console.log(`broadcast to ${connectedRoomId}`)
             io.to(connectedRoomId.toString()).emit('new message', msg);
@@ -126,7 +125,7 @@ io.on('connection', (socket: Socket) => {
             visiblity = false;
         }
 
-        //TODO check if room with same name already exists
+        //TODO check if room with same name already exists ?
 
         rooms.push({ name: data.name, password: data.password, numPeople: 0, public: visiblity });
         console.log(`added new room: ${data.name} ${data.password}`);
@@ -143,6 +142,6 @@ function getRoomView(_rooms: ChatRoom[]) {
     return _rooms.map((r, index) => ({ id: index, name: r.name, numPeople: r.numPeople, public: r.public }));
 }
 
-function getUsernames(_users:Map<string,User>){
+function getUsernames(_users: Map<string, User>) {
     return [..._users.values()]
 }

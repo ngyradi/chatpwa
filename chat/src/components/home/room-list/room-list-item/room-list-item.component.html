@@ -1,12 +1,12 @@
 <ng-container *ngIf="(room)">
-  <div class="grid grid-cols-5">
+  <div class="grid grid-cols-5" [ngClass]="{'bg-gray-500':selected}">
 
     <p class="col-span-3">
 
     {{room.name}}
 
     <ng-container *ngIf="!room.public">
-      password
+      -pass
       <!-- lock icon -->
     </ng-container>
     </p>
@@ -14,5 +14,8 @@
       {{room.numPeople}}
     </p>
     <input class="bg-gray-200"type="button" value="join" (click)="joinRoom()">
+    <ng-container *ngIf="inputVisible">
+      <input class="col-span-2" type="password" name="password" placeholder="password" [(ngModel)]="password">
+    </ng-container>
   </div>
 </ng-container>

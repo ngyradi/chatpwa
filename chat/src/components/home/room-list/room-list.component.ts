@@ -3,8 +3,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RoomFormComponent } from './room-form/room-form.component';
 import { RoomListItemComponent } from './room-list-item/room-list-item.component';
 import { ChatRoom } from '../../../models/Chatroom';
-import { BehaviorSubject } from 'rxjs';
-import { ChatService } from '../../../services/chat-service';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -15,7 +14,8 @@ import { ChatService } from '../../../services/chat-service';
 })
 export class RoomListComponent  {
 
-  @Input() rooms$ = new BehaviorSubject<ChatRoom[]>([]);
+  @Input() rooms$? : BehaviorSubject<ChatRoom[]>;
+  @Input() connectedRoom$? : Subject<ChatRoom>;
 
   @Output() joinRoomEvent = new EventEmitter<ChatRoom>();
   @Output() createRoomEvent = new EventEmitter<ChatRoom>();

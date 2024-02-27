@@ -40,12 +40,12 @@ io.on('connection', (socket) => {
     socket.on('joinRoom', (data) => {
         console.log(`${socket.id} tried to join: ${data.id}`);
         if (data.id !== undefined && data.id !== connectedRoomId) {
-            if (rooms[data.id].public) {
-                if (connectedRoomId !== -1) {
-                    socket.leave(connectedRoomId.toString());
-                    rooms[connectedRoomId].numPeople--;
-                    connectedRoomId = -1;
-                }
+            if (connectedRoomId !== -1) {
+                socket.leave(connectedRoomId.toString());
+                rooms[connectedRoomId].numPeople--;
+                connectedRoomId = -1;
+            }
+            if (rooms[data.id].public || (rooms[data.id].password === data.password)) {
                 rooms[data.id].numPeople++;
                 let joinedRoom = rooms[data.id];
                 joinedRoom.id = data.id;
@@ -66,8 +66,8 @@ io.on('connection', (socket) => {
     });
     //receive message
     socket.on('new message', (data) => {
-        console.log(`${socket.id}: ${data} - ${connectedRoomId}`);
         if (connectedRoomId !== -1) {
+            console.log(`${socket.id}: ${data} - ${connectedRoomId}`);
             let msg = { username: socket.id, message: data };
             console.log(`broadcast to ${connectedRoomId}`);
             io.to(connectedRoomId.toString()).emit('new message', msg);
@@ -85,7 +85,7 @@ io.on('connection', (socket) => {
         if (data.password) {
             visiblity = false;
         }
-        //TODO check if room with same name already exists
+        //TODO check if room with same name already exists ?
         rooms.push({ name: data.name, password: data.password, numPeople: 0, public: visiblity });
         console.log(`added new room: ${data.name} ${data.password}`);
         io.emit('new room');
