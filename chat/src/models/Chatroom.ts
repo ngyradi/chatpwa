@@ -11,6 +11,11 @@ export type ChatMessage = {
     message?: string,
 }
 
+export type PrivateMessage = {
+    socketId?: string,
+    message?: string,
+}
+
 export type User = {
     username?: string,
     socketId?: string,

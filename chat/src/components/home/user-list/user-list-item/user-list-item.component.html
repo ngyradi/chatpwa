@@ -1,3 +1,7 @@
 <ng-container *ngIf="user">
-  <p class="text-right">{{user.username}}</p>
+  <div class="flex grid grid-cols-3 ml-2">
+    <p class="col-span-2">{{user.username}}</p>
+    <input class="bg-slate-200" type="button" value="pm" (click)="sendPrivateMessage()">
+    <!-- mail icon -->
+  </div>
 </ng-container>

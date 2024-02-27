@@ -2,5 +2,5 @@
   online users
 </p>
 <div *ngFor="let user of users | async">
-  <app-user-list-item [user]="user"></app-user-list-item>
+  <app-user-list-item [user]="user" (privateMessageEvent)="sendPrivateMessage($event)"></app-user-list-item>
 </div>

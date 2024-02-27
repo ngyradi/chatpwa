@@ -5,16 +5,16 @@ import { ChatWindowComponent } from './chat-window/chat-window.component';
 import { CommonModule } from '@angular/common';
 import { PageContainerComponent } from '../page-container/page-container.component';
 import { ChatService } from '../../services/chat-service';
-import { ChatMessage, ChatRoom, User } from '../../models/Chatroom';
+import { ChatMessage, ChatRoom, PrivateMessage, User } from '../../models/Chatroom';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { RouterModule } from '@angular/router';
+import { RouterLink, RouterModule } from '@angular/router';
 
 @Component({
   standalone: true,
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  imports: [CommonModule, RoomListComponent, UserListComponent, ChatWindowComponent, PageContainerComponent, RouterModule],
+  imports: [CommonModule, RoomListComponent, UserListComponent, ChatWindowComponent, PageContainerComponent, RouterModule, RouterLink],
   providers: [ChatService],
 })
 export class HomeComponent implements OnDestroy {
@@ -54,6 +54,10 @@ export class HomeComponent implements OnDestroy {
 
   leaveRoom() {
     this.chatService.leaveRoom();
+  }
+
+  sendPrivateMessage(pm: PrivateMessage) {
+    this.chatService.sendPrivateMessage(pm);
   }
 
 }

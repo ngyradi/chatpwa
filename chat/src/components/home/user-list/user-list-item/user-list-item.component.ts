@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, } from '@angular/core';
-import { User } from '../../../../models/Chatroom';
+import { Component, EventEmitter, Input, Output, } from '@angular/core';
+import { PrivateMessage, User } from '../../../../models/Chatroom';
 
 @Component({
   standalone: true,
@@ -12,7 +12,14 @@ import { User } from '../../../../models/Chatroom';
 export class UserListItemComponent {
 
   @Input() user?: User;
+  @Output() privateMessageEvent = new EventEmitter<PrivateMessage>();
 
   constructor() { }
+
+  sendPrivateMessage() {
+    if (this.user) {
+      this.privateMessageEvent.emit({ socketId: this.user.socketId, message: "asdasd" })
+    }
+  }
 
 }
