@@ -18,11 +18,12 @@ io.on('connection', (socket) => {
     socket.on('join', (data) => {
         users.set(socket.id, { username: data.username });
         console.log(`${data.username} joined`);
+        const usernames = [...users.values()];
+        io.emit('all users', usernames);
     });
     socket.on('get users', () => {
         console.log(`${socket.id} asked for online users`);
-        const usernames = [...users.values()];
-        socket.emit('all users', usernames);
+        socket.emit('all users', getUsernames(users));
     });
     socket.on('disconnect', () => {
         users.delete(socket.id);
@@ -32,6 +33,7 @@ io.on('connection', (socket) => {
                 io.emit('all rooms', getRoomView(rooms));
             }
         }
+        io.emit('all users', getUsernames(users));
     });
     //chat
     //join room
@@ -93,4 +95,7 @@ httpServer.listen(port);
 console.log(`Listening on port ${port}`);
 function getRoomView(_rooms) {
     return _rooms.map((r, index) => ({ id: index, name: r.name, numPeople: r.numPeople, public: r.public }));
+}
+function getUsernames(_users) {
+    return [..._users.values()];
 }

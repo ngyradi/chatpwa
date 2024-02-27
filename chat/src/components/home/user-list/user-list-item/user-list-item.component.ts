@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, } from '@angular/core';
+import { User } from '../../../../models/Chatroom';
 
 @Component({
   standalone: true,
@@ -10,7 +11,7 @@ import { Component, Input, } from '@angular/core';
 })
 export class UserListItemComponent {
 
-  @Input() username?: string;
+  @Input() user?: User;
 
   constructor() { }
 

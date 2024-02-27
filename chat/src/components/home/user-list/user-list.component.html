@@ -1,6 +1,6 @@
 <p class="text-right">
   online users
 </p>
-<div *ngFor="let user in users">
-  {{user}}
+<div *ngFor="let user of users | async">
+  <app-user-list-item [user]="user"></app-user-list-item>
 </div>

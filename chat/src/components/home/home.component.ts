@@ -5,7 +5,7 @@ import { ChatWindowComponent } from './chat-window/chat-window.component';
 import { CommonModule } from '@angular/common';
 import { PageContainerComponent } from '../page-container/page-container.component';
 import { ChatService } from '../../services/chat-service';
-import { ChatMessage, ChatRoom } from '../../models/Chatroom';
+import { ChatMessage, ChatRoom, User } from '../../models/Chatroom';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({
@@ -21,13 +21,13 @@ export class HomeComponent {
   connected$ = new BehaviorSubject(false);
   rooms$ = new BehaviorSubject<ChatRoom[]>([]);
   messages: ChatMessage[];
-  users: string[];
+  users: BehaviorSubject<User[]>;
 
   constructor(private readonly chatService: ChatService) {
     this.messages = this.chatService.messages;
     this.connected$ = this.chatService.connected$;
     this.rooms$ = this.chatService.rooms$;
-    this.users = this.chatService.users;
+    this.users = this.chatService.users$;
   }
 
   joinRoom(room: ChatRoom) {
