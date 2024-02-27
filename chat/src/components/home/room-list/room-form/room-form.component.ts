@@ -18,7 +18,7 @@ export class RoomFormComponent {
 
   error: string;
 
-  constructor(private readonly roomservice : RoomService) { 
+  constructor(private readonly roomService : RoomService) { 
     this.roomName = "";
     this.roomPassword = "";
     this.error = "";
@@ -35,7 +35,7 @@ export class RoomFormComponent {
     this.error = "";
 
     //create room
-    this.roomservice.createRoom(this.roomName,this.roomPassword);
+    this.roomService.createRoom(this.roomName,this.roomPassword);
 
     this.roomName = "";
     this.roomPassword = "";

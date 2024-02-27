@@ -5,7 +5,7 @@
 
   <p>chat rooms:</p>
   <div *ngFor="let room of rooms$ | async">
-    <app-room-list-item [room]="room"></app-room-list-item>
+    <app-room-list-item [room]="room" (joinRoomEvent)="joinRoom(room)"></app-room-list-item>
   </div>
   
 </div>

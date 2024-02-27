@@ -1,7 +1,9 @@
 export type ChatRoom = {
+    id?: number,
     name?: string,
     password?: string,
     numPeople?: number,
+    public?: boolean;
 }
 
 export type ChatMessage = {

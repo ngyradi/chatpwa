@@ -1,5 +1,11 @@
 <ng-container *ngIf="(room)">
-  <p>
-    {{room.name}} - {{room.numPeople}}
-  </p>
+  <div class="grid grid-cols-5">
+    <p class="col-span-3">
+     {{room.id}} - {{room.name}} - {{room.public}}
+    </p>
+    <p class="text-right">
+      {{room.numPeople}}
+    </p>
+    <input class="bg-gray-200"type="button" value="join" (click)="joinRoom()">
+  </div>
 </ng-container>

@@ -20,8 +20,6 @@ export class RoomService {
     })
 
     this.socket.on('all rooms', (data:ChatRoom[])=>{
-      console.log("received rooms");
-      console.log(data)
       this.rooms$.next(data);
     })
 
@@ -34,8 +32,6 @@ export class RoomService {
     name = name.trim();
     if (name){
       this.socket.emit('new room', {name: name, password: password});
-      console.log("create room")
-
     }
   }
 

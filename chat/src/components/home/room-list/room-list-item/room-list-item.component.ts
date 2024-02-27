@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ChatRoom } from '../../../../models/Chatroom';
+import { ChatService } from '../../../../services/chat-service';
 @Component({
   standalone: true,
   selector: 'app-room-list-item',
@@ -9,11 +10,16 @@ import { ChatRoom } from '../../../../models/Chatroom';
   imports: [CommonModule],
 })
 export class RoomListItemComponent {
-  
-  @Input() room?: ChatRoom;
 
-  constructor() { 
-    
+  @Input() room?: ChatRoom;
+  @Output() joinRoomEvent = new EventEmitter<ChatRoom>();
+
+  constructor() { }
+
+  joinRoom() {
+    if (this.room) {
+      this.joinRoomEvent.emit({id: this.room.id, password: ""})
+    }
   }
 
 }

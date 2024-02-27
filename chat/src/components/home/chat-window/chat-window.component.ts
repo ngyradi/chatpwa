@@ -20,22 +20,22 @@ export class ChatWindowComponent {
   messages: ChatMessage[];
   message: string;
 
-  constructor(private readonly chatservice: ChatService) {
-    this.messages = this.chatservice.messages;
+  constructor(private readonly chatService: ChatService) {
+    this.messages = this.chatService.messages;
     this.message = "";
-    this.connected$ = this.chatservice.connected$;
+    this.connected$ = this.chatService.connected$;
   }
 
   sendMessage() {
-    if ((this.message.trim()) && this.chatservice.connected) {
-      this.chatservice.sendMessage(this.message);
+    if ((this.message.trim())) {
+      this.chatService.sendMessage(this.message);
       console.log(this.message);
       this.message = "";
     }
   }
 
   join() {
-    this.chatservice.joinRoom();
+    this.chatService.joinRoom();
   }
 
 }
