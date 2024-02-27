@@ -14,6 +14,7 @@ import { PrivateMessage, User } from '../../../models/Chatroom';
 export class UserListComponent {
 
   @Input() users?: BehaviorSubject<User[]>;
+  @Input() clientUserId?: string;
   @Output() privateMessageEvent = new EventEmitter<PrivateMessage>();
 
   constructor() { }

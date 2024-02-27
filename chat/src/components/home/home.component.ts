@@ -60,4 +60,8 @@ export class HomeComponent implements OnDestroy {
     this.chatService.sendPrivateMessage(pm);
   }
 
+  getClientUserId() {
+    return this.chatService.getSocketId();
+  }
+
 }

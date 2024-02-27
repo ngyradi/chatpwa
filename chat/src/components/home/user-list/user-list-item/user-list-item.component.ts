@@ -11,10 +11,13 @@ import { PrivateMessage, User } from '../../../../models/Chatroom';
 })
 export class UserListItemComponent {
 
+  @Input() isSelf: boolean;
   @Input() user?: User;
   @Output() privateMessageEvent = new EventEmitter<PrivateMessage>();
 
-  constructor() { }
+  constructor() {
+    this.isSelf = false;
+  }
 
   sendPrivateMessage() {
     if (this.user) {

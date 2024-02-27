@@ -94,4 +94,8 @@ export class ChatService {
     console.log(pm);
   }
 
+  getSocketId() {
+    return this.socket.id;
+  }
+
 }

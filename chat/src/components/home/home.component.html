@@ -16,6 +16,7 @@
   </div>
 
   <div>
-    <app-user-list [users]="users" (privateMessageEvent)="sendPrivateMessage($event)"></app-user-list>
+    <app-user-list [users]="users" [clientUserId]="getClientUserId()"
+      (privateMessageEvent)="sendPrivateMessage($event)"></app-user-list>
   </div>
 </app-page-container>
