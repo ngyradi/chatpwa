@@ -17,6 +17,7 @@ type ChatMessage = {
 
 export type User = {
     username?: string,
+    socketId?: string,
 }
 
 
@@ -39,7 +40,7 @@ io.on('connection', (socket: Socket) => {
 
     //join online users
     socket.on('join', (data: User) => {
-        users.set(socket.id, { username: data.username })
+        users.set(socket.id, { socketId: socket.id, username: data.username })
         console.log(`${data.username} joined`)
 
         const usernames = [...users.values()]

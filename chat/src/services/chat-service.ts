@@ -32,6 +32,7 @@ export class ChatService {
 
     this.socket.on('all users', (data) => {
       this.users$.next(data);
+      console.log(data);
     })
 
     this.socket.on('all rooms', (data: ChatRoom[]) => {

@@ -16,7 +16,7 @@ io.on('connection', (socket) => {
     let connectedRoomId = -1;
     //join online users
     socket.on('join', (data) => {
-        users.set(socket.id, { username: data.username });
+        users.set(socket.id, { socketId: socket.id, username: data.username });
         console.log(`${data.username} joined`);
         const usernames = [...users.values()];
         io.emit('all users', usernames);
