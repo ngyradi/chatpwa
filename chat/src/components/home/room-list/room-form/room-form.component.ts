@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RoomService } from '../../../../services/room-service.service';
 import { ChatRoom } from '../../../../models/Chatroom';
+import { ChatService } from '../../../../services/chat-service';
 
 @Component({
   standalone: true,
@@ -9,7 +9,7 @@ import { ChatRoom } from '../../../../models/Chatroom';
   templateUrl: './room-form.component.html',
   styleUrls: ['./room-form.component.css'],
   imports: [FormsModule],
-  providers: [RoomService]
+  providers: [ChatService]
 })
 export class RoomFormComponent {
 
@@ -18,7 +18,7 @@ export class RoomFormComponent {
 
   error: string;
 
-  constructor(private readonly roomService : RoomService) { 
+  constructor(private readonly chatService : ChatService) { 
     this.roomName = "";
     this.roomPassword = "";
     this.error = "";
@@ -35,7 +35,7 @@ export class RoomFormComponent {
     this.error = "";
 
     //create room
-    this.roomService.createRoom(this.roomName,this.roomPassword);
+    this.chatService.createRoom(this.roomName,this.roomPassword);
 
     this.roomName = "";
     this.roomPassword = "";

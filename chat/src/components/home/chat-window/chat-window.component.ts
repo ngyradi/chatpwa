@@ -34,8 +34,4 @@ export class ChatWindowComponent {
     }
   }
 
-  join() {
-    this.chatService.joinRoom();
-  }
-
 }

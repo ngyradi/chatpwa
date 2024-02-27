@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ChatRoom } from '../../../../models/Chatroom';
-import { ChatService } from '../../../../services/chat-service';
 @Component({
   standalone: true,
   selector: 'app-room-list-item',

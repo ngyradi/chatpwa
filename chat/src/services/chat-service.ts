@@ -9,8 +9,9 @@ import { ChatMessage, ChatRoom } from '../models/Chatroom';
 export class ChatService {
 
   public messages: ChatMessage[];
-  public connected$ = new BehaviorSubject(false);
   public connectedRoom?: ChatRoom;
+  public connected$ = new BehaviorSubject(false);
+  public rooms$ = new BehaviorSubject<ChatRoom[]>([]);
 
   private socket: Socket;
 
@@ -19,8 +20,21 @@ export class ChatService {
   constructor() {
     this.messages = [];
     this.connected$.next(false);
+    
 
     this.socket = io(this.host);
+
+    this.socket.on('connect', ()=>{
+      this.getRooms();
+    })
+
+    this.socket.on('all rooms', (data:ChatRoom[])=>{
+      this.rooms$.next(data);
+    })
+
+    this.socket.on('new room', ()=>{
+      this.getRooms();
+    })
 
     this.socket.on('joined', (data: ChatRoom) => {
       this.connected$.next(true);
@@ -42,6 +56,17 @@ export class ChatService {
 
   joinRoom = (id?: number, password?: string) => {
     this.socket.emit('join', { id: id, password: password });
+  }
+
+  createRoom(name: string, password = "") {
+    name = name.trim();
+    if (name){
+      this.socket.emit('new room', {name: name, password: password});
+    }
+  }
+
+  getRooms(){
+    this.socket.emit('get rooms');
   }
 
 }
