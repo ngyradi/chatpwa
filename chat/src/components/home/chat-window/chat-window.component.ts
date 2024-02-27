@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ChatMessage } from '../../../models/Chatroom';
+import { ChatMessage } from '../../../models/chatroom';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({

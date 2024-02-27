@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output, } from '@angular/core';
-import { PrivateMessage, User } from '../../../../models/Chatroom';
+import { PrivateMessage, User } from '../../../../models/chatroom';
 
 @Component({
   standalone: true,

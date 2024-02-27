@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ChatRoom } from '../../../../models/Chatroom';
+import { ChatRoom } from '../../../../models/chatroom';
 
 @Component({
   standalone: true,

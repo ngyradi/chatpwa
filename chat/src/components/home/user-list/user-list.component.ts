@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { UserListItemComponent } from './user-list-item/user-list-item.component';
 import { BehaviorSubject } from 'rxjs';
-import { PrivateMessage, User } from '../../../models/Chatroom';
+import { PrivateMessage, User } from '../../../models/chatroom';
 
 @Component({
   standalone: true,

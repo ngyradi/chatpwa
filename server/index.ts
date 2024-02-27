@@ -15,6 +15,11 @@ type ChatMessage = {
     message?: string,
 }
 
+export type PrivateMessage = {
+    socketId?: string,
+    content?: ChatMessage,
+}
+
 export type User = {
     username?: string,
     socketId?: string,
@@ -49,7 +54,7 @@ io.on('connection', (socket: Socket) => {
 
     socket.on('get users', () => {
         console.log(`${socket.id} asked for online users`)
-        socket.emit('all users', getUsernames(users));
+        socket.emit('all users', getUsers(users));
     })
 
 
@@ -62,7 +67,7 @@ io.on('connection', (socket: Socket) => {
                 io.emit('all rooms', getRoomView(rooms));
             }
         }
-        io.emit('all users', getUsernames(users));
+        io.emit('all users', getUsers(users));
     })
 
     //chat
@@ -118,6 +123,15 @@ io.on('connection', (socket: Socket) => {
         }
     })
 
+    //private message
+    socket.on('private message', (pm: PrivateMessage) => {
+        if (pm.socketId) {
+            //add username
+
+            //socket.to(pm.socketId).emit('private message', pm);
+        }
+    })
+
 
     //rooms
     //fetch rooms
@@ -134,8 +148,6 @@ io.on('connection', (socket: Socket) => {
             visiblity = false;
         }
 
-        //TODO check if room with same name already exists ?
-
         rooms.push({ name: data.name, password: data.password, numPeople: 0, public: visiblity });
         console.log(`added new room: ${data.name} ${data.password}`);
 
@@ -151,6 +163,6 @@ function getRoomView(_rooms: ChatRoom[]) {
     return _rooms.map((r, index) => ({ id: index, name: r.name, numPeople: r.numPeople, public: r.public }));
 }
 
-function getUsernames(_users: Map<string, User>) {
+function getUsers(_users: Map<string, User>) {
     return [..._users.values()]
 }

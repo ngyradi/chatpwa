@@ -5,7 +5,7 @@ import { ChatWindowComponent } from './chat-window/chat-window.component';
 import { CommonModule } from '@angular/common';
 import { PageContainerComponent } from '../page-container/page-container.component';
 import { ChatService } from '../../services/chat-service';
-import { ChatMessage, ChatRoom, PrivateMessage, User } from '../../models/Chatroom';
+import { ChatMessage, ChatRoom, PrivateMessage, User } from '../../models/chatroom';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { RouterLink, RouterModule } from '@angular/router';
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { Socket, io } from 'socket.io-client'
-import { ChatMessage, ChatRoom, PrivateMessage, User } from '../models/Chatroom';
+import { ChatMessage, ChatRoom, PrivateMessage, User } from '../models/chatroom';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +16,7 @@ export class ChatService {
 
   private socket: Socket;
   private connectedRoom?: ChatRoom;
+  private privateMessages = new Map<string, ChatMessage[]>();
 
   private readonly host = "http://localhost:3000";
 
@@ -55,6 +56,10 @@ export class ChatService {
     this.socket.on('new message', (data) => {
       this.messages.push(data);
     })
+
+    /*this.socket.on('private message', (data: PrivateMessage) => {
+      
+    })*/
   }
 
   getSocketId() {
@@ -96,6 +101,7 @@ export class ChatService {
 
   sendPrivateMessage(pm: PrivateMessage) {
     console.log(pm);
+    this.socket.emit('private message', { pm })
   }
 
 }

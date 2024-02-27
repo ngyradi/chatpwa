@@ -1,17 +1,17 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ChatRoom } from '../../../../models/Chatroom';
+import { ChatRoom } from '../../../../models/chatroom';
 import { FormsModule } from '@angular/forms';
 @Component({
   standalone: true,
   selector: 'app-room-list-item',
   templateUrl: './room-list-item.component.html',
   styleUrls: ['./room-list-item.component.css'],
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule],
 })
 export class RoomListItemComponent {
 
-  @Input() selected?:boolean;
+  @Input() selected?: boolean;
   @Input() room?: ChatRoom;
   @Output() joinRoomEvent = new EventEmitter<ChatRoom>();
 
@@ -25,10 +25,10 @@ export class RoomListItemComponent {
 
   joinRoom() {
     if (this.room) {
-      if (!this.room.public){
+      if (!this.room.public) {
         this.inputVisible = true;
       }
-      this.joinRoomEvent.emit({id: this.room.id, password: this.password})
+      this.joinRoomEvent.emit({ id: this.room.id, password: this.password })
     }
   }
 
