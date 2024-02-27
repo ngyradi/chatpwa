@@ -14,16 +14,16 @@ import { RouterModule } from '@angular/router';
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  imports: [CommonModule, RoomListComponent, UserListComponent, ChatWindowComponent, PageContainerComponent,RouterModule],
+  imports: [CommonModule, RoomListComponent, UserListComponent, ChatWindowComponent, PageContainerComponent, RouterModule],
   providers: [ChatService],
 })
-export class HomeComponent implements OnDestroy{
+export class HomeComponent implements OnDestroy {
 
-  connected$ : BehaviorSubject<boolean>;
-  rooms$ : BehaviorSubject<ChatRoom[]>;
+  connected$: BehaviorSubject<boolean>;
+  rooms$: BehaviorSubject<ChatRoom[]>;
   messages: ChatMessage[];
   users: BehaviorSubject<User[]>;
-  connectedRoom$ : Subject<ChatRoom>;
+  connectedRoom$: Subject<ChatRoom>;
 
   constructor(private readonly chatService: ChatService) {
     this.messages = this.chatService.messages;
@@ -52,7 +52,7 @@ export class HomeComponent implements OnDestroy{
     }
   }
 
-  leaveRoom(){
+  leaveRoom() {
     this.chatService.leaveRoom();
   }
 

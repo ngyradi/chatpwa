@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ChatMessage, ChatRoom } from '../../../models/Chatroom';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { ChatMessage } from '../../../models/Chatroom';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -13,7 +13,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 })
 export class ChatWindowComponent {
 
-  @Input() connectedRoom$?: Subject<ChatRoom>;
+  @Input() connectedRoomName?: string;
   @Input() messages: ChatMessage[];
   @Input() connected$?: BehaviorSubject<boolean>;
 

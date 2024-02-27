@@ -10,8 +10,9 @@
   </div>
 
   <div class="col-span-3">
-    <app-chat-window (sendMessageEvent)="sendMessage($event)" [connected$]="connected$" [messages]="messages"
-      [connectedRoom$]="connectedRoom$" (leaveRoomEvent)="leaveRoom()"></app-chat-window>
+    <app-chat-window (sendMessageEvent)="sendMessage($event)" [messages]="messages"
+      [connectedRoomName]="(connectedRoom$ | async)?.name" [connected$]="connected$"
+      (leaveRoomEvent)="leaveRoom()"></app-chat-window>
   </div>
 
   <div>

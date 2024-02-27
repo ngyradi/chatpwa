@@ -1,5 +1,5 @@
-<div *ngIf="(connected$ | async)" class="border-2 border-t-0">
-  <b>messages</b> connected to: {{(connectedRoom$ | async)?.name}}
+<div *ngIf="(connected$ | async); else noConnection" class="border-2 border-t-0">
+  <b>messages</b> connected to: {{connectedRoomName}}
 
   <input class="float-right mx-2" type="button" value="x" (click)="leaveRoom()">
 
@@ -14,8 +14,10 @@
 
 </div>
 
-{{(connectedRoom$ | async)?.name}}
-
-<ng-template>
-
+<ng-template #noConnection>
+  <div class="border-2 border-t-0">
+    <div class="pt-2 min-h-96 mb-4 ml-2 mr-2 items-center flex">
+      <h2 class="text-md text-center font-bold w-full">join a room to start chatting</h2>
+    </div>
+  </div>
 </ng-template>

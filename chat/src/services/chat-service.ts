@@ -43,9 +43,9 @@ export class ChatService {
     })
 
     this.socket.on('joinedRoom', (data: ChatRoom) => {
-      this.connected$.next(true);
       this.connectedRoom$.next(data);
       this.connectedRoom = data;
+      this.connected$.next(true);
     })
 
     this.socket.on('leftRoom', () => {
