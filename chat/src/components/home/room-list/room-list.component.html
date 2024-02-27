@@ -8,8 +8,10 @@
   </ng-container>
 
   <p class="font-bold">chat rooms:</p>
-  <div *ngFor=" let room of rooms$ | async">
-    <app-room-list-item [room]="room" (joinRoomEvent)="joinRoom($event)" [selected]="false"></app-room-list-item>
+  <div class="overflow-y-auto">
+    <div *ngFor=" let room of rooms$ | async">
+      <app-room-list-item [room]="room" (joinRoomEvent)="joinRoom($event)" [selected]="false"></app-room-list-item>
+    </div>
   </div>
 
 </div>

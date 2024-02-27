@@ -1,11 +1,13 @@
 <p class="text-right font-bold">
   online users
 </p>
-<div *ngFor="let user of users | async">
-  <app-user-list-item *ngIf="user.socketId !== clientUserId; else selfUser" [user]="user"
-    (privateMessageEvent)="sendPrivateMessage($event)"></app-user-list-item>
-  <ng-template #selfUser>
-    <app-user-list-item [isSelf]="true" [user]="user"
+<div class="overflow-y-auto h-full">
+  <div *ngFor="let user of users | async">
+    <app-user-list-item *ngIf="user.socketId !== clientUserId; else selfUser" [user]="user"
       (privateMessageEvent)="sendPrivateMessage($event)"></app-user-list-item>
-  </ng-template>
+    <ng-template #selfUser>
+      <app-user-list-item [isSelf]="true" [user]="user"
+        (privateMessageEvent)="sendPrivateMessage($event)"></app-user-list-item>
+    </ng-template>
+  </div>
 </div>
