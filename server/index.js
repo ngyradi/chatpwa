@@ -33,8 +33,10 @@ io.on('connection', (socket) => {
                 let joinedRoom = rooms[data.id];
                 joinedRoom.id = data.id;
                 socket.emit('joined', joinedRoom);
+                socket.join(data.id.toString());
                 connectedRoomId = data.id;
                 console.log(`${socket.id} joined ${data.id} - ${rooms[data.id].name}`);
+                console.log(connectedRoomId);
                 io.emit('all rooms', getRoomView(rooms));
             }
         }
@@ -47,9 +49,12 @@ io.on('connection', (socket) => {
     });
     //receive message
     socket.on('new message', (data) => {
-        console.log(`${socket.id}: ${data}`);
-        let msg = { username: socket.id, message: data };
-        io.emit('new message', msg);
+        console.log(`${socket.id}: ${data} - ${connectedRoomId}`);
+        if (connectedRoomId !== undefined) {
+            let msg = { username: socket.id, message: data };
+            console.log(`broadcast to ${connectedRoomId}`);
+            io.to(connectedRoomId.toString()).emit('new message', msg);
+        }
     });
     //rooms
     //fetch rooms

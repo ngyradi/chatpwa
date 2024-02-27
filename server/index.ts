@@ -32,10 +32,10 @@ const io = new Server(httpServer, {
 io.on('connection', (socket: Socket) => {
     console.log(`${socket.id} connected`);
 
-    let connectedRoomId : number;
-    socket.on('disconnect', ()=>{
-        if (connectedRoomId !== undefined){
-            if (rooms[connectedRoomId]){
+    let connectedRoomId: number;
+    socket.on('disconnect', () => {
+        if (connectedRoomId !== undefined) {
+            if (rooms[connectedRoomId]) {
                 rooms[connectedRoomId].numPeople--;
                 io.emit('all rooms', getRoomView(rooms));
                 console.log(`${socket.id} disconnected from room: ${connectedRoomId}`)
@@ -56,9 +56,11 @@ io.on('connection', (socket: Socket) => {
                 let joinedRoom: ChatRoom = rooms[data.id];
                 joinedRoom.id = data.id;
                 socket.emit('joined', joinedRoom);
+                socket.join(data.id.toString());
 
                 connectedRoomId = data.id;
                 console.log(`${socket.id} joined ${data.id} - ${rooms[data.id].name}`);
+                console.log(connectedRoomId)
 
                 io.emit('all rooms', getRoomView(rooms));
             }
@@ -67,17 +69,20 @@ io.on('connection', (socket: Socket) => {
 
     //leave room
     socket.on('leave', (data: ChatRoom) => {
-        if (data.id !== undefined){
+        if (data.id !== undefined) {
             rooms[data.id].numPeople--;
         }
     })
 
     //receive message
     socket.on('new message', (data) => {
-        console.log(`${socket.id}: ${data}`);
+        console.log(`${socket.id}: ${data} - ${connectedRoomId}`);
 
-        let msg = { username: socket.id, message: data }
-        io.emit('new message', msg);
+        if (connectedRoomId !== undefined) {
+            let msg = { username: socket.id, message: data }
+            console.log(`broadcast to ${connectedRoomId}`)
+            io.to(connectedRoomId.toString()).emit('new message', msg);
+        }
     })
 
 
@@ -109,6 +114,6 @@ io.on('connection', (socket: Socket) => {
 httpServer.listen(port);
 console.log(`Listening on port ${port}`);
 
-function getRoomView(_rooms:ChatRoom[]) {
+function getRoomView(_rooms: ChatRoom[]) {
     return _rooms.map((r, index) => ({ id: index, name: r.name, numPeople: r.numPeople, public: r.public }));
 }

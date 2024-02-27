@@ -12,7 +12,6 @@ export class ChatService {
   public connected$ = new BehaviorSubject(false);
   public connectedRoom?: ChatRoom;
 
-  private connected;
   private socket: Socket;
 
   private readonly host = "http://localhost:3000";
@@ -21,11 +20,9 @@ export class ChatService {
     this.messages = [];
     this.connected$.next(false);
 
-    this.connected = false;
     this.socket = io(this.host);
 
     this.socket.on('joined', (data: ChatRoom) => {
-      //this.connected = true;
       this.connected$.next(true);
 
       this.connectedRoom = data;
@@ -39,9 +36,8 @@ export class ChatService {
   }
 
   sendMessage = (message: string) => {
-    if (message && this.connected) {
-      this.socket.emit('new message', message);
-    }
+    console.log(message)
+    this.socket.emit('new message', message);
   }
 
   joinRoom = (id?: number, password?: string) => {
