@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ChatMessage, ChatRoom } from '../../../models/Chatroom';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -13,9 +13,12 @@ import { Subject } from 'rxjs';
 })
 export class ChatWindowComponent {
 
-  @Input() connectedRoom$? : Subject<ChatRoom>;
-  @Output() sendMessageEvent = new EventEmitter<string>();
+  @Input() connectedRoom$?: Subject<ChatRoom>;
   @Input() messages: ChatMessage[];
+  @Input() connected$?: BehaviorSubject<boolean>;
+
+  @Output() sendMessageEvent = new EventEmitter<string>();
+  @Output() leaveRoomEvent = new EventEmitter<void>();
 
   message: string;
 
@@ -29,6 +32,10 @@ export class ChatWindowComponent {
       this.sendMessageEvent.emit(this.message)
       this.message = "";
     }
+  }
+
+  leaveRoom() {
+    this.leaveRoomEvent.emit();
   }
 
 }

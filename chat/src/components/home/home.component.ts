@@ -52,4 +52,8 @@ export class HomeComponent implements OnDestroy{
     }
   }
 
+  leaveRoom(){
+    this.chatService.leaveRoom();
+  }
+
 }

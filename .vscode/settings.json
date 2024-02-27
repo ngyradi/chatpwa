@@ -7,7 +7,7 @@
     "files.autoSave": "onFocusChange", // optional but recommended
     "vs-code-prettier-eslint.prettierLast": false,
     "[typescript]": {
-      "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+      "editor.defaultFormatter": "vscode.typescript-language-features"
     },
     "[html]": {
       "editor.defaultFormatter": "vscode.html-language-features"

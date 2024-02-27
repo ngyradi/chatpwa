@@ -94,9 +94,16 @@ io.on('connection', (socket: Socket) => {
     })
 
     //leave room
-    socket.on('leave', (data: ChatRoom) => {
-        if (data.id !== undefined) {
-            rooms[data.id].numPeople--;
+    socket.on('leave', () => {
+        if (connectedRoomId !== -1) {
+            console.log(`${socket.id} left room: ${connectedRoomId}`)
+            socket.leave(connectedRoomId.toString());
+            rooms[connectedRoomId].numPeople--;
+            connectedRoomId = -1;
+
+            socket.emit('leftRoom');
+
+            io.emit('all rooms', getRoomView(rooms));
         }
     })
 
