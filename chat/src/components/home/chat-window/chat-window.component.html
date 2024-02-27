@@ -1,7 +1,7 @@
 <div *ngIf="(connected$ | async); else noConnection" class="border-2 border-t-0">
   <b>messages</b> connected to: {{connectedRoomName}}
 
-  <input class="float-right mx-2" type="button" value="x" (click)="leaveRoom()">
+  <input class="float-right mr-2 font-bold" type="button" value="x" (click)="leaveRoom()">
 
   <div class="mt-2 min-h-96 bg-gray-50 mb-4 ml-2 mr-2 messageWindow overflow-y-scroll">
     <ng-container *ngFor="let msg of messages">

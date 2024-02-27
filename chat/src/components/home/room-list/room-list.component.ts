@@ -10,24 +10,31 @@ import { BehaviorSubject, Subject } from 'rxjs';
   selector: 'app-room-list',
   templateUrl: './room-list.component.html',
   styleUrls: ['./room-list.component.css'],
-  imports: [RoomFormComponent, RoomListItemComponent,CommonModule]
+  imports: [RoomFormComponent, RoomListItemComponent, CommonModule]
 })
-export class RoomListComponent  {
+export class RoomListComponent {
 
-  @Input() rooms$? : BehaviorSubject<ChatRoom[]>;
-  @Input() connectedRoom$? : Subject<ChatRoom>;
+  @Input() rooms$?: BehaviorSubject<ChatRoom[]>;
+  @Input() connectedRoom$?: Subject<ChatRoom>;
 
   @Output() joinRoomEvent = new EventEmitter<ChatRoom>();
   @Output() createRoomEvent = new EventEmitter<ChatRoom>();
 
+  editing: boolean;
+
   constructor() {
+    this.editing = false;
   }
 
-  joinRoom(room:ChatRoom){
-    this.joinRoomEvent.emit({id: room.id, password: room.password})
+  setEditingState(state: boolean) {
+    this.editing = state;
   }
 
-  createRoom(room:ChatRoom){
+  joinRoom(room: ChatRoom) {
+    this.joinRoomEvent.emit({ id: room.id, password: room.password })
+  }
+
+  createRoom(room: ChatRoom) {
     this.createRoomEvent.emit(room);
   }
 
