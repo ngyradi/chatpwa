@@ -1,9 +1,14 @@
 <ng-container *ngIf="user">
   <div class="mt-2 flex grid grid-cols-3 ml-2">
-    <p *ngIf="!isSelf" class="col-span-2">{{user.username}}</p>
-    <p *ngIf="isSelf" class="col-span-2">{{user.username}} (you)</p>
-
-    <input class="bg-slate-200" type="button" value="pm" (click)="sendPrivateMessage()">
-    <!-- mail icon -->
+    <ng-container *ngIf="!isSelf; else self">
+      <p class="col-span-2">{{user.username}}</p>
+      <input class="bg-slate-200" type="button" value="pm" (click)="sendPrivateMessage()">
+      <!-- mail icon -->
+    </ng-container>
   </div>
+
+  <ng-template #self>
+    <p class="col-span-2">{{user.username}} (you)</p>
+  </ng-template>
+
 </ng-container>

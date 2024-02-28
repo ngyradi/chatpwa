@@ -14,6 +14,7 @@ export class ChatService {
   public rooms$ = new BehaviorSubject<ChatRoom[]>([]);
   public users$ = new BehaviorSubject<User[]>([]);
   public privateRoomCode$ = new BehaviorSubject<string>("");
+  public privateMessageUser$ = new BehaviorSubject<User | undefined>(undefined);
 
   private socket: Socket;
   private connectedRoom?: ChatRoom;
@@ -119,6 +120,14 @@ export class ChatService {
 
   getUsers() {
     this.socket.emit('get users');
+  }
+
+  selectPrivateMessageUser(user: User) {
+    this.privateMessageUser$.next(user);
+  }
+
+  closePrivateMessage() {
+    this.privateMessageUser$.next(undefined);
   }
 
   sendPrivateMessage(pm: PrivateMessage) {

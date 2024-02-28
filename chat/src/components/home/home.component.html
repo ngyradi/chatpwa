@@ -9,10 +9,16 @@
   </div>
 
   <div class="col-span-3">
-    <app-chat-window [connectedRoomName]="(connectedRoom$ | async)?.name"></app-chat-window>
+    <ng-container *ngIf="!(privateMessageUser$ | async); else pmWindow">
+      <app-chat-window [connectedRoomName]="(connectedRoom$ | async)?.name"></app-chat-window>
+    </ng-container>
   </div>
 
   <div>
     <app-user-list [clientUserId]="getClientUserId()"></app-user-list>
   </div>
 </app-page-container>
+
+<ng-template #pmWindow>
+  <app-private-message-window></app-private-message-window>
+</ng-template>

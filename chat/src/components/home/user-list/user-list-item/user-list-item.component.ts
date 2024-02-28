@@ -21,8 +21,8 @@ export class UserListItemComponent {
 
   sendPrivateMessage() {
     if (this.user) {
-      //this.privateMessageEvent.emit({ socketId: this.user.socketId, message: "asdasd" })
-      this.chatService.sendPrivateMessage({ socketId: this.user.socketId, message: "test" });
+      //this.chatService.sendPrivateMessage({ socketId: this.user.socketId, message: "test" });
+      this.chatService.selectPrivateMessageUser(this.user);
     }
   }
 
