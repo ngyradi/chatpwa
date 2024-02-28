@@ -143,8 +143,9 @@ export class ChatService {
   }
 
   sendPrivateMessage(pm: PrivateMessage) {
-    console.log(pm);
-    this.socket.emit('private message', pm)
+    if (pm.message?.trim()) {
+      this.socket.emit('private message', pm)
+    }
   }
 
 }

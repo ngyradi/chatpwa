@@ -101,9 +101,10 @@ io.on('connection', (socket) => {
     });
     //receive message
     socket.on('new message', (data) => {
+        var _a;
         if (connectedRoomId !== -1) {
             console.log(`${socket.id}: ${data} - ${connectedRoomId}`);
-            let msg = { username: socket.id, message: data };
+            let msg = { username: (_a = users.get(socket.id)) === null || _a === void 0 ? void 0 : _a.username, message: data };
             console.log(`broadcast to ${connectedRoomId} - ${rooms[connectedRoomId].joinCode}`);
             io.to(connectedRoomId.toString()).emit('new message', msg);
         }
