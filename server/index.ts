@@ -159,7 +159,8 @@ io.on('connection', (socket: Socket) => {
     //private message
     socket.on('private message', (pm: PrivateMessage) => {
         if (pm.socketId) {
-            //add username
+
+            socket.to(pm.socketId).emit('private message', "asd");
 
             //socket.to(pm.socketId).emit('private message', pm);
         }
