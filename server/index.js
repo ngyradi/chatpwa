@@ -1,11 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const crypto_1 = require("crypto");
 const http_1 = require("http");
 const socket_io_1 = require("socket.io");
 const port = 3000;
 const httpServer = (0, http_1.createServer)();
 let rooms = [];
 let users = new Map();
+let joinCodes = [];
 const io = new socket_io_1.Server(httpServer, {
     cors: {
         origin: "http://localhost:4200",
@@ -38,19 +40,20 @@ io.on('connection', (socket) => {
     });
     //chat
     //join room
-    socket.on('joinRoom', (data) => {
+    socket.on('join room', (data) => {
         console.log(`${socket.id} tried to join: ${data.id}`);
+        console.log(rooms);
         if (data.id !== undefined && data.id !== connectedRoomId) {
             if (connectedRoomId !== -1) {
                 socket.leave(connectedRoomId.toString());
                 rooms[connectedRoomId].numPeople--;
                 connectedRoomId = -1;
             }
-            if (rooms[data.id].public || (rooms[data.id].password === data.password)) {
+            if (!rooms[data.id].hasPassword || (rooms[data.id].password === data.password)) {
                 rooms[data.id].numPeople++;
                 let joinedRoom = rooms[data.id];
                 joinedRoom.id = data.id;
-                socket.emit('joinedRoom', joinedRoom);
+                socket.emit('joined room', joinedRoom);
                 socket.join(data.id.toString());
                 connectedRoomId = data.id;
                 console.log(`${socket.id} joined ${data.id} - ${rooms[data.id].name}`);
@@ -59,14 +62,41 @@ io.on('connection', (socket) => {
             }
         }
     });
-    //leave room
-    socket.on('leave', () => {
+    //join a room with a code
+    socket.on('join private room', (data) => {
+        console.log(`${socket.id} tried to join room:`);
+        console.log(rooms);
+        if (!data.code) {
+            return;
+        }
+        const roomIndex = rooms.findIndex((r) => r.joinCode === data.code);
+        if (roomIndex === -1) {
+            return;
+        }
+        if (roomIndex === connectedRoomId) {
+            return;
+        }
         if (connectedRoomId !== -1) {
-            console.log(`${socket.id} left room: ${connectedRoomId}`);
             socket.leave(connectedRoomId.toString());
             rooms[connectedRoomId].numPeople--;
             connectedRoomId = -1;
-            socket.emit('leftRoom');
+            io.emit('all rooms', getRoomView(rooms));
+        }
+        rooms[roomIndex].numPeople++;
+        let joinedRoom = rooms[roomIndex];
+        socket.emit('joined room', joinedRoom);
+        socket.join(roomIndex.toString());
+        connectedRoomId = roomIndex;
+        console.log(`${socket.id} joined to private room ${roomIndex} - ${rooms[roomIndex].name}`);
+        console.log(connectedRoomId);
+    });
+    //leave room
+    socket.on('leave', () => {
+        if (connectedRoomId !== -1) {
+            socket.leave(connectedRoomId.toString());
+            rooms[connectedRoomId].numPeople--;
+            connectedRoomId = -1;
+            socket.emit('left room');
             io.emit('all rooms', getRoomView(rooms));
         }
     });
@@ -75,7 +105,7 @@ io.on('connection', (socket) => {
         if (connectedRoomId !== -1) {
             console.log(`${socket.id}: ${data} - ${connectedRoomId}`);
             let msg = { username: socket.id, message: data };
-            console.log(`broadcast to ${connectedRoomId}`);
+            console.log(`broadcast to ${connectedRoomId} - ${rooms[connectedRoomId].joinCode}`);
             io.to(connectedRoomId.toString()).emit('new message', msg);
         }
     });
@@ -94,19 +124,30 @@ io.on('connection', (socket) => {
     });
     //create new room
     socket.on('new room', (data) => {
-        let visiblity = true;
+        let hasPwd = false;
         if (data.password) {
-            visiblity = false;
+            hasPwd = true;
         }
-        rooms.push({ name: data.name, password: data.password, numPeople: 0, public: visiblity });
+        rooms.push({ id: rooms.length, name: data.name, password: data.password, numPeople: 0, public: data.public, hasPassword: hasPwd });
         console.log(`added new room: ${data.name} ${data.password}`);
         io.emit('new room');
+    });
+    socket.on('new private room', (data) => {
+        let code = (0, crypto_1.randomInt)(1000, 10000);
+        if (joinCodes.findIndex((i) => i === code) !== -1) {
+            console.log("code exists");
+            return;
+        }
+        console.log(code);
+        joinCodes.push(code);
+        rooms.push({ id: rooms.length, name: data.name, numPeople: 0, public: false, hasPassword: false, joinCode: code.toString() });
+        socket.emit('private room code', (code));
     });
 });
 httpServer.listen(port);
 console.log(`Listening on port ${port}`);
 function getRoomView(_rooms) {
-    return _rooms.map((r, index) => ({ id: index, name: r.name, numPeople: r.numPeople, public: r.public }));
+    return _rooms.filter((r) => { return r.public; }).map((r) => ({ id: r.id, name: r.name, numPeople: r.numPeople, hasPassword: r.hasPassword }));
 }
 function getUsers(_users) {
     return [..._users.values()];

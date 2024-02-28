@@ -2,16 +2,21 @@
   <input *ngIf="!editing" class="float-right mr-2 font-bold" type="button" value="+" (click)="setEditingState(true)">
 
   <ng-container *ngIf="editing">
-    create a new chat room
-    <input class=" float-right mr-2 font-bold" type="button" value="x" (click)="setEditingState(false)">
-    <app-room-form (createRoomEvent)="createRoom($event)"></app-room-form>
+    <input class="float-right mr-2 font-bold" type="button" value="x" (click)="setEditingState(false)">
+    <p class="mt-2 font-bold">create a new chat room</p>
+    <app-room-form (createRoomEvent)="setEditingState(false)"></app-room-form>
   </ng-container>
 
-  <p class="font-bold">chat rooms:</p>
+  <p class="mt-2 font-bold">chat rooms:</p>
   <div class="overflow-y-auto">
     <div *ngFor=" let room of rooms$ | async">
       <app-room-list-item [room]="room" (joinRoomEvent)="joinRoom($event)" [selected]="false"></app-room-list-item>
     </div>
   </div>
+
+  <p>join with code:</p>
+  <input type="text" placeholder="join code" [(ngModel)]="joinCode">
+  <input class="bg-gray-200" type="button" value="join" (click)="joinWithCode()">
+  <p>{{privateRoomCode$ |async}}</p>
 
 </div>

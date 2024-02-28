@@ -5,25 +5,30 @@ import { RoomListItemComponent } from './room-list-item/room-list-item.component
 import { ChatRoom } from '../../../models/chatroom';
 import { BehaviorSubject } from 'rxjs';
 import { ChatService } from '../../../services/chat-service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   standalone: true,
   selector: 'app-room-list',
   templateUrl: './room-list.component.html',
   styleUrls: ['./room-list.component.css'],
-  imports: [RoomFormComponent, RoomListItemComponent, CommonModule]
+  imports: [RoomFormComponent, RoomListItemComponent, CommonModule, FormsModule]
 })
 export class RoomListComponent {
 
   rooms$?: BehaviorSubject<ChatRoom[]>;
   connectedRoom$?: BehaviorSubject<ChatRoom | undefined>;
+  privateRoomCode$?: BehaviorSubject<string>;
 
   editing: boolean;
+  joinCode: string;
 
   constructor(private readonly chatService: ChatService) {
+    this.joinCode = "";
     this.rooms$ = this.chatService.rooms$;
     this.connectedRoom$ = this.chatService.connectedRoom$;
     this.editing = false;
+    this.privateRoomCode$ = this.chatService.privateRoomCode$;
   }
 
   setEditingState(state: boolean) {
@@ -34,10 +39,10 @@ export class RoomListComponent {
     this.chatService.joinRoom(room.id, room.password);
   }
 
-  createRoom(room: ChatRoom) {
-    if (room.name) {
-      this.editing = false;
-      this.chatService.createRoom(room.name, room.password);
+  joinWithCode() {
+    if (this.joinCode.trim()) {
+      this.chatService.joinPrivateRoom(this.joinCode);
+      this.joinCode = "";
     }
   }
 

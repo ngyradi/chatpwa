@@ -3,6 +3,7 @@ export type ChatRoom = {
     name?: string,
     password?: string,
     numPeople?: number,
+    hasPassword?: boolean,
     public?: boolean;
 }
 

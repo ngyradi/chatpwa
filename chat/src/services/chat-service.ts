@@ -13,6 +13,7 @@ export class ChatService {
   public connected$ = new BehaviorSubject(false);
   public rooms$ = new BehaviorSubject<ChatRoom[]>([]);
   public users$ = new BehaviorSubject<User[]>([]);
+  public privateRoomCode$ = new BehaviorSubject<string>("");
 
   private socket: Socket;
   private connectedRoom?: ChatRoom;
@@ -43,19 +44,26 @@ export class ChatService {
       this.getRooms();
     })
 
-    this.socket.on('joinedRoom', (data: ChatRoom) => {
+    this.socket.on('joined room', (data: ChatRoom) => {
       this.connectedRoom$.next(data);
       this.connectedRoom = data;
       this.connected$.next(true);
     })
 
-    this.socket.on('leftRoom', () => {
+    this.socket.on('left room', () => {
       this.connected$.next(false);
     })
 
     this.socket.on('new message', (data) => {
+      console.log(data);
       this.messages.push(data);
     })
+
+    this.socket.on('private room code', (data) => {
+      console.log(data);
+      this.privateRoomCode$.next(data)
+    })
+
 
     /*this.socket.on('private message', (data: PrivateMessage) => {
       
@@ -75,13 +83,27 @@ export class ChatService {
   }
 
   joinRoom = (id?: number, password?: string) => {
-    this.socket.emit('joinRoom', { id: id, password: password });
+    this.socket.emit('join room', { id: id, password: password });
+  }
+
+  joinPrivateRoom(code: string) {
+    code = code.trim();
+    if (code) {
+      this.socket.emit('join private room', { code: code });
+    }
   }
 
   createRoom(name: string, password = "") {
     name = name.trim();
     if (name) {
-      this.socket.emit('new room', { name: name, password: password });
+      this.socket.emit('new room', { name: name, password: password, public: true });
+    }
+  }
+
+  createPrivateRoom(name: string) {
+    name = name.trim();
+    if (name) {
+      this.socket.emit('new private room', { name: name })
     }
   }
 

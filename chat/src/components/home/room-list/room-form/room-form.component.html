@@ -1,18 +1,27 @@
 <div class="grid grid-cols-3 flex">
-    <input class="mr-2" type="text" name="chat-name" id="chat-name" placeholder="name" [(ngModel)]="roomName">
+    <div class="col-span-3">
+        <label class="mr-2" for="room-type">private:</label>
+        <input type="checkbox" id="room-type" [(ngModel)]="isPrivate">
+    </div>
 
-    <input class="mr-2" type="password" name="chat-password" id="chat-password" placeholder="password"
-        [(ngModel)]="roomPassword">
+    <ng-container *ngIf="!isPrivate">
+        <input class="mr-2" type="text" name="chat-name" id="chat-name" placeholder="name" [(ngModel)]="roomName">
 
-    <select name="chat-visiblity" id="chat-visiblity">
-        <option selected value="public">public</option>
-        <option value="private">private</option>
-        <option value="protected">password protected</option>
-    </select>
+        <input class="mr-2" type="password" name="chat-password" id="chat-password" placeholder="password"
+            [(ngModel)]="roomPassword">
 
-    <span class="col-span-3">
         <input class="bg-slate-200" type="submit" value="create" (click)="submit()">
-    </span>
+    </ng-container>
+
+    <ng-container *ngIf="isPrivate">
+        <input class="mr-2" type="text" name="chat-name" id="chat-name" placeholder="name" [(ngModel)]="roomName">
+
+        <input class="bg-slate-200" type="submit" value="create" (click)="submit()">
+    </ng-container>
 
     <p class="text-red-500 col-span-3">{{error}}</p>
 </div>
+
+<ng-template #protected>
+
+</ng-template>

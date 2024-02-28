@@ -5,7 +5,7 @@
 
       {{room.name}}
 
-      <ng-container *ngIf="!room.public">
+      <ng-container *ngIf="room.hasPassword">
         -pass
         <!-- lock icon -->
       </ng-container>

@@ -1,25 +1,30 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ChatRoom } from '../../../../models/chatroom';
+import { CommonModule } from '@angular/common';
+import { ChatService } from '../../../../services/chat-service';
 
 @Component({
   standalone: true,
   selector: 'app-room-form',
   templateUrl: './room-form.component.html',
   styleUrls: ['./room-form.component.css'],
-  imports: [FormsModule],
+  imports: [CommonModule, FormsModule],
 })
 export class RoomFormComponent {
 
   roomName: string;
   roomPassword: string;
-
+  roomCode: string;
   error: string;
+  isPrivate: boolean;
 
-  @Output() createRoomEvent = new EventEmitter<ChatRoom>();
 
-  constructor() {
+  @Output() createRoomEvent = new EventEmitter();
+
+  constructor(private readonly chatService: ChatService) {
+    this.isPrivate = false;
     this.roomName = "";
+    this.roomCode = "";
     this.roomPassword = "";
     this.error = "";
   }
@@ -30,15 +35,17 @@ export class RoomFormComponent {
       return;
     }
 
-    console.log(this.roomName, this.roomPassword);
+    if (!this.isPrivate) {
+      this.chatService.createRoom(this.roomName, this.roomPassword);
+    } else {
+      this.chatService.createPrivateRoom(this.roomName);
+    }
+    this.createRoomEvent.emit();
 
     this.error = "";
-
-    //create room
-    this.createRoomEvent.emit({ name: this.roomName, password: this.roomPassword });
-
     this.roomName = "";
     this.roomPassword = "";
+
   }
 
 }
