@@ -15,6 +15,7 @@ export type ChatMessage = {
 export type PrivateMessage = {
     socketId?: string,
     message?: string,
+    username?: string,
 }
 
 export type User = {

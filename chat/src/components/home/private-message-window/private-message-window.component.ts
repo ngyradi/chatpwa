@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
-import { User } from '../../../models/chatroom';
+import { ChatMessage, User } from '../../../models/chatroom';
 import { ChatService } from '../../../services/chat-service';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -18,10 +18,14 @@ export class PrivateMessageWindowComponent implements OnDestroy {
   userSubscription: Subscription;
 
   message: string;
+  messages$ = new BehaviorSubject<ChatMessage[]>([]);
 
   constructor(private readonly chatService: ChatService) {
     this.message = "";
-    this.userSubscription = this.chatService.privateMessageUser$.subscribe((val) => { this.pmUser = val });
+    this.userSubscription = this.chatService.privateMessageUser$.subscribe((val) => {
+      this.pmUser = val;
+      this.messages$.next(this.chatService.getPrivateMessages(val) || [] as ChatMessage[])
+    });
   }
   ngOnDestroy(): void {
     this.userSubscription.unsubscribe();
@@ -33,7 +37,8 @@ export class PrivateMessageWindowComponent implements OnDestroy {
 
   sendMessage() {
     if (this.pmUser) {
-      this.chatService.sendPrivateMessage({ socketId: this.pmUser?.socketId, message: "test message" })
+      this.chatService.sendPrivateMessage({ socketId: this.pmUser?.socketId, message: this.message })
+      this.message = "";
     }
   }
 

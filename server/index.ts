@@ -21,6 +21,7 @@ type ChatMessage = {
 export type PrivateMessage = {
     socketId?: string,
     message?: string,
+    username?: string,
 }
 
 export type User = {
@@ -49,6 +50,8 @@ io.on('connection', (socket: Socket) => {
 
     //join online users
     socket.on('join', (data: User) => {
+        data.username += randomInt(1, 1000).toString();
+
         users.set(socket.id, { socketId: socket.id, username: data.username })
         console.log(`${data.username} joined`)
 
@@ -160,8 +163,11 @@ io.on('connection', (socket: Socket) => {
     socket.on('private message', (data: PrivateMessage) => {
         console.log(`message from: ${socket.id} to ${data.socketId}  ${data.message}`)
         if (data.socketId) {
-
-            socket.to(data.socketId).emit('private message', { socketId: socket.id, message: data.message });
+            const user = users.get(socket.id);
+            if (user) {
+                socket.emit('private message', { socketId: data.socketId, message: data.message, username: user.username })
+                socket.to(data.socketId).emit('private message', { socketId: socket.id, message: data.message, username: user.username });
+            }
         }
     })
 

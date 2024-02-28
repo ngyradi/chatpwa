@@ -18,6 +18,7 @@ io.on('connection', (socket) => {
     let connectedRoomId = -1;
     //join online users
     socket.on('join', (data) => {
+        data.username += (0, crypto_1.randomInt)(1, 1000).toString();
         users.set(socket.id, { socketId: socket.id, username: data.username });
         console.log(`${data.username} joined`);
         const usernames = [...users.values()];
@@ -109,11 +110,13 @@ io.on('connection', (socket) => {
     });
     //private message
     socket.on('private message', (data) => {
-        console.log(data);
         console.log(`message from: ${socket.id} to ${data.socketId}  ${data.message}`);
         if (data.socketId) {
-            socket.to(data.socketId).emit('private message', "asd");
-            //socket.to(pm.socketId).emit('private message', pm);
+            const user = users.get(socket.id);
+            if (user) {
+                socket.emit('private message', { socketId: data.socketId, message: data.message, username: user.username });
+                socket.to(data.socketId).emit('private message', { socketId: socket.id, message: data.message, username: user.username });
+            }
         }
     });
     //rooms

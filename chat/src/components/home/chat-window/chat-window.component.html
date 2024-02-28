@@ -5,7 +5,7 @@
     <span><input class=" float-right font-bold" type="button" value="x" (click)="leaveRoom()"></span>
   </div>
 
-  <div class="mt-2 min-h-96 bg-gray-50 mb-4 ml-2 mr-2 overflow-y-auto">
+  <div class="mt-2 min-h-96 max-h-96 bg-gray-50 mb-4 ml-2 mr-2 overflow-y-auto">
     <ng-container *ngFor="let msg of messages">
       <p>{{msg.username}}: {{msg.message}}</p>
     </ng-container>

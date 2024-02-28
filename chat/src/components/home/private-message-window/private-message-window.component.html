@@ -5,9 +5,11 @@
     <span><input class=" float-right font-bold" type="button" value="x" (click)="closeWindow()"></span>
   </div>
 
-  <div class="mt-2 min-h-96 bg-gray-50 mb-4 ml-2 mr-2 overflow-y-auto">
+  <div class="mt-2 min-h-96 max-h-96 bg-gray-50 mb-4 ml-2 mr-2 overflow-y-scroll">
     <!-- messages -->
-    messages
+    <p *ngFor="let msg of (messages$ | async)">
+      {{msg.username}}: {{msg.message}}
+    </p>
   </div>
 
   <input type="text" placeholder="message here" [(ngModel)]="message">

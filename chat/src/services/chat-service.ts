@@ -66,8 +66,13 @@ export class ChatService {
     })
 
 
-    this.socket.on('private message', (data) => {
-      console.log(data);
+    this.socket.on('private message', (data: PrivateMessage) => {
+      if (data.socketId) {
+        const msgArr = this.privateMessages.get(data.socketId) || [] as ChatMessage[];
+        msgArr.push({ username: data.username, message: data.message });
+        console.log(msgArr);
+        this.privateMessages.set(data.socketId, msgArr);
+      }
     })
   }
 
@@ -124,6 +129,13 @@ export class ChatService {
 
   selectPrivateMessageUser(user: User) {
     this.privateMessageUser$.next(user);
+  }
+
+  getPrivateMessages(user?: User) {
+    if (user && user.socketId) {
+      return this.privateMessages.get(user.socketId);
+    }
+    return [] as ChatMessage[];
   }
 
   closePrivateMessage() {
