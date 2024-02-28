@@ -42,7 +42,6 @@ io.on('connection', (socket) => {
     //join room
     socket.on('join room', (data) => {
         console.log(`${socket.id} tried to join: ${data.id}`);
-        console.log(rooms);
         if (data.id !== undefined && data.id !== connectedRoomId) {
             if (connectedRoomId !== -1) {
                 socket.leave(connectedRoomId.toString());
@@ -64,8 +63,7 @@ io.on('connection', (socket) => {
     });
     //join a room with a code
     socket.on('join private room', (data) => {
-        console.log(`${socket.id} tried to join room:`);
-        console.log(rooms);
+        console.log(`${socket.id} tried to join private room:`);
         if (!data.code) {
             return;
         }
