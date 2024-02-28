@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output, } from '@angular/core';
-import { PrivateMessage, User } from '../../../../models/chatroom';
+import { Component, Input } from '@angular/core';
+import { User } from '../../../../models/chatroom';
+import { ChatService } from '../../../../services/chat-service';
 
 @Component({
   standalone: true,
@@ -13,15 +14,15 @@ export class UserListItemComponent {
 
   @Input() isSelf: boolean;
   @Input() user?: User;
-  @Output() privateMessageEvent = new EventEmitter<PrivateMessage>();
 
-  constructor() {
+  constructor(private readonly chatService: ChatService) {
     this.isSelf = false;
   }
 
   sendPrivateMessage() {
     if (this.user) {
-      this.privateMessageEvent.emit({ socketId: this.user.socketId, message: "asdasd" })
+      //this.privateMessageEvent.emit({ socketId: this.user.socketId, message: "asdasd" })
+      this.chatService.sendPrivateMessage({ socketId: this.user.socketId, message: "test" });
     }
   }
 

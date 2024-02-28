@@ -23,7 +23,7 @@ io.on('connection', (socket) => {
     });
     socket.on('get users', () => {
         console.log(`${socket.id} asked for online users`);
-        socket.emit('all users', getUsernames(users));
+        socket.emit('all users', getUsers(users));
     });
     socket.on('disconnect', () => {
         console.log("user disconnected");
@@ -34,7 +34,7 @@ io.on('connection', (socket) => {
                 io.emit('all rooms', getRoomView(rooms));
             }
         }
-        io.emit('all users', getUsernames(users));
+        io.emit('all users', getUsers(users));
     });
     //chat
     //join room
@@ -79,6 +79,13 @@ io.on('connection', (socket) => {
             io.to(connectedRoomId.toString()).emit('new message', msg);
         }
     });
+    //private message
+    socket.on('private message', (pm) => {
+        if (pm.socketId) {
+            //add username
+            //socket.to(pm.socketId).emit('private message', pm);
+        }
+    });
     //rooms
     //fetch rooms
     socket.on('get rooms', () => {
@@ -91,7 +98,6 @@ io.on('connection', (socket) => {
         if (data.password) {
             visiblity = false;
         }
-        //TODO check if room with same name already exists ?
         rooms.push({ name: data.name, password: data.password, numPeople: 0, public: visiblity });
         console.log(`added new room: ${data.name} ${data.password}`);
         io.emit('new room');
@@ -102,6 +108,6 @@ console.log(`Listening on port ${port}`);
 function getRoomView(_rooms) {
     return _rooms.map((r, index) => ({ id: index, name: r.name, numPeople: r.numPeople, public: r.public }));
 }
-function getUsernames(_users) {
+function getUsers(_users) {
     return [..._users.values()];
 }

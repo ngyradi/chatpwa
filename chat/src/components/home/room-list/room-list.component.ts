@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { RoomFormComponent } from './room-form/room-form.component';
 import { RoomListItemComponent } from './room-list-item/room-list-item.component';
 import { ChatRoom } from '../../../models/chatroom';
 import { BehaviorSubject, Subject } from 'rxjs';
+import { ChatService } from '../../../services/chat-service';
 
 @Component({
   standalone: true,
@@ -14,15 +15,14 @@ import { BehaviorSubject, Subject } from 'rxjs';
 })
 export class RoomListComponent {
 
-  @Input() rooms$?: BehaviorSubject<ChatRoom[]>;
-  @Input() connectedRoom$?: Subject<ChatRoom>;
-
-  @Output() joinRoomEvent = new EventEmitter<ChatRoom>();
-  @Output() createRoomEvent = new EventEmitter<ChatRoom>();
+  rooms$?: BehaviorSubject<ChatRoom[]>;
+  connectedRoom$?: Subject<ChatRoom>;
 
   editing: boolean;
 
-  constructor() {
+  constructor(private readonly chatService: ChatService) {
+    this.rooms$ = this.chatService.rooms$;
+    this.connectedRoom$ = this.chatService.connectedRoom$;
     this.editing = false;
   }
 
@@ -31,12 +31,14 @@ export class RoomListComponent {
   }
 
   joinRoom(room: ChatRoom) {
-    this.joinRoomEvent.emit({ id: room.id, password: room.password })
+    this.chatService.joinRoom(room.id, room.password);
   }
 
   createRoom(room: ChatRoom) {
-    this.editing = false;
-    this.createRoomEvent.emit(room);
+    if (room.name) {
+      this.editing = false;
+      this.chatService.createRoom(room.name, room.password);
+    }
   }
 
 }

@@ -5,18 +5,14 @@
   </div>
 
   <div>
-    <app-room-list (joinRoomEvent)="joinRoom($event)" (createRoomEvent)="createRoom($event)" [rooms$]="rooms$"
-      [connectedRoom$]="connectedRoom$"></app-room-list>
+    <app-room-list></app-room-list>
   </div>
 
   <div class="col-span-3">
-    <app-chat-window (sendMessageEvent)="sendMessage($event)" [messages]="messages"
-      [connectedRoomName]="(connectedRoom$ | async)?.name" [connected$]="connected$"
-      (leaveRoomEvent)="leaveRoom()"></app-chat-window>
+    <app-chat-window [connectedRoomName]="(connectedRoom$ | async)?.name"></app-chat-window>
   </div>
 
   <div>
-    <app-user-list [users]="users" [clientUserId]="getClientUserId()"
-      (privateMessageEvent)="sendPrivateMessage($event)"></app-user-list>
+    <app-user-list [clientUserId]="getClientUserId()"></app-user-list>
   </div>
 </app-page-container>

@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { UserListItemComponent } from './user-list-item/user-list-item.component';
 import { BehaviorSubject } from 'rxjs';
 import { PrivateMessage, User } from '../../../models/chatroom';
+import { ChatService } from '../../../services/chat-service';
 
 @Component({
   standalone: true,
@@ -13,14 +14,15 @@ import { PrivateMessage, User } from '../../../models/chatroom';
 })
 export class UserListComponent {
 
-  @Input() users?: BehaviorSubject<User[]>;
+  users?: BehaviorSubject<User[]>;
   @Input() clientUserId?: string;
-  @Output() privateMessageEvent = new EventEmitter<PrivateMessage>();
 
-  constructor() { }
+  constructor(private readonly chatService: ChatService) {
+    this.users = this.chatService.users$;
+  }
 
   sendPrivateMessage(pm: PrivateMessage) {
-    this.privateMessageEvent.emit(pm)
+    this.chatService.sendPrivateMessage(pm);
   }
 
 }

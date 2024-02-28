@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ChatMessage } from '../../../models/chatroom';
 import { BehaviorSubject } from 'rxjs';
+import { ChatService } from '../../../services/chat-service';
 
 @Component({
   standalone: true,
@@ -17,25 +18,24 @@ export class ChatWindowComponent {
   @Input() messages: ChatMessage[];
   @Input() connected$?: BehaviorSubject<boolean>;
 
-  @Output() sendMessageEvent = new EventEmitter<string>();
-  @Output() leaveRoomEvent = new EventEmitter<void>();
 
   message: string;
 
-  constructor() {
-    this.messages = [];
+  constructor(private readonly chatService: ChatService) {
+    this.connected$ = this.chatService.connected$;
+    this.messages = this.chatService.messages;
     this.message = "";
   }
 
   sendMessage() {
     if (this.message.trim()) {
-      this.sendMessageEvent.emit(this.message)
+      this.chatService.sendMessage(this.message);
       this.message = "";
     }
   }
 
   leaveRoom() {
-    this.leaveRoomEvent.emit();
+    this.chatService.leaveRoom();
   }
 
 }

@@ -5,8 +5,8 @@ import { ChatWindowComponent } from './chat-window/chat-window.component';
 import { CommonModule } from '@angular/common';
 import { PageContainerComponent } from '../page-container/page-container.component';
 import { ChatService } from '../../services/chat-service';
-import { ChatMessage, ChatRoom, PrivateMessage, User } from '../../models/chatroom';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { ChatRoom } from '../../models/chatroom';
+import { Subject } from 'rxjs';
 import { RouterLink, RouterModule } from '@angular/router';
 
 @Component({
@@ -15,49 +15,16 @@ import { RouterLink, RouterModule } from '@angular/router';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
   imports: [CommonModule, RoomListComponent, UserListComponent, ChatWindowComponent, PageContainerComponent, RouterModule, RouterLink],
-  providers: [ChatService],
 })
 export class HomeComponent implements OnDestroy {
 
-  connected$: BehaviorSubject<boolean>;
-  rooms$: BehaviorSubject<ChatRoom[]>;
-  messages: ChatMessage[];
-  users: BehaviorSubject<User[]>;
   connectedRoom$: Subject<ChatRoom>;
 
   constructor(private readonly chatService: ChatService) {
-    this.messages = this.chatService.messages;
-    this.connected$ = this.chatService.connected$;
-    this.rooms$ = this.chatService.rooms$;
-    this.users = this.chatService.users$;
     this.connectedRoom$ = this.chatService.connectedRoom$;
   }
   ngOnDestroy(): void {
-    this.chatService.destroyConnection();
-  }
-
-  joinRoom(room: ChatRoom) {
-    this.chatService.joinRoom(room.id, room.password);
-  }
-
-  createRoom(room: ChatRoom) {
-    if (room.name) {
-      this.chatService.createRoom(room.name, room.password);
-    }
-  }
-
-  sendMessage(message: string) {
-    if ((message.trim())) {
-      this.chatService.sendMessage(message);
-    }
-  }
-
-  leaveRoom() {
-    this.chatService.leaveRoom();
-  }
-
-  sendPrivateMessage(pm: PrivateMessage) {
-    this.chatService.sendPrivateMessage(pm);
+    //this.chatService.destroyConnection();
   }
 
   getClientUserId() {
