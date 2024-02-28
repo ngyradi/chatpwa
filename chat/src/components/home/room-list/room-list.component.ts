@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { RoomFormComponent } from './room-form/room-form.component';
 import { RoomListItemComponent } from './room-list-item/room-list-item.component';
 import { ChatRoom } from '../../../models/chatroom';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { ChatService } from '../../../services/chat-service';
 
 @Component({
@@ -16,7 +16,7 @@ import { ChatService } from '../../../services/chat-service';
 export class RoomListComponent {
 
   rooms$?: BehaviorSubject<ChatRoom[]>;
-  connectedRoom$?: Subject<ChatRoom>;
+  connectedRoom$?: BehaviorSubject<ChatRoom | undefined>;
 
   editing: boolean;
 
