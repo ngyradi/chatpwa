@@ -108,9 +108,11 @@ io.on('connection', (socket) => {
         }
     });
     //private message
-    socket.on('private message', (pm) => {
-        if (pm.socketId) {
-            //add username
+    socket.on('private message', (data) => {
+        console.log(data);
+        console.log(`message from: ${socket.id} to ${data.socketId}  ${data.message}`);
+        if (data.socketId) {
+            socket.to(data.socketId).emit('private message', "asd");
             //socket.to(pm.socketId).emit('private message', pm);
         }
     });

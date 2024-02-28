@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { User } from '../../../models/chatroom';
 import { ChatService } from '../../../services/chat-service';
-import { BehaviorSubject } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -12,14 +12,19 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./private-message-window.component.css'],
   imports: [CommonModule, FormsModule]
 })
-export class PrivateMessageWindowComponent {
+export class PrivateMessageWindowComponent implements OnDestroy {
 
-  privateMessageUser$: BehaviorSubject<User | undefined>;
+  pmUser?: User;
+  userSubscription: Subscription;
+
   message: string;
 
   constructor(private readonly chatService: ChatService) {
     this.message = "";
-    this.privateMessageUser$ = this.chatService.privateMessageUser$;
+    this.userSubscription = this.chatService.privateMessageUser$.subscribe((val) => { this.pmUser = val });
+  }
+  ngOnDestroy(): void {
+    this.userSubscription.unsubscribe();
   }
 
   closeWindow() {
@@ -27,7 +32,9 @@ export class PrivateMessageWindowComponent {
   }
 
   sendMessage() {
-
+    if (this.pmUser) {
+      this.chatService.sendPrivateMessage({ socketId: this.pmUser?.socketId, message: "test message" })
+    }
   }
 
 }

@@ -66,9 +66,9 @@ export class ChatService {
     })
 
 
-    /*this.socket.on('private message', (data: PrivateMessage) => {
-      
-    })*/
+    this.socket.on('private message', (data) => {
+      console.log(data);
+    })
   }
 
   getSocketId() {
@@ -132,7 +132,7 @@ export class ChatService {
 
   sendPrivateMessage(pm: PrivateMessage) {
     console.log(pm);
-    this.socket.emit('private message', { pm })
+    this.socket.emit('private message', pm)
   }
 
 }

@@ -1,7 +1,7 @@
 <div class="border-2 border-t-0">
   <div class="w-full grid grid-cols-3 px-2">
     <b>private message:</b>
-    <h2 class="text-center">{{(privateMessageUser$ | async)?.username}}</h2>
+    <h2 class="text-center">{{pmUser?.username}} - {{pmUser?.socketId}}</h2>
     <span><input class=" float-right font-bold" type="button" value="x" (click)="closeWindow()"></span>
   </div>
 
