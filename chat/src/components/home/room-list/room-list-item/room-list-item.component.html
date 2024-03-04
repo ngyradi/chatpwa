@@ -1,22 +1,25 @@
 <ng-container *ngIf="(room)">
-  <div class="grid grid-cols-5 mt-2" [ngClass]="{'bg-gray-500':selected}">
+  <div class="grid grid-cols-7 mt-2" [ngClass]="{'bg-gray-500':selected}">
 
-    <p class="col-span-3">
-
+    <p class="col-span-5 truncate mr-4">
+      <img *ngIf="room.hasPassword" src="/assets/icons/lock.svg" class="size-5 inline" alt="Locked"
+        title="Password protected">
+      <img *ngIf="!room.hasPassword" src="/assets/icons/world.svg" class="size-5 inline" alt="Public" title="Public">
       {{room.name}}
-
-      <ng-container *ngIf="room.hasPassword">
-        -pass
-        <!-- lock icon -->
-      </ng-container>
     </p>
-    <p class="text-right">
-      <!--person icon-->
+    <p class="text-left">
       {{room.numPeople}}
+      <img *ngIf="room.numPeople && room.numPeople >= 2; else singleUser" class="size-5 inline"
+        src="/assets/icons/users-alt.svg" alt="People" title="Number of people talking">
     </p>
-    <input class="bg-gray-200" type="button" value="join" (click)="joinRoom()">
+    <img class="mt-1 size-5 cursor-pointer" src="/assets/icons/arrow-small-right.svg" (click)="joinRoom()" alt="Join"
+      title="Join room">
     <ng-container *ngIf="inputVisible">
       <input class="col-span-2" type="password" name="password" placeholder="password" [(ngModel)]="password">
     </ng-container>
   </div>
 </ng-container>
+
+<ng-template #singleUser>
+  <img class="size-5 inline" src="/assets/icons/user.svg" alt="People" title="Number of people talking">
+</ng-template>

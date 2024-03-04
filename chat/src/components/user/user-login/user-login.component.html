@@ -1,11 +1,12 @@
-<app-page-container>
+<div class="grid grid-cols-7 min-w-screen min-h-screen">
+  <div class="grid grid-cols-5 lg:col-start-2 lg:col-span-5 col-span-7 grid-rows-5 bg-bg">
+    <div class="col-span-5 grid grid-cols-5 mb-8 mt-4">
+      <h1 class="text-center text-xl font-bold lg:col-start-2 col-start-1 lg:col-span-3 col-span-5">Sign in</h1>
+    </div>
 
-  <div class="col-span-5 grid grid-cols-5 mb-8">
-    <h1 class="text-center text-xl font-bold col-start-3">Login</h1>
+    <div
+      class="bg-card lg:col-start-2 lg:col-span-3 col-span-5 text-center lg:mx-48 mx-8 row-span-2 rounded-lg border-2 border-chips-500/25">
+      <app-user-login-form></app-user-login-form>
+    </div>
   </div>
-
-  <div class="col-start-3 text-center">
-    <app-user-login-form></app-user-login-form>
-  </div>
-
-</app-page-container>
+</div>

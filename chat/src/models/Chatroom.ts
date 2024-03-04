@@ -10,6 +10,7 @@ export interface ChatRoom {
 export interface ChatMessage {
   username?: string
   message?: string
+  info?: boolean
 }
 
 export interface PrivateMessage {

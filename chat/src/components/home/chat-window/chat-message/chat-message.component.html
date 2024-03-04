@@ -1,0 +1,4 @@
+<div class="pl-1" *ngIf="message">
+  <p *ngIf="!message.info">{{message.username}}: {{message.message}}</p>
+  <p class="text-gray-500" *ngIf="message.info">{{message.message}}</p>
+</div>

@@ -5,8 +5,17 @@
 html,body{
     height: 100%;
     background-color: #f8fafc;
+    color: theme('colors.text');
 }
 
 input[type=submit], input[type=button]{
     cursor: pointer;
+}
+
+#page-container{
+    background-color: theme('colors.bg');
+}
+
+.card{
+    background-color: theme('colors.card');
 }

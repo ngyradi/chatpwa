@@ -4,13 +4,14 @@ import { CommonModule } from '@angular/common'
 import { type ChatMessage } from '../../../models/chatroom'
 import { type BehaviorSubject } from 'rxjs'
 import { ChatService } from '../../../services/chat-service'
+import { ChatMessageComponent } from './chat-message/chat-message.component'
 
 @Component({
   standalone: true,
   selector: 'app-chat-window',
   templateUrl: './chat-window.component.html',
   styleUrls: ['./chat-window.component.css'],
-  imports: [FormsModule, CommonModule]
+  imports: [FormsModule, CommonModule, ChatMessageComponent]
 })
 export class ChatWindowComponent {
   @Input() connectedRoomName?: string

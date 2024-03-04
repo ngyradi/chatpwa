@@ -1,11 +1,13 @@
-<p class="text-right font-bold">
-  online users
-</p>
-<div class="overflow-y-auto h-full">
-  <div *ngFor="let user of users | async">
-    <app-user-list-item *ngIf="user.socketId !== clientUserId; else selfUser" [user]="user"></app-user-list-item>
-    <ng-template #selfUser>
-      <app-user-list-item [isSelf]="true" [user]="user"></app-user-list-item>
-    </ng-template>
+<div class="mt-2">
+  <p class="text-right font-bold">
+    online users
+  </p>
+  <div class="overflow-y-auto h-full">
+    <div *ngFor="let user of users | async">
+      <app-user-list-item *ngIf="user.socketId !== clientUserId; else selfUser" [user]="user"></app-user-list-item>
+      <ng-template #selfUser>
+        <app-user-list-item [isSelf]="true" [user]="user"></app-user-list-item>
+      </ng-template>
+    </div>
   </div>
 </div>

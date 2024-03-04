@@ -1,20 +1,20 @@
 <app-page-container>
-  <div class="col-span-5 border-b-2 h-14 grid grid-cols-5 h-12">
+  <div class="col-span-5 h-14 grid grid-cols-5 h-12">
     <h1 class="text-center text-xl font-bold col-start-3">Chat</h1>
-    <p class="text-right col-start-5"><button class="underline" (click)="logout()">logout</button></p>
+    <p class="text-right col-start-5 mr-2"><button class="underline" (click)="logout()">logout</button></p>
   </div>
 
-  <div>
+  <div class="lg:col-span-1 col-span-5 ml-2">
     <app-room-list></app-room-list>
   </div>
 
-  <div class="col-span-3">
+  <div class="lg:col-span-3 col-span-5">
     <ng-container *ngIf="!(privateMessageUser$ | async); else pmWindow">
       <app-chat-window [connectedRoomName]="(connectedRoom$ | async)?.name"></app-chat-window>
     </ng-container>
   </div>
 
-  <div>
+  <div class="lg:col-span-1 col-span-5 mr-2">
     <app-user-list [clientUserId]="getClientUserId()"></app-user-list>
   </div>
 </app-page-container>

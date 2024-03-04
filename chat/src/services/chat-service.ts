@@ -47,6 +47,7 @@ export class ChatService {
     })
 
     this.socket.on('joined room', (data: ChatRoom) => {
+      this.messages.push({ message: `Chatting in: ${data.name}`, info: true })
       this.connectedRoom = data
       this.connectedRoom$.next(data)
       this.connected$.next(true)
