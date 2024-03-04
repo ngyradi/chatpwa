@@ -1,4 +1,4 @@
-import { Component } from '@angular/core'
+import { Component, Inject } from '@angular/core'
 import { RoomListComponent } from './room-list/room-list.component'
 import { UserListComponent } from './user-list/user-list.component'
 import { ChatWindowComponent } from './chat-window/chat-window.component'
@@ -9,7 +9,7 @@ import { type ChatRoom, type User } from '../../models/chatroom'
 import { type BehaviorSubject } from 'rxjs'
 import { RouterLink, RouterModule } from '@angular/router'
 import { PrivateMessageWindowComponent } from './private-message-window/private-message-window.component'
-import { type UserService } from '../../services/user.service'
+import { UserService } from '../../services/user.service'
 
 @Component({
   standalone: true,
@@ -23,7 +23,7 @@ export class HomeComponent {
   connectedRoom$: BehaviorSubject<ChatRoom | undefined>
   public privateMessageUser$: BehaviorSubject<User | undefined>
 
-  constructor (private readonly chatService: ChatService, private readonly userService: UserService) {
+  constructor (private readonly chatService: ChatService, @Inject(UserService) private readonly userService: UserService) {
     this.privateMessageUser$ = this.chatService.privateMessageUser$
     this.connectedRoom$ = this.chatService.connectedRoom$
   }

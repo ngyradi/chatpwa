@@ -1,6 +1,6 @@
-import { type SocialAuthService, type SocialUser } from '@abacritt/angularx-social-login'
-import { Injectable, inject } from '@angular/core'
-import { type CanActivateFn, type Router, type UrlTree } from '@angular/router'
+import { SocialAuthService, type SocialUser } from '@abacritt/angularx-social-login'
+import { Inject, Injectable, inject } from '@angular/core'
+import { type CanActivateFn, Router, type UrlTree } from '@angular/router'
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +8,7 @@ import { type CanActivateFn, type Router, type UrlTree } from '@angular/router'
 export class UserService {
   private user?: SocialUser
 
-  constructor (private readonly authService: SocialAuthService, private readonly router: Router) {
+  constructor (@Inject(SocialAuthService) private readonly authService: SocialAuthService, @Inject(Router) private readonly router: Router) {
     if (localStorage.getItem('user') !== undefined) {
       this.user = JSON.parse(localStorage.getItem('user') ?? '')
     }

@@ -1,9 +1,9 @@
-import { Component, OnDestroy } from '@angular/core';
-import { ChatMessage, User } from '../../../models/chatroom';
-import { ChatService } from '../../../services/chat-service';
-import { BehaviorSubject, Subscription } from 'rxjs';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { Component, Inject, type OnDestroy } from '@angular/core'
+import { type ChatMessage, type User } from '../../../models/chatroom'
+import { ChatService } from '../../../services/chat-service'
+import { BehaviorSubject, type Subscription } from 'rxjs'
+import { CommonModule } from '@angular/common'
+import { FormsModule } from '@angular/forms'
 
 @Component({
   standalone: true,
@@ -13,34 +13,33 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, FormsModule]
 })
 export class PrivateMessageWindowComponent implements OnDestroy {
+  pmUser?: User
+  userSubscription: Subscription
 
-  pmUser?: User;
-  userSubscription: Subscription;
+  message: string
+  messages$ = new BehaviorSubject<ChatMessage[]>([])
 
-  message: string;
-  messages$ = new BehaviorSubject<ChatMessage[]>([]);
-
-  constructor(private readonly chatService: ChatService) {
-    this.message = "";
+  constructor (@Inject(ChatService) private readonly chatService: ChatService) {
+    this.message = ''
     this.userSubscription = this.chatService.privateMessageUser$.subscribe((val) => {
-      this.pmUser = val;
-      this.chatService.initPrivateMessages(val);
-      this.messages$.next(this.chatService.getPrivateMessages(val) || [] as ChatMessage[])
-    });
-
-  }
-  ngOnDestroy(): void {
-    this.userSubscription.unsubscribe();
+      this.pmUser = val
+      this.chatService.initPrivateMessages(val)
+      this.messages$.next(this.chatService.getPrivateMessages(val) ?? [] as ChatMessage[])
+    })
   }
 
-  closeWindow() {
-    this.chatService.closePrivateMessage();
+  ngOnDestroy (): void {
+    this.userSubscription.unsubscribe()
   }
 
-  sendMessage() {
-    if (this.pmUser) {
+  closeWindow (): void {
+    this.chatService.closePrivateMessage()
+  }
+
+  sendMessage (): void {
+    if (this.pmUser !== undefined) {
       this.chatService.sendPrivateMessage({ socketId: this.pmUser?.socketId, message: this.message })
-      this.message = "";
+      this.message = ''
     }
   }
 }

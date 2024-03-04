@@ -8,8 +8,8 @@ import { UserService } from '../services/user.service';
   imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  providers: [UserService],
+  providers: [UserService]
 })
 export class AppComponent {
-  title = 'chat';
+  title = 'chat'
 }

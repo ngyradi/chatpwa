@@ -21,7 +21,7 @@ const leaveRoomEvent = (socket, io, connectedRoomId, rooms) => {
 exports.leaveRoomEvent = leaveRoomEvent;
 const createRoomEvent = (io, data, rooms) => {
     let hasPwd = false;
-    if (data.password) {
+    if (data.password !== undefined) {
         hasPwd = true;
     }
     rooms.push({ id: rooms.length, name: data.name, password: data.password, numPeople: 0, public: data.public, hasPassword: hasPwd });
@@ -32,13 +32,13 @@ exports.createRoomEvent = createRoomEvent;
 const createPrivateRoomEvent = (socket, io, data, rooms, joinCodes) => {
     const code = generateJoinCode(joinCodes);
     if (code === -1) {
-        //failed to generate code
+        // failed to generate code
         return;
     }
     console.log(code);
     joinCodes.push(code);
     rooms.push({ id: rooms.length, name: data.name, numPeople: 0, public: false, hasPassword: false, joinCode: code.toString() });
-    socket.emit('private room code', (code));
+    socket.emit('private room code', (code.toString()));
 };
 exports.createPrivateRoomEvent = createPrivateRoomEvent;
 const joinRoomEvent = (socket, io, data, rooms, connectedRoomId) => {
@@ -49,9 +49,9 @@ const joinRoomEvent = (socket, io, data, rooms, connectedRoomId) => {
             rooms[connectedRoomId].numPeople--;
             connectedRoomId = -1;
         }
-        if (!rooms[data.id].hasPassword || (rooms[data.id].password === data.password)) {
+        if (rooms[data.id].hasPassword === undefined || (rooms[data.id].password === data.password)) {
             rooms[data.id].numPeople++;
-            let joinedRoom = rooms[data.id];
+            const joinedRoom = rooms[data.id];
             joinedRoom.id = data.id;
             socket.emit('joined room', joinedRoom);
             socket.join(data.id.toString());
@@ -66,7 +66,7 @@ const joinRoomEvent = (socket, io, data, rooms, connectedRoomId) => {
 exports.joinRoomEvent = joinRoomEvent;
 const joinPrivateRoomEvent = (socket, io, data, rooms, connectedRoomId) => {
     console.log(`${socket.id} tried to join private room:`);
-    if (!data) {
+    if (data === undefined) {
         return connectedRoomId;
     }
     const roomIndex = rooms.findIndex((r) => r.joinCode === data);
@@ -108,7 +108,7 @@ const generateJoinCode = (joinCodes) => {
         n++;
     } while (n < 5 && joinCodes.findIndex((i) => i === code) !== -1);
     if (n >= 5) {
-        //failed to generate a code
+        // failed to generate a code
         return -1;
     }
     return code;

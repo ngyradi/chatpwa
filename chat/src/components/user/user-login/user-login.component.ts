@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { PageContainerComponent } from '../../page-container/page-container.component';
-import { UserLoginFormComponent } from './user-login-form/user-login-form.component';
-import { RouterLink, RouterModule } from '@angular/router';
-import { UserService } from '../../../services/user.service';
+import { Component, Inject, type OnInit } from '@angular/core'
+import { PageContainerComponent } from '../../page-container/page-container.component'
+import { UserLoginFormComponent } from './user-login-form/user-login-form.component'
+import { RouterLink, RouterModule } from '@angular/router'
+import { UserService } from '../../../services/user.service'
 
 @Component({
   standalone: true,
@@ -12,11 +12,9 @@ import { UserService } from '../../../services/user.service';
   imports: [PageContainerComponent, UserLoginFormComponent, RouterModule, RouterLink]
 })
 export class UserLoginComponent implements OnInit {
+  constructor (@Inject(UserService) private readonly userService: UserService) { }
 
-  constructor(private readonly userService: UserService) { }
-
-  ngOnInit() {
-    this.userService.logout();
+  ngOnInit (): void {
+    this.userService.logout()
   }
-
 }

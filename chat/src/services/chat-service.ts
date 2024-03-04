@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core'
+import { Inject, Injectable } from '@angular/core'
 import { BehaviorSubject } from 'rxjs'
 import { type Socket, io } from 'socket.io-client'
 import { type ChatMessage, type ChatRoom, type PrivateMessage, type User } from '../models/chatroom'
-import { type UserService } from './user.service'
+import { UserService } from './user.service'
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +22,7 @@ export class ChatService {
 
   private readonly host = 'http://localhost:3000'
 
-  constructor (private readonly userService: UserService) {
+  constructor (@Inject(UserService) private readonly userService: UserService) {
     this.messages = []
     this.connected$.next(false)
     this.socket = io(this.host)

@@ -10,10 +10,10 @@ const userJoinEvent = (socket, io, data, users) => {
 };
 exports.userJoinEvent = userJoinEvent;
 const userDisconnectEvent = (socket, io, users, rooms, connectedRoomId) => {
-    console.log("user disconnected");
+    console.log('user disconnected');
     users.delete(socket.id);
     if (connectedRoomId !== -1) {
-        if (rooms[connectedRoomId]) {
+        if (rooms[connectedRoomId] !== undefined) {
             rooms[connectedRoomId].numPeople--;
             (0, room_events_1.emitAllRooms)(io, rooms);
         }

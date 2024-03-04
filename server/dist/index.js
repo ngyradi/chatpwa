@@ -7,12 +7,12 @@ const user_events_1 = require("./events/user.events");
 const message_events_1 = require("./events/message.events");
 const port = 3000;
 const httpServer = (0, http_1.createServer)();
-let rooms = [];
-let users = new Map();
-let joinCodes = [];
+const rooms = [];
+const users = new Map();
+const joinCodes = [];
 const io = new socket_io_1.Server(httpServer, {
     cors: {
-        origin: "http://localhost:4200",
+        origin: 'http://localhost:4200'
     }
 });
 io.on('connection', (socket) => {
