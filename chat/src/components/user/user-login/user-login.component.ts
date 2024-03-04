@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PageContainerComponent } from '../../page-container/page-container.component';
 import { UserLoginFormComponent } from './user-login-form/user-login-form.component';
 import { RouterLink, RouterModule } from '@angular/router';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   standalone: true,
@@ -12,9 +13,10 @@ import { RouterLink, RouterModule } from '@angular/router';
 })
 export class UserLoginComponent implements OnInit {
 
-  constructor() { }
+  constructor(private readonly userService: UserService) { }
 
   ngOnInit() {
+    this.userService.logout();
   }
 
 }

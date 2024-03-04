@@ -9,6 +9,7 @@ import { ChatRoom, User } from '../../models/chatroom';
 import { BehaviorSubject } from 'rxjs';
 import { RouterLink, RouterModule } from '@angular/router';
 import { PrivateMessageWindowComponent } from './private-message-window/private-message-window.component';
+import { UserService } from '../../services/user.service';
 
 @Component({
   standalone: true,
@@ -16,19 +17,25 @@ import { PrivateMessageWindowComponent } from './private-message-window/private-
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
   imports: [CommonModule, RoomListComponent, UserListComponent, ChatWindowComponent, PageContainerComponent, RouterModule, RouterLink, PrivateMessageWindowComponent],
+  providers: [ChatService],
 })
 export class HomeComponent {
 
   connectedRoom$: BehaviorSubject<ChatRoom | undefined>;
   public privateMessageUser$: BehaviorSubject<User | undefined>;
 
-  constructor(private readonly chatService: ChatService) {
+  constructor(private readonly chatService: ChatService, private readonly userService: UserService) {
     this.privateMessageUser$ = this.chatService.privateMessageUser$;
     this.connectedRoom$ = this.chatService.connectedRoom$;
   }
 
   getClientUserId() {
     return this.chatService.getSocketId();
+  }
+
+  logout() {
+    this.chatService.exit();
+    this.userService.logout();
   }
 
 }

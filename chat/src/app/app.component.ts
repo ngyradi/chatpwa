@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { ChatService } from '../services/chat-service';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +8,7 @@ import { ChatService } from '../services/chat-service';
   imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  providers: [ChatService],
+  providers: [UserService],
 })
 export class AppComponent {
   title = 'chat';

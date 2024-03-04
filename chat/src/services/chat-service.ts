@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Socket, io } from 'socket.io-client'
 import { ChatMessage, ChatRoom, PrivateMessage, User } from '../models/chatroom';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,13 +23,14 @@ export class ChatService {
 
   private readonly host = "http://localhost:3000";
 
-  constructor() {
+  constructor(private readonly userService: UserService) {
     this.messages = [];
     this.connected$.next(false);
     this.socket = io(this.host);
 
     this.socket.on('connect', () => {
-      this.socket.emit('join', { username: "test user" });
+      const username = this.userService.user?.firstName + " " + this.userService.user?.lastName;
+      this.socket.emit('join', { username: username });
       this.getRooms();
       this.getUsers();
     })
@@ -131,6 +133,12 @@ export class ChatService {
     this.privateMessageUser$.next(user);
   }
 
+  initPrivateMessages(user?: User) {
+    if (user && user.socketId && !this.privateMessages.get(user?.socketId)) {
+      this.privateMessages.set(user.socketId, [] as ChatMessage[]);
+    }
+  }
+
   getPrivateMessages(user?: User) {
     if (user && user.socketId) {
       return this.privateMessages.get(user.socketId);
@@ -148,4 +156,7 @@ export class ChatService {
     }
   }
 
+  exit() {
+    this.socket.close();
+  }
 }

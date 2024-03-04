@@ -24,8 +24,10 @@ export class PrivateMessageWindowComponent implements OnDestroy {
     this.message = "";
     this.userSubscription = this.chatService.privateMessageUser$.subscribe((val) => {
       this.pmUser = val;
+      this.chatService.initPrivateMessages(val);
       this.messages$.next(this.chatService.getPrivateMessages(val) || [] as ChatMessage[])
     });
+
   }
   ngOnDestroy(): void {
     this.userSubscription.unsubscribe();
@@ -41,5 +43,4 @@ export class PrivateMessageWindowComponent implements OnDestroy {
       this.message = "";
     }
   }
-
 }

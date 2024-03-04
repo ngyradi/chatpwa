@@ -50,8 +50,6 @@ io.on('connection', (socket: Socket) => {
 
     //join online users
     socket.on('join', (data: User) => {
-        data.username += randomInt(1, 1000).toString();
-
         users.set(socket.id, { socketId: socket.id, username: data.username })
         console.log(`${data.username} joined`)
 
