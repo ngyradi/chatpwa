@@ -3,10 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUsers = exports.emitAllUsers = exports.getUserEvent = exports.userDisconnectEvent = exports.userJoinEvent = void 0;
 const room_events_1 = require("./room.events");
 const userJoinEvent = (socket, io, data, users) => {
-    users.set(socket.id, { socketId: socket.id, username: data.username });
     console.log(`${data.username} joined`);
-    const usernames = [...users.values()];
-    io.emit('all users', usernames);
+    data.socketId = socket.id;
+    users.set(socket.id, data);
+    io.emit('all users', (0, exports.getUsers)(users));
 };
 exports.userJoinEvent = userJoinEvent;
 const userDisconnectEvent = (socket, io, users, rooms, connectedRoomId) => {

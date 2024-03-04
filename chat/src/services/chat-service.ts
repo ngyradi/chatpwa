@@ -34,6 +34,7 @@ export class ChatService {
     })
 
     this.socket.on('all users', (data: User[]) => {
+      console.log(data)
       this.users$.next(data)
     })
 
