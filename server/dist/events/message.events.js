@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.privateMessageEvent = exports.chatMessageEvent = void 0;
 const chatMessageEvent = (socket, io, data, rooms, users, connectedRoomId) => {
     var _a;
-    if (connectedRoomId !== -1) {
+    if (connectedRoomId !== -1 && data.length > 0) {
         console.log(`${socket.id}: ${data} - ${connectedRoomId}`);
         const msg = { username: (_a = users.get(socket.id)) === null || _a === void 0 ? void 0 : _a.username, message: data };
         console.log(`broadcast to ${connectedRoomId} - ${rooms[connectedRoomId].joinCode}`);

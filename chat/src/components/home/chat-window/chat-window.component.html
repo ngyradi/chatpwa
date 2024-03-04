@@ -1,17 +1,17 @@
-<div class="mx-2" *ngIf="(connected$ | async); else noConnection">
-  <div class="w-full grid grid-cols-3 px-2 mt-2 pb-2 bg-card rounded-2xl rounded-b-none items-center">
+<div class="lg:mx-2 lg:my-0 my-2" *ngIf="(connected$ | async); else noConnection">
+  <div class="w-full grid grid-cols-3 max-h-8 px-2 pb-2 bg-card rounded-2xl rounded-b-none items-center">
     <h2 class="col-span-2 text-lg font-bold truncate">{{connectedRoomName}}</h2>
     <span><img class="mt-2 float-right size-5 cursor-pointer" src="/assets/icons/exit.svg" alt="Leave room"
         title="Leave room" (click)="leaveRoom()"></span>
   </div>
 
-  <div class="min-h-96 max-h-96 bg-gray-50  overflow-y-auto rounded-xl rounded-b-none rounded-t-none">
-    <ng-container *ngFor="let msg of messages">
+  <div class="min-h-96 max-h-96 bg-gray-50  overflow-y-auto rounded-xl rounded-b-none rounded-t-none" #scroller>
+    <div *ngFor="let msg of messages" #messages>
       <app-chat-message [message]="msg"></app-chat-message>
-    </ng-container>
+    </div>
   </div>
 
-  <div class="grid grid-cols-12 rounded-r-xl">
+  <div class="grid grid-cols-12 rounded-r-xl rounded-t-none bg-card">
     <input class="w-full col-span-11 bg-gray-50 pl-1" type="text" placeholder="type here" [(ngModel)]="message"
       autofocus (keyup.enter)="sendMessage()">
     <span class="border-l-2 border-gray-200">
