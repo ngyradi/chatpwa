@@ -59,12 +59,10 @@ export class ChatService {
     })
 
     this.socket.on('new message', (data: ChatMessage) => {
-      console.log(data)
       this.messages.push(data)
     })
 
     this.socket.on('private room code', (data: string) => {
-      console.log(data)
       this.privateRoomCode$.next(data)
     })
 
@@ -72,7 +70,6 @@ export class ChatService {
       if (data.socketId !== undefined) {
         const msgArr = this.privateMessages.get(data.socketId) ?? [] as ChatMessage[]
         msgArr.push({ username: data.username, message: data.message })
-        console.log(msgArr)
         this.privateMessages.set(data.socketId, msgArr)
       }
     })
@@ -119,6 +116,7 @@ export class ChatService {
   leaveRoom (): void {
     if (this.connectedRoom !== undefined) {
       this.socket.emit('leave', this.connectedRoom)
+      this.connectedRoom$.next(undefined)
     }
   }
 
