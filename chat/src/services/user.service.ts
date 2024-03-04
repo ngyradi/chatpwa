@@ -1,13 +1,13 @@
 import { SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
 import { Injectable, inject } from '@angular/core';
-import { CanActivateFn, Router } from '@angular/router';
+import { CanActivateFn, Router, UrlTree } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  user?: SocialUser;
+  private user?: SocialUser;
 
   constructor(private readonly authService: SocialAuthService, private readonly router: Router) {
     if (localStorage.getItem('user')) {
@@ -30,12 +30,16 @@ export class UserService {
     this.router.navigate(['']);
   }
 
-  canActivate(): boolean {
+  getUser() {
+    return this.user;
+  }
+
+  canActivate(): boolean | UrlTree {
     if (this.user) {
       return true;
     }
 
-    return false;
+    return this.router.parseUrl('');
   }
 }
 

@@ -148,10 +148,10 @@ io.on('connection', (socket: Socket) => {
     })
 
     //receive message
-    socket.on('new message', (data) => {
+    socket.on('new message', (data: string) => {
         if (connectedRoomId !== -1) {
             console.log(`${socket.id}: ${data} - ${connectedRoomId}`);
-            let msg = { username: users.get(socket.id)?.username, message: data }
+            let msg: ChatMessage = { username: users.get(socket.id)?.username, message: data }
             console.log(`broadcast to ${connectedRoomId} - ${rooms[connectedRoomId].joinCode}`)
             io.to(connectedRoomId.toString()).emit('new message', msg);
         }

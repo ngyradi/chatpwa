@@ -29,13 +29,13 @@ export class ChatService {
     this.socket = io(this.host);
 
     this.socket.on('connect', () => {
-      const username = this.userService.user?.firstName + " " + this.userService.user?.lastName;
+      const username = this.userService.getUser()?.firstName + " " + this.userService.getUser()?.lastName;
       this.socket.emit('join', { username: username });
       this.getRooms();
       this.getUsers();
     })
 
-    this.socket.on('all users', (data) => {
+    this.socket.on('all users', (data: User[]) => {
       this.users$.next(data);
     })
 
@@ -57,7 +57,7 @@ export class ChatService {
       this.connected$.next(false);
     })
 
-    this.socket.on('new message', (data) => {
+    this.socket.on('new message', (data: ChatMessage) => {
       console.log(data);
       this.messages.push(data);
     })
