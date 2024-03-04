@@ -50,6 +50,7 @@ export class ChatService {
       this.connectedRoom = data
       this.connectedRoom$.next(data)
       this.connected$.next(true)
+      this.closePrivateMessage()
     })
 
     this.socket.on('left room', () => {
