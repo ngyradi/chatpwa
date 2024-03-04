@@ -28,7 +28,7 @@ export class RoomFormComponent {
   }
 
   submit (): void {
-    if (this.roomName.trim() !== undefined) {
+    if (this.roomName.trim().length === 0) {
       this.error = 'Room name is empty'
       return
     }

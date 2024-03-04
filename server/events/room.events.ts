@@ -25,7 +25,7 @@ export const leaveRoomEvent = (socket: Socket, io: Server, connectedRoomId: numb
 
 export const createRoomEvent = (io: Server, data: ChatRoom, rooms: ChatRoom[]): void => {
   let hasPwd = false
-  if (data.password !== undefined) {
+  if (data.password !== undefined && data.password.length > 0) {
     hasPwd = true
   }
 

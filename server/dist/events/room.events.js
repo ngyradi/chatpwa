@@ -21,7 +21,7 @@ const leaveRoomEvent = (socket, io, connectedRoomId, rooms) => {
 exports.leaveRoomEvent = leaveRoomEvent;
 const createRoomEvent = (io, data, rooms) => {
     let hasPwd = false;
-    if (data.password !== undefined) {
+    if (data.password !== undefined && data.password.length > 0) {
         hasPwd = true;
     }
     rooms.push({ id: rooms.length, name: data.name, password: data.password, numPeople: 0, public: data.public, hasPassword: hasPwd });
