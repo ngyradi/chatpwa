@@ -9,10 +9,9 @@ export const theme = {
     },
     colors: {
       bg: '#F0F2F5',
-      card: '#eaf2f6',
+      card: '#dae9f1',
       chips: '#CAD4DB',
-      navbar: '#CAD4DB',
-      modal: '#CAD4DB',
+      sidebar: '#edf4f8',
       text: '#222222',
       error: '#FF0000',
       content: '#EEF2FF'

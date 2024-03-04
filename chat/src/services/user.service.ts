@@ -11,9 +11,8 @@ export class UserService {
   constructor (@Inject(SocialAuthService) private readonly authService: SocialAuthService, @Inject(Router) private readonly router: Router) {
     this.authService.authState.subscribe((user) => {
       this.user = user
-      if (user !== undefined) {
-        this.router.navigate(['home'])
-      }
+      console.log(user)
+      this.router.navigate(['home'], { onSameUrlNavigation: 'reload' })
     })
   }
 
@@ -28,8 +27,6 @@ export class UserService {
   }
 
   canActivate (): boolean | UrlTree {
-    return true
-
     if (this.user !== undefined) {
       return true
     }

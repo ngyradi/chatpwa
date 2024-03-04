@@ -10,7 +10,7 @@
   <p class="mt-2 font-bold">chat rooms:</p>
   <div class="overflow-y-auto">
     <div *ngFor=" let room of rooms$ | async">
-      <app-room-list-item [room]="room" (joinRoomEvent)="joinRoom($event)" [selected]="false"></app-room-list-item>
+      <app-room-list-item [room]="room" (joinRoomEvent)="joinRoom($event)"></app-room-list-item>
     </div>
   </div>
 

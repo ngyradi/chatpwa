@@ -1,4 +1,4 @@
-<div class="lg:mx-2 lg:my-0 my-2" *ngIf="(connectedRoom$ | async); else noConnection">
+<div class="lg:mx-2 my-4" *ngIf="(connectedRoom$ | async); else noConnection">
   <div class="w-full grid grid-cols-3 max-h-8 px-2 pb-2 bg-card rounded-2xl rounded-b-none items-center">
     <h2 class="col-span-2 font-bold truncate">{{(connectedRoom$ | async)?.name}}</h2>
     <span><img class="mt-2 float-right size-3 cursor-pointer" src="/assets/icons/cross.svg" alt="Leave room"
@@ -14,7 +14,7 @@
   <div class="grid grid-cols-12 rounded-r-xl rounded-t-none bg-card">
     <input class="w-full col-span-11 bg-gray-50 pl-1" type="text" placeholder="type here" [(ngModel)]="message"
       autofocus (keyup.enter)="sendMessage()">
-    <span class="border-l-2 border-gray-200">
+    <span>
       <img class="size-5 m-1 cursor-pointer float-right" alt="Send" title="Send message"
         src="/assets/icons/paper-plane.svg" (click)="sendMessage()">
     </span>

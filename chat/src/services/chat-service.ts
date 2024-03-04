@@ -34,7 +34,6 @@ export class ChatService {
     })
 
     this.socket.on('all users', (data: User[]) => {
-      console.log(data)
       this.users$.next(data)
     })
 
@@ -48,7 +47,7 @@ export class ChatService {
 
     this.socket.on('joined room', (data: ChatRoom) => {
       this.messages = [] as ChatMessage[]
-      this.messages.push({ message: `Chatting in: ${data.name}`, info: true })
+      this.messages.push({ message: `Chatting in ${data.name}`, info: true })
       this.connectedRoom = data
       this.connectedRoom$.next(data)
       this.closePrivateMessage()
@@ -85,10 +84,15 @@ export class ChatService {
   }
 
   sendMessage = (message: string): void => {
-    this.socket.emit('new message', message)
+    if (message.trim() !== undefined && message.trim().length > 0) {
+      this.socket.emit('new message', message)
+    }
   }
 
   joinRoom = (id?: number, password?: string): void => {
+    if (id === this.connectedRoom?.id) {
+      this.closePrivateMessage()
+    }
     this.socket.emit('join room', { id, password })
   }
 
@@ -151,7 +155,7 @@ export class ChatService {
   }
 
   sendPrivateMessage (pm: PrivateMessage): void {
-    if (pm.message?.trim() !== undefined) {
+    if (pm.message?.trim() !== undefined && pm.message.trim().length > 0) {
       this.socket.emit('private message', pm)
     }
   }

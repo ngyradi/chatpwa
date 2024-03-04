@@ -1,11 +1,12 @@
 <app-page-container>
-  <div class="col-span-5 h-14 grid grid-cols-5 h-12">
+  <div class="col-span-5 h-14 grid grid-cols-5 h-8">
+    <div class="col-start-1 bg-sidebar"></div>
     <h1 class="text-center text-xl font-bold col-start-3">Chat</h1>
-    <p class="text-right col-start-5 mr-2"><img class="size-5 ml-auto mr-2 mt-2 cursor-pointer"
+    <p class="bg-sidebar text-right col-start-5 mr-2"><img class="size-5 ml-auto mr-2 mt-1 cursor-pointer"
         src="/assets/icons/exit.svg" alt="Logout" title="Sign out" (click)="logout()"></p>
   </div>
 
-  <div class="lg:col-span-1 col-span-5 ml-2">
+  <div class="lg:col-span-1 col-span-5 pl-2 bg-sidebar">
     <app-room-list></app-room-list>
   </div>
 
@@ -15,7 +16,7 @@
     </ng-container>
   </div>
 
-  <div class="lg:col-span-1 col-span-5 mr-2">
+  <div class="lg:col-span-1 col-span-5 pr-2 bg-sidebar">
     <app-user-list [clientUserId]="getClientUserId()"></app-user-list>
   </div>
 </app-page-container>
