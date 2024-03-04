@@ -4,13 +4,14 @@ import { ChatService } from '../../../services/chat-service'
 import { BehaviorSubject, type Subscription } from 'rxjs'
 import { CommonModule } from '@angular/common'
 import { FormsModule } from '@angular/forms'
+import { ChatMessageComponent } from '../chat-window/chat-message/chat-message.component'
 
 @Component({
   standalone: true,
   selector: 'app-private-message-window',
   templateUrl: './private-message-window.component.html',
   styleUrls: ['./private-message-window.component.css'],
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule, ChatMessageComponent]
 })
 export class PrivateMessageWindowComponent implements OnDestroy {
   pmUser?: User
