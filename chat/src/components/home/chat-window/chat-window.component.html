@@ -1,12 +1,12 @@
-<div class="lg:mx-2 lg:my-0 my-2" *ngIf="(connected$ | async); else noConnection">
+<div class="lg:mx-2 lg:my-0 my-2" *ngIf="(connectedRoom$ | async); else noConnection">
   <div class="w-full grid grid-cols-3 max-h-8 px-2 pb-2 bg-card rounded-2xl rounded-b-none items-center">
-    <h2 class="col-span-2 font-bold truncate">{{connectedRoomName}}</h2>
-    <span><img class="mt-2 float-right size-5 cursor-pointer" src="/assets/icons/exit.svg" alt="Leave room"
+    <h2 class="col-span-2 font-bold truncate">{{(connectedRoom$ | async)?.name}}</h2>
+    <span><img class="mt-2 float-right size-3 cursor-pointer" src="/assets/icons/cross.svg" alt="Leave room"
         title="Leave room" (click)="leaveRoom()"></span>
   </div>
 
   <div class="min-h-96 max-h-96 bg-gray-50  overflow-y-auto rounded-xl rounded-b-none rounded-t-none" #scroller>
-    <div *ngFor="let msg of messages" #messages>
+    <div *ngFor="let msg of (messages$ | async)" #messages>
       <app-chat-message [message]="msg"></app-chat-message>
     </div>
   </div>

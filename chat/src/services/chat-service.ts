@@ -8,9 +8,8 @@ import { UserService } from './user.service'
   providedIn: 'root'
 })
 export class ChatService {
-  public messages: ChatMessage[]
+  public messages$ = new BehaviorSubject<ChatMessage[] | undefined>(undefined)
   public connectedRoom$ = new BehaviorSubject<ChatRoom | undefined>(undefined)
-  public connected$ = new BehaviorSubject(false)
   public rooms$ = new BehaviorSubject<ChatRoom[]>([])
   public users$ = new BehaviorSubject<User[]>([])
   public privateRoomCode$ = new BehaviorSubject<string>('')
@@ -19,12 +18,12 @@ export class ChatService {
   private readonly socket: Socket
   private connectedRoom?: ChatRoom
   private readonly privateMessages = new Map<string, ChatMessage[]>()
+  private messages: ChatMessage[]
 
   private readonly host = 'http://localhost:3000'
 
   constructor (@Inject(UserService) private readonly userService: UserService) {
     this.messages = []
-    this.connected$.next(false)
     this.socket = io(this.host)
 
     this.socket.on('connect', () => {
@@ -47,15 +46,16 @@ export class ChatService {
     })
 
     this.socket.on('joined room', (data: ChatRoom) => {
+      this.messages = [] as ChatMessage[]
       this.messages.push({ message: `Chatting in: ${data.name}`, info: true })
       this.connectedRoom = data
       this.connectedRoom$.next(data)
-      this.connected$.next(true)
       this.closePrivateMessage()
+      this.messages$.next(this.messages)
     })
 
     this.socket.on('left room', () => {
-      this.connected$.next(false)
+      this.connectedRoom$.next(undefined)
     })
 
     this.socket.on('new message', (data: ChatMessage) => {

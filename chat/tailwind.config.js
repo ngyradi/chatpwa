@@ -9,7 +9,7 @@ export const theme = {
     },
     colors: {
       bg: '#F0F2F5',
-      card: '#E4EAED',
+      card: '#eaf2f6',
       chips: '#CAD4DB',
       navbar: '#CAD4DB',
       modal: '#CAD4DB',
