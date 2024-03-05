@@ -39,11 +39,17 @@ io.on('connection', (socket: Socket) => {
   })
 
   socket.on('new room', (data: ChatRoom) => {
-    createRoomEvent(io, data, rooms)
+    const res = createRoomEvent(socket, io, data, rooms, connectedRoomId)
+    if (res !== undefined) {
+      connectedRoomId = res
+    }
   })
 
   socket.on('new private room', (data: ChatRoom) => {
-    createPrivateRoomEvent(socket, io, data, rooms, joinCodes)
+    const res = createPrivateRoomEvent(socket, io, data, rooms, joinCodes, connectedRoomId)
+    if (res !== undefined) {
+      connectedRoomId = res
+    }
   })
 
   socket.on('join room', (data: ChatRoom) => {

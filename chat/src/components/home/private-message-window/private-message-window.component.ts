@@ -20,7 +20,7 @@ export class PrivateMessageWindowComponent implements OnDestroy, AfterViewInit {
   message: string
   messages$ = new BehaviorSubject<ChatMessage[]>([])
 
-  @ViewChildren('messages') messageElements!: QueryList<any>
+  @ViewChildren('messages') messageElements!: QueryList<ChatMessageComponent>
   @ViewChild('scroller') content!: ElementRef
 
   constructor (@Inject(ChatService) private readonly chatService: ChatService) {

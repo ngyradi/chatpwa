@@ -31,10 +31,16 @@ io.on('connection', (socket) => {
         (0, room_events_1.getRoomEvent)(socket, rooms);
     });
     socket.on('new room', (data) => {
-        (0, room_events_1.createRoomEvent)(io, data, rooms);
+        const res = (0, room_events_1.createRoomEvent)(socket, io, data, rooms, connectedRoomId);
+        if (res !== undefined) {
+            connectedRoomId = res;
+        }
     });
     socket.on('new private room', (data) => {
-        (0, room_events_1.createPrivateRoomEvent)(socket, io, data, rooms, joinCodes);
+        const res = (0, room_events_1.createPrivateRoomEvent)(socket, io, data, rooms, joinCodes, connectedRoomId);
+        if (res !== undefined) {
+            connectedRoomId = res;
+        }
     });
     socket.on('join room', (data) => {
         connectedRoomId = (0, room_events_1.joinRoomEvent)(socket, io, data, rooms, connectedRoomId);

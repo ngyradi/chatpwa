@@ -17,7 +17,7 @@ export class ChatWindowComponent implements AfterViewInit {
   connectedRoom$?: BehaviorSubject<ChatRoom | undefined>
   messages$: BehaviorSubject<ChatMessage[] | undefined>
 
-  @ViewChildren('messages') messageElements!: QueryList<any>
+  @ViewChildren('messages') messageElements!: QueryList<ChatMessageComponent>
   @ViewChild('scroller') content!: ElementRef
 
   message: string

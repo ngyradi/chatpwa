@@ -19,79 +19,89 @@ const leaveRoomEvent = (socket, io, connectedRoomId, rooms) => {
     return connectedRoomId;
 };
 exports.leaveRoomEvent = leaveRoomEvent;
-const createRoomEvent = (io, data, rooms) => {
+const createRoomEvent = (socket, io, data, rooms, connectedRoomId) => {
     let hasPwd = false;
     if (data.password !== undefined && data.password.length > 0) {
         hasPwd = true;
     }
-    rooms.push({ id: rooms.length, name: data.name, password: data.password, numPeople: 0, public: data.public, hasPassword: hasPwd });
+    const newId = rooms.length;
+    rooms.push({ id: newId, name: data.name, password: data.password, numPeople: 0, public: data.public, hasPassword: hasPwd });
     console.log(`added new room: ${data.name} ${data.password}`);
     io.emit('new room');
+    console.log(connectedRoomId);
+    if (connectedRoomId !== undefined) {
+        return joinUserToRoom(socket, io, rooms, newId, connectedRoomId);
+    }
 };
 exports.createRoomEvent = createRoomEvent;
-const createPrivateRoomEvent = (socket, io, data, rooms, joinCodes) => {
+const createPrivateRoomEvent = (socket, io, data, rooms, joinCodes, connectedRoomId) => {
     const code = generateJoinCode(joinCodes);
     if (code === -1) {
         // failed to generate code
         return;
     }
-    console.log(code);
     joinCodes.push(code);
-    rooms.push({ id: rooms.length, name: data.name, numPeople: 0, public: false, hasPassword: false, joinCode: code.toString() });
+    const newId = rooms.length;
+    rooms.push({ id: newId, name: data.name, numPeople: 0, public: false, hasPassword: false, joinCode: code.toString() });
     socket.emit('private room code', (code.toString()));
+    if (connectedRoomId !== undefined) {
+        return joinUserToRoom(socket, io, rooms, newId, connectedRoomId);
+    }
 };
 exports.createPrivateRoomEvent = createPrivateRoomEvent;
 const joinRoomEvent = (socket, io, data, rooms, connectedRoomId) => {
     console.log(`${socket.id} tried to join: ${data.id}`);
-    if (data.id !== undefined && data.id !== connectedRoomId) {
-        if (connectedRoomId !== -1) {
-            socket.leave(connectedRoomId.toString());
-            rooms[connectedRoomId].numPeople--;
-            connectedRoomId = -1;
-        }
-        if (rooms[data.id].hasPassword === undefined || (rooms[data.id].password === data.password)) {
-            rooms[data.id].numPeople++;
-            const joinedRoom = rooms[data.id];
-            joinedRoom.id = data.id;
-            socket.emit('joined room', joinedRoom);
-            socket.join(data.id.toString());
-            connectedRoomId = data.id;
-            console.log(`${socket.id} joined ${data.id} - ${rooms[data.id].name}`);
-            console.log(connectedRoomId);
-            (0, exports.emitAllRooms)(io, rooms);
+    if (data.id !== undefined) {
+        if (rooms[data.id].hasPassword === false || (rooms[data.id].password === data.password)) {
+            connectedRoomId = joinUserToRoom(socket, io, rooms, data.id, connectedRoomId);
         }
     }
     return connectedRoomId;
 };
 exports.joinRoomEvent = joinRoomEvent;
-const joinPrivateRoomEvent = (socket, io, data, rooms, connectedRoomId) => {
+const joinPrivateRoomEvent = (socket, io, joinCode, rooms, connectedRoomId) => {
     console.log(`${socket.id} tried to join private room:`);
-    if (data === undefined) {
+    if (joinCode === undefined) {
         return connectedRoomId;
     }
-    const roomIndex = rooms.findIndex((r) => r.joinCode === data);
+    const roomIndex = rooms.findIndex((r) => r.joinCode === joinCode);
     if (roomIndex === -1) {
         return connectedRoomId;
     }
-    if (roomIndex === connectedRoomId) {
-        return connectedRoomId;
+    return joinUserToRoom(socket, io, rooms, roomIndex, connectedRoomId);
+};
+exports.joinPrivateRoomEvent = joinPrivateRoomEvent;
+const generateJoinCode = (joinCodes) => {
+    let code = 0;
+    let n = 0;
+    do {
+        code = (0, crypto_1.randomInt)(10000, 100000);
+        n++;
+    } while (n < 5 && joinCodes.findIndex((i) => i === code) !== -1);
+    // failed to generate a code
+    if (n >= 5) {
+        return -1;
+    }
+    return code;
+};
+const joinUserToRoom = (socket, io, rooms, roomId, connectedRoomId) => {
+    if (connectedRoomId === roomId) {
+        return roomId;
     }
     if (connectedRoomId !== -1) {
         socket.leave(connectedRoomId.toString());
         rooms[connectedRoomId].numPeople--;
         connectedRoomId = -1;
-        io.emit('all rooms', (0, exports.getRoomView)(rooms));
     }
-    rooms[roomIndex].numPeople++;
-    const joinedRoom = rooms[roomIndex];
+    rooms[roomId].numPeople++;
+    const joinedRoom = rooms[roomId];
+    joinedRoom.id = roomId;
+    socket.join(roomId.toString());
     socket.emit('joined room', joinedRoom);
-    socket.join(roomIndex.toString());
-    connectedRoomId = roomIndex;
-    console.log(`${socket.id} joined to private room ${roomIndex} - ${rooms[roomIndex].name}`);
-    console.log(connectedRoomId);
-    return connectedRoomId;
+    console.log(`${socket.id} joined ${roomId} - ${rooms[roomId].name}`);
+    (0, exports.emitAllRooms)(io, rooms);
+    return roomId;
 };
-exports.joinPrivateRoomEvent = joinPrivateRoomEvent;
 const emitAllRooms = (io, rooms) => {
     io.emit('all rooms', (0, exports.getRoomView)(rooms));
 };
@@ -100,16 +110,3 @@ const getRoomView = (rooms) => {
     return rooms.filter((r) => { return r.public; }).map((r) => ({ id: r.id, name: r.name, numPeople: r.numPeople, hasPassword: r.hasPassword }));
 };
 exports.getRoomView = getRoomView;
-const generateJoinCode = (joinCodes) => {
-    let code = 0;
-    let n = 0;
-    do {
-        code = (0, crypto_1.randomInt)(10000, 100000);
-        n++;
-    } while (n < 5 && joinCodes.findIndex((i) => i === code) !== -1);
-    if (n >= 5) {
-        // failed to generate a code
-        return -1;
-    }
-    return code;
-};
