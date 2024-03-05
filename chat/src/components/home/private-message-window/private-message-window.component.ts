@@ -5,13 +5,14 @@ import { BehaviorSubject, type Subscription } from 'rxjs'
 import { CommonModule } from '@angular/common'
 import { FormsModule } from '@angular/forms'
 import { ChatMessageComponent } from '../chat-window/chat-message/chat-message.component'
+import { WindowIconComponent } from '../window-icon/window-icon.component'
 
 @Component({
   standalone: true,
   selector: 'app-private-message-window',
   templateUrl: './private-message-window.component.html',
   styleUrls: ['./private-message-window.component.css'],
-  imports: [CommonModule, FormsModule, ChatMessageComponent]
+  imports: [CommonModule, FormsModule, ChatMessageComponent, WindowIconComponent]
 })
 export class PrivateMessageWindowComponent implements OnDestroy, AfterViewInit {
   pmUser?: User

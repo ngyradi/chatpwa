@@ -5,13 +5,14 @@ import { type ChatRoom, type ChatMessage } from '../../../models/chatroom'
 import { type BehaviorSubject } from 'rxjs'
 import { ChatService } from '../../../services/chat-service'
 import { ChatMessageComponent } from './chat-message/chat-message.component'
+import { WindowIconComponent } from '../window-icon/window-icon.component'
 
 @Component({
   standalone: true,
   selector: 'app-chat-window',
   templateUrl: './chat-window.component.html',
   styleUrls: ['./chat-window.component.css'],
-  imports: [FormsModule, CommonModule, ChatMessageComponent]
+  imports: [FormsModule, CommonModule, ChatMessageComponent, WindowIconComponent]
 })
 export class ChatWindowComponent implements AfterViewInit {
   connectedRoom$?: BehaviorSubject<ChatRoom | undefined>

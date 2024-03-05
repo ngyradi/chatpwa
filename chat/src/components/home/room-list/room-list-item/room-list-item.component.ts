@@ -24,8 +24,8 @@ export class RoomListItemComponent {
   }
 
   joinRoom (): void {
-    if (this.room !== undefined && this.room.id !== this.selected) {
-      if (this.room.hasPassword === true) {
+    if (this.room !== undefined) {
+      if (this.room.id !== this.selected && this.room.hasPassword === true) {
         this.inputVisible = true
       }
       this.joinRoomEvent.emit({ id: this.room.id, password: this.password })
