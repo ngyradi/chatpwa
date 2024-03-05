@@ -6,20 +6,21 @@ import { CommonModule } from '@angular/common'
 import { FormsModule } from '@angular/forms'
 import { ChatMessageComponent } from '../chat-message/chat-message.component'
 import { WindowIconComponent } from '../../window-icon/window-icon.component'
+import { MessageAreaComponent } from '../message-area/message-area.component'
 
 @Component({
   standalone: true,
   selector: 'app-private-message-window',
   templateUrl: './private-message-window.component.html',
   styleUrls: ['./private-message-window.component.css'],
-  imports: [CommonModule, FormsModule, ChatMessageComponent, WindowIconComponent]
+  imports: [CommonModule, FormsModule, ChatMessageComponent, WindowIconComponent, MessageAreaComponent]
 })
 export class PrivateMessageWindowComponent implements OnDestroy, AfterViewInit {
   pmUser?: User
   userSubscription: Subscription
 
   message: string
-  messages$ = new BehaviorSubject<ChatMessage[]>([])
+  messages$ = new BehaviorSubject<ChatMessage[] | undefined>([])
 
   @ViewChildren('messages') messageElements!: QueryList<ChatMessageComponent>
   @ViewChild('scroller') content!: ElementRef
@@ -45,10 +46,9 @@ export class PrivateMessageWindowComponent implements OnDestroy, AfterViewInit {
     this.chatService.closePrivateMessage()
   }
 
-  sendMessage (): void {
+  sendMessage (message: string): void {
     if (this.pmUser !== undefined) {
-      this.chatService.sendPrivateMessage({ socketId: this.pmUser?.socketId, message: this.message })
-      this.message = ''
+      this.chatService.sendPrivateMessage({ socketId: this.pmUser?.socketId, message })
     }
     this.scrollToBottom()
   }

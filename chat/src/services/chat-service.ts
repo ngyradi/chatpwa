@@ -3,17 +3,21 @@ import { BehaviorSubject } from 'rxjs'
 import { type Socket, io } from 'socket.io-client'
 import { type ChatMessage, type ChatRoom, type PrivateMessage, type User } from '../models/chatroom'
 import { UserService } from './user.service'
+import { ChatState } from '../models/ui.state'
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
+  ChatState = ChatState
+
   public messages$ = new BehaviorSubject<ChatMessage[] | undefined>(undefined)
   public connectedRoom$ = new BehaviorSubject<ChatRoom | undefined>(undefined)
   public rooms$ = new BehaviorSubject<ChatRoom[]>([])
   public users$ = new BehaviorSubject<User[]>([])
   public privateRoomCode$ = new BehaviorSubject<string>('')
   public privateMessageUser$ = new BehaviorSubject<User | undefined>(undefined)
+  public chatState$ = new BehaviorSubject<ChatState | undefined>(undefined)
 
   private readonly socket: Socket
   private connectedRoom?: ChatRoom
@@ -51,7 +55,8 @@ export class ChatService {
       this.connectedRoom = data
       this.connectedRoom$.next(data)
       this.messages$.next(this.messages)
-      this.closePrivateMessage()
+      // this.closePrivateMessage()
+      this.chatState$.next(ChatState.ROOM)
     })
 
     this.socket.on('left room', () => {
@@ -135,6 +140,7 @@ export class ChatService {
 
   selectPrivateMessageUser (user: User): void {
     this.privateMessageUser$.next(user)
+    this.chatState$.next(ChatState.PRIVATE)
   }
 
   initPrivateMessages (user?: User): void {

@@ -3,3 +3,8 @@ export enum PageState {
   CHAT,
   USERS,
 }
+
+export enum ChatState {
+  ROOM,
+  PRIVATE,
+}
