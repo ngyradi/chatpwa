@@ -16,11 +16,14 @@
     </div>
 
     <div class="col-span-5 mt-4 pl-1">
-      <p>join with code:</p>
-      <input type="text" placeholder="join code" name="join-code" [(ngModel)]="joinCode">
-      <input class="bg-gray-200" type="button" value="join" (click)="joinWithCode()">
-      <p>{{privateRoomCode$ |async}}</p>
+      <p class="font-bold">With join code</p>
+      <input class="bg-gray-50 rounded-md p-0.5 w-5/6 mt-1" type="text" placeholder="Code" name="join-code"
+        [(ngModel)]="joinCode" required="true">
+      <img class="inline ml-2 mb-2 cursor-pointer size-4" src="/assets/icons/check.svg" (click)="joinWithCode()">
+      <!--<p class="float-left text-error text-sm">{{error}}</p>-->
     </div>
+
+    <p class="font-bold pl-1 mt-2">Browse</p>
 
     <div class="overflow-y-auto lg:max-h-64 max-h-7/10 col-span-5 mb-4">
       <div *ngFor=" let room of rooms$ | async">

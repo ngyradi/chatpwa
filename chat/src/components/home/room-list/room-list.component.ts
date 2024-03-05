@@ -21,8 +21,10 @@ export class RoomListComponent {
 
   editing: boolean
   joinCode: string
+  error: string
 
   constructor (@Inject(ChatService) private readonly chatService: ChatService) {
+    this.error = ''
     this.joinCode = ''
     this.rooms$ = this.chatService.rooms$
     this.connectedRoom$ = this.chatService.connectedRoom$
@@ -39,9 +41,12 @@ export class RoomListComponent {
   }
 
   joinWithCode (): void {
-    if (this.joinCode.trim() !== undefined) {
+    if (this.joinCode.trim() !== undefined && this.joinCode.trim().length > 0) {
       this.chatService.joinPrivateRoom(this.joinCode)
       this.joinCode = ''
+      this.error = ''
+    } else {
+      this.error = 'Code is required'
     }
   }
 }
