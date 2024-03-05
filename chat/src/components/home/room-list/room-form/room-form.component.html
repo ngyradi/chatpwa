@@ -55,6 +55,7 @@
         </div>
         <div class="mt-2 pr-1">
             <p class="float-left text-error text-sm">{{error}}</p>
+            <p *ngIf="(roomCode$ | async) && !error" class="float-left text-sm">Join code: {{(roomCode$ | async)}}</p>
             <img class="cursor-pointer ml-auto size-4" src="/assets/icons/check.svg" (click)="submit()">
         </div>
     </form>
