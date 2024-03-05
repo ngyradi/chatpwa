@@ -5,30 +5,29 @@ import { ChatWindowComponent } from './chat-window/chat-window.component'
 import { CommonModule } from '@angular/common'
 import { PageContainerComponent } from '../page-container/page-container.component'
 import { ChatService } from '../../services/chat-service'
-import { type User } from '../../models/chatroom'
 import { type BehaviorSubject } from 'rxjs'
 import { Router, RouterLink, RouterModule } from '@angular/router'
-import { PrivateMessageWindowComponent } from './chat-window/private-message-window/private-message-window.component'
 import { UserService } from '../../services/user.service'
 import { HomeFullComponent } from './home-full/home-full.component'
 import { HomeMobileComponent } from './home-mobile/home-mobile.component'
+import { type ChatState } from '../../models/ui.state'
 
 @Component({
   standalone: true,
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  imports: [CommonModule, RoomListComponent, UserListComponent, ChatWindowComponent, PageContainerComponent, RouterModule, RouterLink, PrivateMessageWindowComponent, HomeFullComponent, HomeMobileComponent],
+  imports: [CommonModule, RoomListComponent, UserListComponent, ChatWindowComponent, PageContainerComponent, RouterModule, RouterLink, HomeFullComponent, HomeMobileComponent],
   providers: [ChatService]
 })
 export class HomeComponent implements AfterViewInit {
-  public privateMessageUser$: BehaviorSubject<User | undefined>
+  public chatState$: BehaviorSubject<ChatState>
 
   innerWidth: number
   mobileWidth: number
 
   constructor (private readonly chatService: ChatService, @Inject(UserService) private readonly userService: UserService, @Inject(Router) private readonly router: Router) {
-    this.privateMessageUser$ = this.chatService.privateMessageUser$
+    this.chatState$ = this.chatService.chatState$
 
     this.innerWidth = window.innerWidth
     this.mobileWidth = 1024

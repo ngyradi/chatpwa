@@ -13,8 +13,16 @@
   </div>
 
   <div class="lg:col-span-3 col-span-5">
-    <ng-container *ngIf="!(privateMessageUser$ | async); else pmWindow">
+    <ng-container *ngIf="(chatState$ | async) === ChatState.ROOM">
       <app-chat-window></app-chat-window>
+    </ng-container>
+    <ng-container *ngIf="(chatState$ | async) === ChatState.PRIVATE">
+      <app-private-message-window></app-private-message-window>
+    </ng-container>
+    <ng-container *ngIf="(chatState$ | async) === ChatState.NONE">
+      <div class="pt-2 lg:min-h-96 lg:max-h-96 min-h-7/10 max-h-7/10 mb-2 ml-2 mr-2 items-center flex">
+        <h2 class="text-md text-center font-bold w-full">Join a room to start chatting</h2>
+      </div>
     </ng-container>
   </div>
 
@@ -22,7 +30,3 @@
     <app-user-list [clientUserId]="clientUserId"></app-user-list>
   </div>
 </app-page-container>
-
-<ng-template #pmWindow>
-  <app-private-message-window></app-private-message-window>
-</ng-template>

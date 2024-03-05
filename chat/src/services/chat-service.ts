@@ -17,10 +17,11 @@ export class ChatService {
   public users$ = new BehaviorSubject<User[]>([])
   public privateRoomCode$ = new BehaviorSubject<string>('')
   public privateMessageUser$ = new BehaviorSubject<User | undefined>(undefined)
-  public chatState$ = new BehaviorSubject<ChatState | undefined>(undefined)
+  public chatState$ = new BehaviorSubject<ChatState>(ChatState.NONE)
 
   private readonly socket: Socket
   private connectedRoom?: ChatRoom
+  private privateMessageUser?: User
   private readonly privateMessages = new Map<string, ChatMessage[]>()
   private messages: ChatMessage[]
 
@@ -52,10 +53,9 @@ export class ChatService {
     this.socket.on('joined room', (data: ChatRoom) => {
       this.messages = [] as ChatMessage[]
       this.messages.push({ message: `Chatting in ${data.name}`, info: true })
+      this.messages$.next(this.messages)
       this.connectedRoom = data
       this.connectedRoom$.next(data)
-      this.messages$.next(this.messages)
-      // this.closePrivateMessage()
       this.chatState$.next(ChatState.ROOM)
     })
 
@@ -96,7 +96,7 @@ export class ChatService {
 
   joinRoom = (id?: number, password?: string): void => {
     if (id === this.connectedRoom?.id) {
-      this.closePrivateMessage()
+      this.chatState$.next(ChatState.ROOM)
     }
     this.socket.emit('join room', { id, password })
   }
@@ -125,7 +125,13 @@ export class ChatService {
 
   leaveRoom (): void {
     if (this.connectedRoom !== undefined) {
+      if (this.privateMessageUser !== undefined) {
+        this.chatState$.next(ChatState.PRIVATE)
+      } else {
+        this.chatState$.next(ChatState.NONE)
+      }
       this.socket.emit('leave', this.connectedRoom)
+      this.connectedRoom = undefined
       this.connectedRoom$.next(undefined)
     }
   }
@@ -139,6 +145,7 @@ export class ChatService {
   }
 
   selectPrivateMessageUser (user: User): void {
+    this.privateMessageUser = user
     this.privateMessageUser$.next(user)
     this.chatState$.next(ChatState.PRIVATE)
   }
@@ -157,7 +164,13 @@ export class ChatService {
   }
 
   closePrivateMessage (): void {
+    this.privateMessageUser = undefined
     this.privateMessageUser$.next(undefined)
+    if (this.connectedRoom !== undefined) {
+      this.chatState$.next(ChatState.ROOM)
+    } else {
+      this.chatState$.next(ChatState.NONE)
+    }
   }
 
   sendPrivateMessage (pm: PrivateMessage): void {

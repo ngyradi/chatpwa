@@ -1,4 +1,4 @@
-<div class="lg:mx-2 lg:mt-2 lg:mb-4 drop-shadow-lg" *ngIf=" pmUser">
+<div class="lg:mx-2 mt-4 lg:mb-4 drop-shadow-lg" *ngIf=" pmUser">
   <div class="w-full grid grid-cols-3 max-h-8 px-2 pb-2 bg-card lg:rounded-2xl lg:rounded-b-none items-center">
     <h2 class="col-span-2 mt-1 font-bold truncate">
       <app-window-icon [image]="'/assets/icons/envelope.svg'" [text]="'Private messaging'"></app-window-icon>
@@ -8,6 +8,7 @@
         title="Leave room" (click)="closeWindow()"></span>
   </div>
 
-  <app-message-area [messages$]="messages$" (sendMessageEvent)="sendMessage($event)"></app-message-area>
+  <app-message-area [messages$]="messages$" (sendMessageEvent)="sendMessage($event)"
+    [infoMessage]="'Chatting with ' + pmUser.username"></app-message-area>
 
 </div>

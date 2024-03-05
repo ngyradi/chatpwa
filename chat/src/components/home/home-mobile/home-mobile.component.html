@@ -19,8 +19,11 @@
       <app-room-list></app-room-list>
     </div>
     <div *ngIf="selectedPage === PageState.CHAT">
-      <ng-container *ngIf="!privateMessageUser; else pmWindow">
+      <ng-container *ngIf="(chatState$ | async) === ChatState.ROOM">
         <app-chat-window></app-chat-window>
+      </ng-container>
+      <ng-container *ngIf="(chatState$ | async) === ChatState.PRIVATE">
+        <app-private-message-window></app-private-message-window>
       </ng-container>
     </div>
     <div *ngIf="selectedPage === PageState.USERS">
@@ -29,7 +32,3 @@
   </div>
 
 </app-page-container>
-
-<ng-template #pmWindow>
-  <app-private-message-window></app-private-message-window>
-</ng-template>

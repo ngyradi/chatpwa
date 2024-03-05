@@ -7,4 +7,5 @@ export enum PageState {
 export enum ChatState {
   ROOM,
   PRIVATE,
+  NONE,
 }

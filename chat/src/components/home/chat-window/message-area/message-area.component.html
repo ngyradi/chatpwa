@@ -1,6 +1,7 @@
 <div
   class="lg:min-h-96 lg:max-h-96 min-h-7/10 max-h-7/10 bg-gray-50 overflow-y-auto rounded-xl rounded-b-none rounded-t-none border-b-2"
   #scroller>
+  <p class="text-gray-500 ml-1" *ngIf="infoMessage">{{infoMessage}}</p>
   <div *ngFor="let msg of (messages$ | async)" #messages>
     <app-chat-message [message]="msg"></app-chat-message>
   </div>

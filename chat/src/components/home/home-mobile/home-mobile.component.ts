@@ -2,15 +2,15 @@ import { CommonModule } from '@angular/common'
 import { Component, EventEmitter, Inject, Input, type OnDestroy, Output } from '@angular/core'
 import { RoomListComponent } from '../room-list/room-list.component'
 import { ChatWindowComponent } from '../chat-window/chat-window.component'
-import { PrivateMessageWindowComponent } from '../chat-window/private-message-window/private-message-window.component'
 import { UserListComponent } from '../user-list/user-list.component'
 import { PageContainerComponent } from '../../page-container/page-container.component'
-import { type Subscription } from 'rxjs'
+import { type BehaviorSubject, type Subscription } from 'rxjs'
 import { type User } from '../../../models/chatroom'
 import { MobileHamburgerMenuButtonComponent } from './mobile-hamburger-menu-button/mobile-hamburger-menu-button.component'
 import { MobileHamburgerMenuComponent } from './mobile-hamburger-menu/mobile-hamburger-menu.component'
-import { PageState } from '../../../models/ui.state'
+import { ChatState, PageState } from '../../../models/ui.state'
 import { ChatService } from '../../../services/chat-service'
+import { PrivateMessageWindowComponent } from '../chat-window/private-message-window/private-message-window.component'
 
 @Component({
   standalone: true,
@@ -20,10 +20,12 @@ import { ChatService } from '../../../services/chat-service'
   imports: [CommonModule, RoomListComponent, ChatWindowComponent, PrivateMessageWindowComponent, UserListComponent, PageContainerComponent, MobileHamburgerMenuButtonComponent, MobileHamburgerMenuComponent]
 })
 export class HomeMobileComponent implements OnDestroy {
-  privateMessageUser: User | undefined
+  ChatState = ChatState
+  @Input() chatState$?: BehaviorSubject<ChatState>
   @Input() clientUserId: string | undefined
   @Output() logoutEvent = new EventEmitter<void>()
 
+  privateMessageUser: User | undefined
   isMenuOpen: boolean
   selectedPage: PageState
   PageState = PageState

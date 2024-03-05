@@ -1,8 +1,8 @@
 <ng-container *ngIf="innerWidth > mobileWidth;else mobileScreen">
-  <app-home-full (logoutEvent)="logout()" [clientUserId]="getClientUserId()"
-    [privateMessageUser$]="privateMessageUser$"></app-home-full>
+  <app-home-full (logoutEvent)="logout()" [clientUserId]="getClientUserId()" [chatState$]="chatState$"></app-home-full>
 </ng-container>
 
 <ng-template #mobileScreen>
-  <app-home-mobile (logoutEvent)="logout()" [clientUserId]="getClientUserId()"></app-home-mobile>
+  <app-home-mobile (logoutEvent)="logout()" [clientUserId]="getClientUserId()"
+    [chatState$]="chatState$"></app-home-mobile>
 </ng-template>

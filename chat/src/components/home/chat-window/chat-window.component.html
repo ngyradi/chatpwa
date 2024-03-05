@@ -1,4 +1,4 @@
-<div class="lg:mx-2 lg:mt-2 lg:mb-4 drop-shadow-lg" *ngIf="(connectedRoom$ | async); else noConnection">
+<div class="lg:mx-2 mt-4 lg:mb-4 drop-shadow-lg" *ngIf="(connectedRoom$ | async)">
   <div class="w-full grid grid-cols-3 max-h-8 px-2 pb-2 bg-card lg:rounded-2xl lg:rounded-b-none items-center">
     <h2 class="col-span-2 mt-1 font-bold truncate">
       <ng-container *ngIf="(connectedRoom$ | async)?.public;else privateRoom">
@@ -18,12 +18,6 @@
   <app-message-area [messages$]="messages$" (sendMessageEvent)="sendMessage($event)"></app-message-area>
 
 </div>
-
-<ng-template #noConnection>
-  <div class="pt-2 lg:min-h-96 lg:max-h-96 min-h-7/10 max-h-7/10 mb-2 ml-2 mr-2 items-center flex">
-    <h2 class="text-md text-center font-bold w-full">Join a room to start chatting</h2>
-  </div>
-</ng-template>
 
 <ng-template #privateRoom>
   <app-window-icon [image]="'/assets/icons/exclamation.svg'" [text]="'Private chat room'"></app-window-icon>

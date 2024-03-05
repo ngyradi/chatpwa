@@ -14,6 +14,7 @@ import { FormsModule } from '@angular/forms'
 })
 export class MessageAreaComponent implements AfterViewInit {
   @Input() messages$?: BehaviorSubject<ChatMessage[] | undefined>
+  @Input() infoMessage?: string
   @Output() sendMessageEvent = new EventEmitter<string>()
 
   @ViewChildren('messages') messageElements!: QueryList<ChatMessageComponent>
