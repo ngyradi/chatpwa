@@ -25,7 +25,8 @@
   </div>
 
   <ng-container *ngIf="inputVisible">
-    <input class="col-span-2 pl-2" type="password" name="password" placeholder="password" [(ngModel)]="password">
+    <input class="col-span-2 pl-2" type="password" name="password" placeholder="password" [(ngModel)]="password"
+      (keyup.enter)="joinRoom()">
   </ng-container>
 
   <ng-template #singleUser>

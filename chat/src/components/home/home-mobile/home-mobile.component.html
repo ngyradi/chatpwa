@@ -11,7 +11,8 @@
   </div>
 
   <div *ngIf="isMenuOpen" class="col-span-5">
-    <app-mobile-hamburger-menu (changePageEvent)="changePage($event)"></app-mobile-hamburger-menu>
+    <app-mobile-hamburger-menu (changePageEvent)="changePage($event)"
+      [selectedPage]="selectedPage"></app-mobile-hamburger-menu>
   </div>
 
   <div class="col-span-5 h-full">

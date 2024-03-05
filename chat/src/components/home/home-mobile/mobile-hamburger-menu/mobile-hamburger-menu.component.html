@@ -1,11 +1,14 @@
 <div class="bg-sidebar grid grid-cols-3 text-center min-h-8 shadow-md">
-  <div class="border-r-2 border-card cursor-pointer h-full" (click)="changePage(PageState.ROOMS)">
+  <div [ngClass]="{'bg-card':selectedPage===PageState.ROOMS, 'border-transparent':selectedPage!==PageState.USERS}"
+    class="border-r-2 border-chips cursor-pointer h-full" (click)="changePage(PageState.ROOMS)">
     <p class="pt-1 font-bold">Rooms</p>
   </div>
-  <div class="cursor-pointer h-full" (click)="changePage(PageState.CHAT)">
+  <div [ngClass]="{'bg-card':selectedPage===PageState.CHAT}" class="cursor-pointer h-full"
+    (click)="changePage(PageState.CHAT)">
     <p class="pt-1 font-bold">Chat</p>
   </div>
-  <div class="border-l-2 border-card cursor-pointer h-full" (click)="changePage(PageState.USERS)">
+  <div [ngClass]="{'bg-card':selectedPage===PageState.USERS, 'border-transparent':selectedPage!==PageState.ROOMS}"
+    class="border-l-2 border-chips cursor-pointer h-full" (click)="changePage(PageState.USERS)">
     <p class="pt-1 font-bold">Users</p>
   </div>
 </div>
