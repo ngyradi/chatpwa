@@ -1,4 +1,4 @@
-<ng-container *ngIf="innerWidth > mobileWidth;else mobileScreen">
+<ng-container *ngIf="innerWidth >= mobileWidth;else mobileScreen">
   <app-home-full (logoutEvent)="logout()" [clientUserId]="getClientUserId()" [chatState$]="chatState$"></app-home-full>
 </ng-container>
 

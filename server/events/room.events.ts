@@ -11,12 +11,8 @@ export const getRoomEvent = (socket: Socket, rooms: ChatRoom[]): void => {
 export const leaveRoomEvent = (socket: Socket, io: Server, connectedRoomId: number, rooms: ChatRoom[]): number => {
   if (connectedRoomId !== -1) {
     console.log(`${socket.id} left room ${connectedRoomId}`)
-    socket.leave(connectedRoomId.toString())
 
-    rooms[connectedRoomId].numPeople--
-
-    socket.emit('left room')
-    emitAllRooms(io, rooms)
+    disconnectFromRoom(socket, io, connectedRoomId, rooms)
 
     return -1
   }
@@ -100,14 +96,12 @@ const generateJoinCode = (joinCodes: number[]): number => {
 }
 
 const joinUserToRoom = (socket: Socket, io: Server, rooms: ChatRoom[], roomId: number, connectedRoomId: number): number => {
-  if (connectedRoomId === roomId) {
+  if (connectedRoomId === roomId || rooms[roomId].deleted === true) {
     return roomId
   }
 
   if (connectedRoomId !== -1) {
-    socket.leave(connectedRoomId.toString())
-    rooms[connectedRoomId].numPeople--
-    connectedRoomId = -1
+    disconnectFromRoom(socket, io, connectedRoomId, rooms)
   }
 
   rooms[roomId].numPeople++
@@ -129,5 +123,14 @@ export const emitAllRooms = (io: Server, rooms: ChatRoom[]): void => {
 }
 
 export const getRoomView = (rooms: ChatRoom[]): ChatRoom[] => {
-  return rooms.filter((r) => { return r.public }).map((r) => ({ id: r.id, name: r.name, numPeople: r.numPeople, hasPassword: r.hasPassword }))
+  return rooms.filter((r) => { return (r.public === true && r.deleted !== true) }).map((r) => ({ id: r.id, name: r.name, numPeople: r.numPeople, hasPassword: r.hasPassword }))
+}
+
+export const disconnectFromRoom = (socket: Socket, io: Server, connectedRoomId: number, rooms: ChatRoom[]): void => {
+  socket.leave(connectedRoomId.toString())
+  rooms[connectedRoomId].numPeople--
+  if (rooms[connectedRoomId].numPeople <= 0 && rooms[connectedRoomId].public === true) {
+    rooms[connectedRoomId].deleted = true
+  }
+  emitAllRooms(io, rooms)
 }

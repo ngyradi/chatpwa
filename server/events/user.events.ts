@@ -1,6 +1,6 @@
 import { type Socket, type Server } from 'socket.io'
 import { type ChatRoom, type User } from '../model/chatroom'
-import { emitAllRooms } from './room.events'
+import { disconnectFromRoom } from './room.events'
 
 export const userJoinEvent = (socket: Socket, io: Server, data: User, users: Map<string, User>): void => {
   console.log(`${data.username} joined`)
@@ -13,10 +13,7 @@ export const userDisconnectEvent = (socket: Socket, io: Server, users: Map<strin
   console.log('user disconnected')
   users.delete(socket.id)
   if (connectedRoomId !== -1) {
-    if (rooms[connectedRoomId] !== undefined) {
-      rooms[connectedRoomId].numPeople--
-      emitAllRooms(io, rooms)
-    }
+    disconnectFromRoom(socket, io, connectedRoomId, rooms)
   }
   emitAllUsers(io, users)
 }

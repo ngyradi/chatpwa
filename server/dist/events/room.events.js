@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getRoomView = exports.emitAllRooms = exports.joinPrivateRoomEvent = exports.joinRoomEvent = exports.createPrivateRoomEvent = exports.createRoomEvent = exports.leaveRoomEvent = exports.getRoomEvent = void 0;
+exports.disconnectFromRoom = exports.getRoomView = exports.emitAllRooms = exports.joinPrivateRoomEvent = exports.joinRoomEvent = exports.createPrivateRoomEvent = exports.createRoomEvent = exports.leaveRoomEvent = exports.getRoomEvent = void 0;
 const crypto_1 = require("crypto");
 const getRoomEvent = (socket, rooms) => {
     console.log(`${socket.id} asked for rooms`);
@@ -10,10 +10,7 @@ exports.getRoomEvent = getRoomEvent;
 const leaveRoomEvent = (socket, io, connectedRoomId, rooms) => {
     if (connectedRoomId !== -1) {
         console.log(`${socket.id} left room ${connectedRoomId}`);
-        socket.leave(connectedRoomId.toString());
-        rooms[connectedRoomId].numPeople--;
-        socket.emit('left room');
-        (0, exports.emitAllRooms)(io, rooms);
+        (0, exports.disconnectFromRoom)(socket, io, connectedRoomId, rooms);
         return -1;
     }
     return connectedRoomId;
@@ -85,13 +82,11 @@ const generateJoinCode = (joinCodes) => {
     return code;
 };
 const joinUserToRoom = (socket, io, rooms, roomId, connectedRoomId) => {
-    if (connectedRoomId === roomId) {
+    if (connectedRoomId === roomId || rooms[roomId].deleted === true) {
         return roomId;
     }
     if (connectedRoomId !== -1) {
-        socket.leave(connectedRoomId.toString());
-        rooms[connectedRoomId].numPeople--;
-        connectedRoomId = -1;
+        (0, exports.disconnectFromRoom)(socket, io, connectedRoomId, rooms);
     }
     rooms[roomId].numPeople++;
     const joinedRoom = rooms[roomId];
@@ -107,6 +102,15 @@ const emitAllRooms = (io, rooms) => {
 };
 exports.emitAllRooms = emitAllRooms;
 const getRoomView = (rooms) => {
-    return rooms.filter((r) => { return r.public; }).map((r) => ({ id: r.id, name: r.name, numPeople: r.numPeople, hasPassword: r.hasPassword }));
+    return rooms.filter((r) => { return (r.public === true && r.deleted !== true); }).map((r) => ({ id: r.id, name: r.name, numPeople: r.numPeople, hasPassword: r.hasPassword }));
 };
 exports.getRoomView = getRoomView;
+const disconnectFromRoom = (socket, io, connectedRoomId, rooms) => {
+    socket.leave(connectedRoomId.toString());
+    rooms[connectedRoomId].numPeople--;
+    if (rooms[connectedRoomId].numPeople <= 0 && rooms[connectedRoomId].public === true) {
+        rooms[connectedRoomId].deleted = true;
+    }
+    (0, exports.emitAllRooms)(io, rooms);
+};
+exports.disconnectFromRoom = disconnectFromRoom;

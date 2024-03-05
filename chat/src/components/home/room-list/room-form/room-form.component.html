@@ -45,8 +45,7 @@
 
 <ng-template #privateForm>
     <form class="col-span-5 lg:bg-sidebar p-2 bg-bg mx-1 rounded-b-xl rounded-tl-xl"
-        [ngClass]="{'rounded-tl-xl':formState !== RoomCreationState.PUBLIC}" (ngSubmit)="submit()"
-        (keyup.enter)="submit()">
+        [ngClass]="{'rounded-tl-xl':formState !== RoomCreationState.PUBLIC}" (ngSubmit)="submit()">
         <div class="inline-grid grid-cols-12 w-full pr-1">
             <img class="inline size-4 mr-1 mt-3" src="/assets/icons/exclamation.svg" alt="Private name"
                 title="Private name">

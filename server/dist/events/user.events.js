@@ -13,10 +13,7 @@ const userDisconnectEvent = (socket, io, users, rooms, connectedRoomId) => {
     console.log('user disconnected');
     users.delete(socket.id);
     if (connectedRoomId !== -1) {
-        if (rooms[connectedRoomId] !== undefined) {
-            rooms[connectedRoomId].numPeople--;
-            (0, room_events_1.emitAllRooms)(io, rooms);
-        }
+        (0, room_events_1.disconnectFromRoom)(socket, io, connectedRoomId, rooms);
     }
     (0, exports.emitAllUsers)(io, users);
 };

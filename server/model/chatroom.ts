@@ -6,6 +6,7 @@ export interface ChatRoom {
   hasPassword?: boolean
   public?: boolean
   joinCode?: string
+  deleted?: boolean
 }
 
 export interface ChatMessage {
