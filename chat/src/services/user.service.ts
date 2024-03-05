@@ -11,7 +11,6 @@ export class UserService {
   constructor (@Inject(SocialAuthService) private readonly authService: SocialAuthService, @Inject(Router) private readonly router: Router) {
     this.authService.authState.subscribe((user) => {
       this.user = user
-      console.log(user)
       this.router.navigate(['home'], { onSameUrlNavigation: 'reload' })
     })
   }

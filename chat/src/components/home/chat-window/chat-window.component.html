@@ -1,7 +1,15 @@
 <div class="lg:mx-2 my-4 drop-shadow-lg" *ngIf="(connectedRoom$ | async); else noConnection">
   <div class="w-full grid grid-cols-3 max-h-8 px-2 pb-2 bg-card rounded-2xl rounded-b-none items-center">
     <h2 class="col-span-2 mt-1 font-bold truncate">
-      <app-window-icon [image]="'/assets/icons/users-alt.svg'" [text]="'Chat room'"></app-window-icon>
+
+      <ng-container *ngIf="(connectedRoom$ | async)?.public;else privateRoom">
+        <app-window-icon *ngIf="!(connectedRoom$ | async)?.hasPassword" [image]="'/assets/icons/world.svg'"
+          [text]="'Public chat room'"></app-window-icon>
+        <app-window-icon *ngIf="(connectedRoom$ | async)?.hasPassword" [image]="'/assets/icons/lock.svg'"
+          [text]="'Protected chat room'"></app-window-icon>
+      </ng-container>
+
+
       {{(connectedRoom$ | async)?.name}}
     </h2>
     <span><img class="mt-2 float-right size-3 cursor-pointer" src="/assets/icons/cross.svg" alt="Leave room"
@@ -30,4 +38,8 @@
   <div class="pt-2 min-h-96 max-h-96 mb-2 ml-2 mr-2 items-center flex">
     <h2 class="text-md text-center font-bold w-full">Join a room to start chatting</h2>
   </div>
+</ng-template>
+
+<ng-template #privateRoom>
+  <app-window-icon [image]="'/assets/icons/exclamation.svg'" [text]="'Private chat room'"></app-window-icon>
 </ng-template>
