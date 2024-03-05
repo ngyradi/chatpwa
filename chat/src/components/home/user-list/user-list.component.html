@@ -2,7 +2,7 @@
   <p class="text-right font-bold">
     online users
   </p>
-  <div class="overflow-y-auto h-full">
+  <div class="max-h-96 overflow-y-auto h-full">
     <div *ngFor="let user of users | async">
       <app-user-list-item *ngIf="user.socketId !== clientUserId; else selfUser" [user]="user"></app-user-list-item>
       <ng-template #selfUser>

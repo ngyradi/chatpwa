@@ -27,6 +27,8 @@ export class UserService {
   }
 
   canActivate (): boolean | UrlTree {
+    return true
+
     if (this.user !== undefined) {
       return true
     }

@@ -1,25 +1,36 @@
 <ng-container *ngIf="(room)">
-  <div class="grid grid-cols-7 mt-2" [ngClass]="{'bg-gray-500':selected}">
-
-    <p class="col-span-5 truncate mr-4">
+  <div class="grid grid-cols-12 mt-2 pl-1" [ngClass]="{'bg-card':isConnectedRoom()}">
+    <p class="col-span-8 truncate mr-4">
       <img *ngIf="room.hasPassword" src="/assets/icons/lock.svg" class="size-5 inline" alt="Locked"
         title="Password protected">
       <img *ngIf="!room.hasPassword" src="/assets/icons/world.svg" class="size-5 inline" alt="Public" title="Public">
       {{room.name}}
     </p>
-    <p class="text-left">
-      {{room.numPeople}}
-      <img *ngIf="room.numPeople && room.numPeople >= 2; else singleUser" class="size-5 inline"
-        src="/assets/icons/users-alt.svg" alt="People" title="Number of people talking">
-    </p>
-    <img class="mt-1 size-5 cursor-pointer" src="/assets/icons/arrow-small-right.svg" (click)="joinRoom()" alt="Join"
-      title="Join room">
-    <ng-container *ngIf="inputVisible">
-      <input class="col-span-2" type="password" name="password" placeholder="password" [(ngModel)]="password">
-    </ng-container>
-  </div>
-</ng-container>
 
-<ng-template #singleUser>
-  <img class="size-5 inline" src="/assets/icons/user.svg" alt="People" title="Number of people talking">
-</ng-template>
+    <span class="col-span-2 mr-2">
+      <p class="text-right truncate" [title]="room.numPeople">
+        {{room.numPeople}}
+      </p>
+    </span>
+
+    <span>
+      <img *ngIf="room.numPeople && room.numPeople >= 2; else singleUser" class="float-right size-5 inline"
+        src="/assets/icons/users-alt.svg" alt="People" [title]="room.numPeople + ' users talking'">
+    </span>
+
+    <span>
+      <img class="mt-0.5 size-5 cursor-pointer float-right" src="/assets/icons/arrow-small-right.svg"
+        (click)="joinRoom()" alt="Join" title="Join room">
+    </span>
+  </div>
+
+  <ng-container *ngIf="inputVisible">
+    <input class="col-span-2 pl-2" type="password" name="password" placeholder="password" [(ngModel)]="password">
+  </ng-container>
+
+  <ng-template #singleUser>
+    <img class="float-right size-5 inline" src="/assets/icons/user.svg" alt="People"
+      [title]="room.numPeople + ' user(s) talking'">
+  </ng-template>
+
+</ng-container>

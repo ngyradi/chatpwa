@@ -1,22 +1,25 @@
 <div>
-  <input *ngIf="!editing" class="float-right mr-2 font-bold" type="button" value="+" (click)="setEditingState(true)">
+  <input *ngIf="!editing" class="float-right mx-2 font-bold" type="button" value="+" (click)="setEditingState(true)">
 
   <ng-container *ngIf="editing">
     <input class="float-right mr-2 font-bold" type="button" value="x" (click)="setEditingState(false)">
-    <p class="mt-2 font-bold">create a new chat room</p>
+    <p class="pl-1 mt-2 font-bold">create a new chat room</p>
     <app-room-form (createRoomEvent)="setEditingState(false)"></app-room-form>
   </ng-container>
 
-  <p class="mt-2 font-bold">chat rooms:</p>
-  <div class="overflow-y-auto">
+  <p class="pl-1 mt-2 font-bold">chat rooms:</p>
+  <div class="overflow-y-auto max-h-96">
     <div *ngFor=" let room of rooms$ | async">
-      <app-room-list-item [room]="room" (joinRoomEvent)="joinRoom($event)"></app-room-list-item>
+      <app-room-list-item [room]="room" [selected]="(connectedRoom$ | async)?.id"
+        (joinRoomEvent)="joinRoom($event)"></app-room-list-item>
     </div>
   </div>
 
-  <p>join with code:</p>
-  <input type="text" placeholder="join code" [(ngModel)]="joinCode">
-  <input class="bg-gray-200" type="button" value="join" (click)="joinWithCode()">
-  <p>{{privateRoomCode$ |async}}</p>
+  <div class="mt-4 pl-1">
+    <p>join with code:</p>
+    <input type="text" placeholder="join code" [(ngModel)]="joinCode">
+    <input class="bg-gray-200" type="button" value="join" (click)="joinWithCode()">
+    <p>{{privateRoomCode$ |async}}</p>
+  </div>
 
 </div>

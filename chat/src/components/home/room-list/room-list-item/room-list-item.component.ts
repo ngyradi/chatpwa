@@ -1,9 +1,8 @@
 import { CommonModule } from '@angular/common'
-import { Component, EventEmitter, Inject, Input, Output } from '@angular/core'
+import { Component, EventEmitter, Input, Output } from '@angular/core'
 import { type ChatRoom } from '../../../../models/chatroom'
 import { FormsModule } from '@angular/forms'
-import { type BehaviorSubject } from 'rxjs'
-import { ChatService } from '../../../../services/chat-service'
+
 @Component({
   standalone: true,
   selector: 'app-room-list-item',
@@ -12,28 +11,28 @@ import { ChatService } from '../../../../services/chat-service'
   imports: [CommonModule, FormsModule]
 })
 export class RoomListItemComponent {
-  selected?: boolean // todo
-  connectedRoom$: BehaviorSubject<ChatRoom | undefined> //dont open password input if same room
-
-
+  @Input() selected?: number
   @Input() room?: ChatRoom
   @Output() joinRoomEvent = new EventEmitter<ChatRoom>()
 
   password: string
   inputVisible: boolean
 
-  constructor (@Inject(ChatService) private readonly chatService: ChatService) {
-    this.connectedRoom$ = this.chatService.connectedRoom$
+  constructor () {
     this.inputVisible = false
     this.password = ''
   }
 
   joinRoom (): void {
-    if (this.room !== undefined) {
+    if (this.room !== undefined && this.room.id !== this.selected) {
       if (this.room.hasPassword === true) {
         this.inputVisible = true
       }
       this.joinRoomEvent.emit({ id: this.room.id, password: this.password })
     }
+  }
+
+  isConnectedRoom (): boolean {
+    return this.selected === this.room?.id
   }
 }
