@@ -19,7 +19,7 @@
 
   <div class="mt-4 pl-1">
     <p>join with code:</p>
-    <input type="text" placeholder="join code" [(ngModel)]="joinCode">
+    <input type="text" placeholder="join code" name="join-code" [(ngModel)]="joinCode">
     <input class="bg-gray-200" type="button" value="join" (click)="joinWithCode()">
     <p>{{privateRoomCode$ |async}}</p>
   </div>
