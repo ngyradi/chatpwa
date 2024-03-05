@@ -19,7 +19,7 @@
       <app-room-list></app-room-list>
     </div>
     <div *ngIf="selectedPage === PageState.CHAT">
-      <ng-container *ngIf="!(privateMessageUser$ | async); else pmWindow">
+      <ng-container *ngIf="!privateMessageUser; else pmWindow">
         <app-chat-window></app-chat-window>
       </ng-container>
     </div>
@@ -27,20 +27,6 @@
       <app-user-list [clientUserId]="clientUserId"></app-user-list>
     </div>
   </div>
-
-  <!--
-  <div class="col-span-5 bg-sidebar rounded-bl-md">
-    <app-room-list></app-room-list>
-  </div>
-
-  <div class="col-span-5">
-
-  </div>
-
-  <div class="col-span-5 pr-1 bg-sidebar rounded-br-md">
-    <app-user-list [clientUserId]="clientUserId"></app-user-list>
-  </div>
-  -->
 
 </app-page-container>
 

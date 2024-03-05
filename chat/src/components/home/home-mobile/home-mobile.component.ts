@@ -1,15 +1,16 @@
 import { CommonModule } from '@angular/common'
-import { Component, EventEmitter, Input, Output } from '@angular/core'
+import { Component, EventEmitter, Inject, Input, type OnDestroy, Output } from '@angular/core'
 import { RoomListComponent } from '../room-list/room-list.component'
 import { ChatWindowComponent } from '../chat-window/chat-window.component'
 import { PrivateMessageWindowComponent } from '../private-message-window/private-message-window.component'
 import { UserListComponent } from '../user-list/user-list.component'
 import { PageContainerComponent } from '../../page-container/page-container.component'
-import { type BehaviorSubject } from 'rxjs'
+import { type Subscription } from 'rxjs'
 import { type User } from '../../../models/chatroom'
 import { MobileHamburgerMenuButtonComponent } from './mobile-hamburger-menu-button/mobile-hamburger-menu-button.component'
 import { MobileHamburgerMenuComponent } from './mobile-hamburger-menu/mobile-hamburger-menu.component'
 import { PageState } from '../../../models/ui.state'
+import { ChatService } from '../../../services/chat-service'
 
 @Component({
   standalone: true,
@@ -18,8 +19,8 @@ import { PageState } from '../../../models/ui.state'
   styleUrls: ['./home-mobile.component.css'],
   imports: [CommonModule, RoomListComponent, ChatWindowComponent, PrivateMessageWindowComponent, UserListComponent, PageContainerComponent, MobileHamburgerMenuButtonComponent, MobileHamburgerMenuComponent]
 })
-export class HomeMobileComponent {
-  @Input() privateMessageUser$?: BehaviorSubject<User | undefined>
+export class HomeMobileComponent implements OnDestroy {
+  privateMessageUser: User | undefined
   @Input() clientUserId: string | undefined
   @Output() logoutEvent = new EventEmitter<void>()
 
@@ -27,9 +28,29 @@ export class HomeMobileComponent {
   selectedPage: PageState
   PageState = PageState
 
-  constructor () {
+  connectedRoomSubscription: Subscription
+  privateMessageUserSubscription: Subscription
+
+  constructor (@Inject(ChatService) private readonly chatService: ChatService) {
     this.isMenuOpen = false
     this.selectedPage = PageState.ROOMS
+    this.connectedRoomSubscription = this.chatService.connectedRoom$.subscribe((room) => {
+      if ((room?.id) !== undefined) {
+        this.selectedPage = PageState.CHAT
+      }
+    })
+
+    this.privateMessageUserSubscription = this.chatService.privateMessageUser$.subscribe((user) => {
+      this.privateMessageUser = user
+      if (user?.socketId !== undefined) {
+        this.selectedPage = PageState.CHAT
+      }
+    })
+  }
+
+  ngOnDestroy (): void {
+    this.connectedRoomSubscription.unsubscribe()
+    this.privateMessageUserSubscription.unsubscribe()
   }
 
   logout (): void {
