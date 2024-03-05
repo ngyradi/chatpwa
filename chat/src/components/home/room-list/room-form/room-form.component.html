@@ -1,27 +1,61 @@
-<div class="ml-1 grid grid-cols-3 flex">
-    <div class="col-span-3">
-        <label class="mr-2" for="room-type">private:</label>
-        <input type="checkbox" id="room-type" name="room-type" [(ngModel)]="isPrivate">
+<div class="mb-2 p-1 bg-card rounded-xl mx-1 min-h-16">
+    <div>
+        <img class="float-right mt-1 mr-1 size-3 cursor-pointer" src="/assets/icons/cross.svg" alt="Cancel"
+            title="Cancel creating" (click)="cancel()">
+
+        <p class="pl-1 font-bold lg:text-left text-center">New chat room</p>
+        <div class="grid grid-cols-2 mt-1 text-center">
+            <div [ngClass]="{'lg:bg-sidebar bg-bg':formState === RoomCreationState.PUBLIC}"
+                class="mx-1 mr-2 p-1 rounded-t-xl cursor-pointer"
+                (click)="changeVisibilityType(RoomCreationState.PUBLIC)" title="Public room anyone can see">
+                <p>Public</p>
+            </div>
+            <div [ngClass]="{'lg:bg-sidebar bg-bg':formState === RoomCreationState.PRIVATE}"
+                class="mx-1 ml-2 p-1 rounded-t-xl cursor-pointer" (click)="
+                changeVisibilityType(RoomCreationState.PRIVATE)" title="Private room requires a code to join">
+                <p>Private</p>
+            </div>
+        </div>
     </div>
 
-    <ng-container *ngIf="!isPrivate">
-        <input class="mr-2" type="text" name="chat-name" id="chat-name" placeholder="name" [(ngModel)]="roomName">
+    <form *ngIf="formState === RoomCreationState.PUBLIC; else privateForm"
+        class="col-span-5 lg:bg-sidebar p-2 bg-bg mx-1 mb-1 rounded-b-xl rounded-tr-xl"
+        [ngClass]="{'rounded-tl-xl':formState !== RoomCreationState.PUBLIC}" (ngSubmit)="submit()"
+        (keyup.enter)="submit()">
 
-        <input class="mr-2" type="password" name="chat-password" id="chat-password" placeholder="password"
-            [(ngModel)]="roomPassword">
+        <div class="inline-grid grid-cols-12 w-full pr-1">
+            <img class=" inline size-4 mr-1 mt-3" src="/assets/icons/world.svg" alt="Public name" title="Public name">
+            <input class="col-span-11 mx-1 bg-gray-50 rounded-md mt-1 p-0.5 w-full" type="text" name="room-name"
+                placeholder="Name" [(ngModel)]="roomName" autofocus required="true">
+        </div>
 
-        <input class="bg-slate-200" type="submit" value="create" (click)="submit()">
-    </ng-container>
+        <div class="inline-grid grid-cols-12 w-full pr-1">
+            <img class="inline size-4 mr-1 mt-3" src="/assets/icons/lock.svg" alt="Password"
+                title="Password protection">
+            <input class="col-span-11 mx-1 bg-gray-50 rounded-md mt-1 p-0.5 w-full" type="text" name="room-password"
+                placeholder="Password" [(ngModel)]="roomPassword">
+        </div>
 
-    <ng-container *ngIf="isPrivate">
-        <input class="mr-2" type="text" name="chat-name" id="chat-name" placeholder="name" [(ngModel)]="roomName">
-
-        <input class="bg-slate-200" type="submit" value="create" (click)="submit()">
-    </ng-container>
-
-    <p class="text-red-500 col-span-3">{{error}}</p>
+        <div class="mt-2 pr-1">
+            <p class="float-left text-error text-sm">{{error}}</p>
+            <img class="cursor-pointer ml-auto size-4" src="/assets/icons/check.svg" (click)="submit()">
+        </div>
+    </form>
 </div>
 
-<ng-template #protected>
-
+<ng-template #privateForm>
+    <form class="col-span-5 lg:bg-sidebar p-2 bg-bg mx-1 rounded-b-xl rounded-tl-xl"
+        [ngClass]="{'rounded-tl-xl':formState !== RoomCreationState.PUBLIC}" (ngSubmit)="submit()"
+        (keyup.enter)="submit()">
+        <div class="inline-grid grid-cols-12 w-full pr-1">
+            <img class="inline size-4 mr-1 mt-3" src="/assets/icons/exclamation.svg" alt="Private name"
+                title="Private name">
+            <input class="col-span-11 mx-1 bg-gray-50 rounded-md mt-1 p-0.5 w-full" type="text" name="room-name"
+                placeholder="Name" [(ngModel)]="roomName" autofocus required="true">
+        </div>
+        <div class="mt-2 pr-1">
+            <p class="float-left text-error text-sm">{{error}}</p>
+            <img class="cursor-pointer ml-auto size-4" src="/assets/icons/check.svg" (click)="submit()">
+        </div>
+    </form>
 </ng-template>

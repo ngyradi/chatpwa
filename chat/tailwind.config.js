@@ -14,10 +14,12 @@ export const theme = {
       content: '#EEF2FF'
     },
     minHeight: {
-      '7/10': '70vh'
+      '7/10': '70vh',
+      '5/10': '50vh'
     },
     maxHeight: {
-      '7/10': '70vh'
+      '7/10': '70vh',
+      '5/10': '50vh'
     }
   }
 }

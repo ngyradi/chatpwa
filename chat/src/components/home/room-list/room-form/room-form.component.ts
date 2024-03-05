@@ -2,6 +2,7 @@ import { Component, EventEmitter, Inject, Output } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { CommonModule } from '@angular/common'
 import { ChatService } from '../../../../services/chat-service'
+import { RoomCreationState } from '../../../../models/ui.state'
 
 @Component({
   standalone: true,
@@ -11,15 +12,21 @@ import { ChatService } from '../../../../services/chat-service'
   imports: [CommonModule, FormsModule]
 })
 export class RoomFormComponent {
+  RoomCreationState = RoomCreationState
+  formState: RoomCreationState
+
   roomName: string
   roomPassword: string
   roomCode: string
   error: string
   isPrivate: boolean
 
-  @Output() createRoomEvent = new EventEmitter()
+  @Output() createRoomEvent = new EventEmitter<void>()
+  @Output() cancelEvent = new EventEmitter<void>()
 
   constructor (@Inject(ChatService) private readonly chatService: ChatService) {
+    this.formState = RoomCreationState.PUBLIC
+
     this.isPrivate = false
     this.roomName = ''
     this.roomCode = ''
@@ -29,7 +36,7 @@ export class RoomFormComponent {
 
   submit (): void {
     if (this.roomName.trim().length === 0) {
-      this.error = 'Room name is empty'
+      this.error = 'Room name is required'
       return
     }
 
@@ -43,5 +50,16 @@ export class RoomFormComponent {
     this.error = ''
     this.roomName = ''
     this.roomPassword = ''
+  }
+
+  changeVisibilityType (type: RoomCreationState): void {
+    if (this.formState !== type) {
+      this.formState = type
+      this.error = ''
+    }
+  }
+
+  cancel (): void {
+    this.cancelEvent.emit()
   }
 }

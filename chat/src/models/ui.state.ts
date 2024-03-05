@@ -9,3 +9,8 @@ export enum ChatState {
   PRIVATE,
   NONE,
 }
+
+export enum RoomCreationState {
+  PUBLIC,
+  PRIVATE,
+}
