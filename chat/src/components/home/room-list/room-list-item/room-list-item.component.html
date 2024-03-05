@@ -1,5 +1,5 @@
 <ng-container *ngIf="(room)">
-  <div class="grid grid-cols-12 mt-2 pl-1" [ngClass]="{'bg-card':isConnectedRoom()}">
+  <div class="grid grid-cols-12 lg:mt-2 lg:py-0 py-2 pl-1" [ngClass]="{'bg-card':isConnectedRoom()}">
     <p class="col-span-8 truncate mr-4">
       <img *ngIf="room.hasPassword" src="/assets/icons/lock.svg" class="size-5 inline" alt="Locked"
         title="Password protected">

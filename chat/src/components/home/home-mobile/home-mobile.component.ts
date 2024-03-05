@@ -28,7 +28,7 @@ export class HomeMobileComponent {
   PageState = PageState
 
   constructor () {
-    this.isMenuOpen = true
+    this.isMenuOpen = false
     this.selectedPage = PageState.ROOMS
   }
 

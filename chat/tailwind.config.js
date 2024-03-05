@@ -15,6 +15,12 @@ export const theme = {
       text: '#222222',
       error: '#FF0000',
       content: '#EEF2FF'
+    },
+    minHeight: {
+      '7/10': '70vh'
+    },
+    maxHeight: {
+      '7/10': '70vh'
     }
   }
 }
