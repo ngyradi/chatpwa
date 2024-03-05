@@ -1,5 +1,5 @@
 <ng-container *ngIf="user">
-  <div class="mt-2 flex grid grid-cols-5 ml-2">
+  <div class="mt-2 flex grid grid-cols-5 ml-1">
     <ng-container *ngIf="!isSelf; else self">
       <p class="col-span-4 truncate">{{user.username}}</p>
       <img class="size-5 mt-1 ml-auto mr-2 cursor-pointer" src="/assets/icons/envelope.svg" alt="Private message"

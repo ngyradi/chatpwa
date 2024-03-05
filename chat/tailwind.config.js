@@ -11,7 +11,7 @@ export const theme = {
       bg: '#F0F2F5',
       card: '#dae9f1',
       chips: '#CAD4DB',
-      sidebar: '#edf4f8',
+      sidebar: '#e9f1f7',
       text: '#222222',
       error: '#FF0000',
       content: '#EEF2FF'

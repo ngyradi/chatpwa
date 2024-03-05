@@ -1,13 +1,15 @@
 <div>
-  <input *ngIf="!editing" class="float-right mx-2 font-bold" type="button" value="+" (click)="setEditingState(true)">
+  <img *ngIf="!editing" class="float-right mt-1 mx-2 size-3 cursor-pointer" src="/assets/icons/plus.svg"
+    alt="Create a room" title="Create a room" (click)="setEditingState(true)">
 
   <ng-container *ngIf="editing">
-    <input class="float-right mr-2 font-bold" type="button" value="x" (click)="setEditingState(false)">
-    <p class="pl-1 mt-2 font-bold">create a new chat room</p>
+    <img class="float-right mt-1 mx-2 size-3 cursor-pointer" src="/assets/icons/cross.svg" alt="Stop creating"
+      title="Stop creating" (click)="setEditingState(false)">
+    <p class="pl-1 mt-2 font-bold">Create a new chat room</p>
     <app-room-form (createRoomEvent)="setEditingState(false)"></app-room-form>
   </ng-container>
 
-  <p class="pl-1 mt-2 font-bold">chat rooms:</p>
+  <p class="pl-1 mt-2 font-bold">Chat rooms</p>
   <div class="overflow-y-auto max-h-96">
     <div *ngFor=" let room of rooms$ | async">
       <app-room-list-item [room]="room" [selected]="(connectedRoom$ | async)?.id"
