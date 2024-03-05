@@ -7,13 +7,14 @@ import { type BehaviorSubject } from 'rxjs'
 import { PageContainerComponent } from '../../page-container/page-container.component'
 import { ChatState } from '../../../models/ui.state'
 import { PrivateMessageWindowComponent } from '../chat-window/private-message-window/private-message-window.component'
+import { ChatPlaceholderComponent } from '../chat-window/chat-placeholder/chat-placeholder.component'
 
 @Component({
   standalone: true,
   selector: 'app-home-full',
   templateUrl: './home-full.component.html',
   styleUrls: ['./home-full.component.css'],
-  imports: [CommonModule, RoomListComponent, ChatWindowComponent, PrivateMessageWindowComponent, UserListComponent, PageContainerComponent]
+  imports: [CommonModule, RoomListComponent, ChatWindowComponent, PrivateMessageWindowComponent, UserListComponent, PageContainerComponent, ChatPlaceholderComponent]
 })
 export class HomeFullComponent {
   ChatState = ChatState

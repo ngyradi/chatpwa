@@ -20,9 +20,7 @@
       <app-private-message-window></app-private-message-window>
     </ng-container>
     <ng-container *ngIf="(chatState$ | async) === ChatState.NONE">
-      <div class="pt-2 lg:min-h-96 lg:max-h-96 min-h-7/10 max-h-7/10 mb-2 ml-2 mr-2 items-center flex">
-        <h2 class="text-md text-center font-bold w-full">Join a room to start chatting</h2>
-      </div>
+      <app-chat-placeholder></app-chat-placeholder>
     </ng-container>
   </div>
 

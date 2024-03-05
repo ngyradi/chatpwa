@@ -11,16 +11,19 @@ import { MobileHamburgerMenuComponent } from './mobile-hamburger-menu/mobile-ham
 import { ChatState, PageState } from '../../../models/ui.state'
 import { ChatService } from '../../../services/chat-service'
 import { PrivateMessageWindowComponent } from '../chat-window/private-message-window/private-message-window.component'
+import { ChatPlaceholderComponent } from '../chat-window/chat-placeholder/chat-placeholder.component'
 
 @Component({
   standalone: true,
   selector: 'app-home-mobile',
   templateUrl: './home-mobile.component.html',
   styleUrls: ['./home-mobile.component.css'],
-  imports: [CommonModule, RoomListComponent, ChatWindowComponent, PrivateMessageWindowComponent, UserListComponent, PageContainerComponent, MobileHamburgerMenuButtonComponent, MobileHamburgerMenuComponent]
+  imports: [CommonModule, RoomListComponent, ChatWindowComponent, PrivateMessageWindowComponent, UserListComponent, PageContainerComponent, MobileHamburgerMenuButtonComponent, MobileHamburgerMenuComponent, ChatPlaceholderComponent]
 })
 export class HomeMobileComponent implements OnDestroy {
   ChatState = ChatState
+  PageState = PageState
+
   @Input() chatState$?: BehaviorSubject<ChatState>
   @Input() clientUserId: string | undefined
   @Output() logoutEvent = new EventEmitter<void>()
@@ -28,31 +31,32 @@ export class HomeMobileComponent implements OnDestroy {
   privateMessageUser: User | undefined
   isMenuOpen: boolean
   selectedPage: PageState
-  PageState = PageState
 
-  connectedRoomSubscription: Subscription
-  privateMessageUserSubscription: Subscription
+  chatStateSubscription: Subscription
 
   constructor (@Inject(ChatService) private readonly chatService: ChatService) {
     this.isMenuOpen = false
     this.selectedPage = PageState.ROOMS
-    this.connectedRoomSubscription = this.chatService.connectedRoom$.subscribe((room) => {
-      if ((room?.id) !== undefined) {
-        this.selectedPage = PageState.CHAT
-      }
-    })
 
-    this.privateMessageUserSubscription = this.chatService.privateMessageUser$.subscribe((user) => {
-      this.privateMessageUser = user
-      if (user?.socketId !== undefined) {
-        this.selectedPage = PageState.CHAT
+    this.chatStateSubscription = this.chatService.chatState$.subscribe((state) => {
+      switch (state) {
+        case ChatState.ROOM:{
+          this.selectedPage = PageState.CHAT
+          break
+        }
+        case ChatState.PRIVATE:{
+          this.selectedPage = PageState.CHAT
+          break
+        }
+        default: {
+          // this.selectedPage = PageState.ROOMS
+        }
       }
     })
   }
 
   ngOnDestroy (): void {
-    this.connectedRoomSubscription.unsubscribe()
-    this.privateMessageUserSubscription.unsubscribe()
+    this.chatStateSubscription.unsubscribe()
   }
 
   logout (): void {

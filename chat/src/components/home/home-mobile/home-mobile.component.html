@@ -25,6 +25,9 @@
       <ng-container *ngIf="(chatState$ | async) === ChatState.PRIVATE">
         <app-private-message-window></app-private-message-window>
       </ng-container>
+      <ng-container *ngIf="(chatState$ | async) === ChatState.NONE">
+        <app-chat-placeholder></app-chat-placeholder>
+      </ng-container>
     </div>
     <div *ngIf="selectedPage === PageState.USERS">
       <app-user-list [clientUserId]="clientUserId"></app-user-list>
