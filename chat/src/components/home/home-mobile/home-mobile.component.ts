@@ -9,6 +9,7 @@ import { type BehaviorSubject } from 'rxjs'
 import { type User } from '../../../models/chatroom'
 import { MobileHamburgerMenuButtonComponent } from './mobile-hamburger-menu-button/mobile-hamburger-menu-button.component'
 import { MobileHamburgerMenuComponent } from './mobile-hamburger-menu/mobile-hamburger-menu.component'
+import { PageState } from '../../../models/ui.state'
 
 @Component({
   standalone: true,
@@ -23,9 +24,12 @@ export class HomeMobileComponent {
   @Output() logoutEvent = new EventEmitter<void>()
 
   isMenuOpen: boolean
+  selectedPage: PageState
+  PageState = PageState
 
   constructor () {
-    this.isMenuOpen = false
+    this.isMenuOpen = true
+    this.selectedPage = PageState.ROOMS
   }
 
   logout (): void {
@@ -34,5 +38,9 @@ export class HomeMobileComponent {
 
   openMenu (): void {
     this.isMenuOpen = !this.isMenuOpen
+  }
+
+  changePage (page: PageState): void {
+    this.selectedPage = page
   }
 }

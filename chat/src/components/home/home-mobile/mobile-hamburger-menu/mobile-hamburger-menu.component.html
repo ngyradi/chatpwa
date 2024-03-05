@@ -1,3 +1,11 @@
-<p>
-  mobile-hamburger-menu works!
-</p>
+<div class="bg-sidebar grid grid-cols-3 text-center min-h-8 items-center shadow-md">
+  <div class="border-r-2 cursor-pointer" (click)="changePage(PageState.ROOMS)">
+    rooms
+  </div>
+  <div class="cursor-pointer" (click)="changePage(PageState.CHAT)">
+    chat
+  </div>
+  <div class="border-l-2 cursor-pointer" (click)="changePage(PageState.USERS)">
+    users
+  </div>
+</div>

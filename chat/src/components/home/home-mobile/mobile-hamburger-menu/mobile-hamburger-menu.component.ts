@@ -1,4 +1,5 @@
-import { Component } from '@angular/core'
+import { Component, EventEmitter, Output } from '@angular/core'
+import { PageState } from '../../../../models/ui.state'
 
 @Component({
   standalone: true,
@@ -7,5 +8,10 @@ import { Component } from '@angular/core'
   styleUrls: ['./mobile-hamburger-menu.component.css']
 })
 export class MobileHamburgerMenuComponent {
+  @Output() changePageEvent = new EventEmitter<PageState>()
+  PageState = PageState
 
+  changePage (page: PageState): void {
+    this.changePageEvent.emit(page)
+  }
 }

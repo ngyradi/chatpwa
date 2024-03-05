@@ -9,7 +9,7 @@
     <app-room-form (createRoomEvent)="setEditingState(false)"></app-room-form>
   </ng-container>
 
-  <p class="pl-1 mt-2 font-bold">Chat rooms</p>
+  <p class="pl-1 mt-2 font-bold">Rooms</p>
   <div class="overflow-y-auto max-h-96">
     <div *ngFor=" let room of rooms$ | async">
       <app-room-list-item [room]="room" [selected]="(connectedRoom$ | async)?.id"
