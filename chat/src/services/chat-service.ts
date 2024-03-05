@@ -50,8 +50,8 @@ export class ChatService {
       this.messages.push({ message: `Chatting in ${data.name}`, info: true })
       this.connectedRoom = data
       this.connectedRoom$.next(data)
-      this.closePrivateMessage()
       this.messages$.next(this.messages)
+      this.closePrivateMessage()
     })
 
     this.socket.on('left room', () => {

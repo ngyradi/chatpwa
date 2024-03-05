@@ -1,11 +1,11 @@
 import { type AfterViewInit, Component, type ElementRef, Inject, type QueryList, ViewChild, ViewChildren, type OnDestroy } from '@angular/core'
-import { type ChatMessage, type User } from '../../../models/chatroom'
-import { ChatService } from '../../../services/chat-service'
+import { type ChatMessage, type User } from '../../../../models/chatroom'
+import { ChatService } from '../../../../services/chat-service'
 import { BehaviorSubject, type Subscription } from 'rxjs'
 import { CommonModule } from '@angular/common'
 import { FormsModule } from '@angular/forms'
-import { ChatMessageComponent } from '../chat-window/chat-message/chat-message.component'
-import { WindowIconComponent } from '../window-icon/window-icon.component'
+import { ChatMessageComponent } from '../chat-message/chat-message.component'
+import { WindowIconComponent } from '../../window-icon/window-icon.component'
 
 @Component({
   standalone: true,
