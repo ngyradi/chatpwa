@@ -24,8 +24,6 @@ export class ChatWindowComponent implements AfterViewInit {
   constructor (@Inject(ChatService) private readonly chatService: ChatService) {
     this.connectedRoom$ = this.chatService.connectedRoom$
     this.messages$ = this.chatService.messages$
-
-    this.connectedRoom$.subscribe((asd) => { console.log(asd) })
   }
 
   ngAfterViewInit (): void {
