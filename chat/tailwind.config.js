@@ -4,9 +4,6 @@ export const content = [
 ]
 export const theme = {
   extend: {
-    fontFamily: {
-      // 'sans': ['SFMono-regular'],
-    },
     colors: {
       bg: '#F0F2F5',
       card: '#dae9f1',
