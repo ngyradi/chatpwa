@@ -1,26 +1,35 @@
 <app-page-container>
   <div class="col-span-5 h-14 grid grid-cols-5 h-8">
-    <div class="col-start-1 bg-card lg:rounded-tl-xl"></div>
-    <h1 class="text-center text-xl font-bold col-start-2 col-span-3 bg-card">Chat - mobile screen</h1>
+    <div class="col-start-1 bg-card lg:rounded-tl-xl">
+      <app-mobile-hamburger-menu-button [isOpen]="isMenuOpen" (click)="openMenu()"></app-mobile-hamburger-menu-button>
+    </div>
+    <h1 class="text-center text-xl font-bold col-start-2 col-span-3 bg-card">Chat</h1>
     <p class="bg-card lg:rounded-tr-xl text-right col-start-5">
       <img class="size-5 ml-auto mr-2 mt-1 cursor-pointer" src="/assets/icons/exit.svg" alt="Logout" title="Sign out"
         (click)="logout()">
     </p>
   </div>
 
-  <div class="lg:col-span-1 col-span-5 bg-sidebar rounded-bl-md">
+  <div *ngIf="isMenuOpen" class="col-span-5">
+    <app-mobile-hamburger-menu></app-mobile-hamburger-menu>
+  </div>
+
+  <!--
+  <div class="col-span-5 bg-sidebar rounded-bl-md">
     <app-room-list></app-room-list>
   </div>
 
-  <div class="lg:col-span-3 col-span-5">
+  <div class="col-span-5">
     <ng-container *ngIf="!(privateMessageUser$ | async); else pmWindow">
       <app-chat-window></app-chat-window>
     </ng-container>
   </div>
 
-  <div class="lg:col-span-1 col-span-5 pr-1 bg-sidebar rounded-br-md">
+  <div class="col-span-5 pr-1 bg-sidebar rounded-br-md">
     <app-user-list [clientUserId]="clientUserId"></app-user-list>
   </div>
+  -->
+
 </app-page-container>
 
 <ng-template #pmWindow>
