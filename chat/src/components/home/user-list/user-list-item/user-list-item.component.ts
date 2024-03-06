@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common'
 import { Component, Inject, Input } from '@angular/core'
 import { type User } from '../../../../models/chatroom'
-import { ChatService } from '../../../../services/chat-service'
+import { ChatService } from '../../../../services/chat.service'
 
 @Component({
   standalone: true,

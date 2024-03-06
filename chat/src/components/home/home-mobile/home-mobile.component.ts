@@ -9,7 +9,7 @@ import { type User } from '../../../models/chatroom'
 import { MobileHamburgerMenuButtonComponent } from './mobile-hamburger-menu-button/mobile-hamburger-menu-button.component'
 import { MobileHamburgerMenuComponent } from './mobile-hamburger-menu/mobile-hamburger-menu.component'
 import { ChatState, PageState } from '../../../models/ui.state'
-import { ChatService } from '../../../services/chat-service'
+import { ChatService } from '../../../services/chat.service'
 import { PrivateMessageWindowComponent } from '../chat-window/private-message-window/private-message-window.component'
 import { ChatPlaceholderComponent } from '../chat-window/chat-placeholder/chat-placeholder.component'
 

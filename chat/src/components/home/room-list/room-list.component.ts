@@ -4,7 +4,7 @@ import { RoomFormComponent } from './room-form/room-form.component'
 import { RoomListItemComponent } from './room-list-item/room-list-item.component'
 import { type ChatRoom } from '../../../models/chatroom'
 import { type BehaviorSubject } from 'rxjs'
-import { ChatService } from '../../../services/chat-service'
+import { ChatService } from '../../../services/chat.service'
 import { FormsModule } from '@angular/forms'
 
 @Component({

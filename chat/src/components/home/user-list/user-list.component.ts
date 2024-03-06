@@ -3,7 +3,7 @@ import { Component, Inject, Input } from '@angular/core'
 import { UserListItemComponent } from './user-list-item/user-list-item.component'
 import { type BehaviorSubject } from 'rxjs'
 import { type PrivateMessage, type User } from '../../../models/chatroom'
-import { ChatService } from '../../../services/chat-service'
+import { ChatService } from '../../../services/chat.service'
 
 @Component({
   standalone: true,

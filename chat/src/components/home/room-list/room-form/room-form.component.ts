@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Inject, Output } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { CommonModule } from '@angular/common'
-import { ChatService } from '../../../../services/chat-service'
+import { ChatService } from '../../../../services/chat.service'
 import { RoomCreationState } from '../../../../models/ui.state'
 import { type BehaviorSubject } from 'rxjs'
 
