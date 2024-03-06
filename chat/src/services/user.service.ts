@@ -15,8 +15,9 @@ export class UserService {
     })
   }
 
+  // After logging out redirect to the sign in page
   logout (): void {
-    this.router.navigate(['']).then(() => {
+    this.authService.signOut().then(() => {
       this.router.navigate([''])
     })
   }
@@ -25,6 +26,20 @@ export class UserService {
     return this.user
   }
 
+  // Create a username from the users first and last name
+  // Handle if the user doesn't have a last name
+  getUsername (): string | undefined {
+    let name
+    if (this.user !== undefined) {
+      name = this.user?.firstName
+      if (this.user.lastName?.length > 0) {
+        name += ' ' + this.user.lastName
+      }
+    }
+    return name
+  }
+
+  // Home page route guard
   canActivate (): boolean | UrlTree {
     if (this.user !== undefined) {
       return true

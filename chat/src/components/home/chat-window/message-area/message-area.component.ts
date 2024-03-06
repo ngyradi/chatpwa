@@ -17,6 +17,7 @@ export class MessageAreaComponent implements AfterViewInit {
   @Input() infoMessage?: string
   @Output() sendMessageEvent = new EventEmitter<string>()
 
+  // Used to scroll to the bottom when a message is added
   @ViewChildren('messages') messageElements!: QueryList<ChatMessageComponent>
   @ViewChild('scroller') content!: ElementRef
 
@@ -27,6 +28,7 @@ export class MessageAreaComponent implements AfterViewInit {
   }
 
   ngAfterViewInit (): void {
+    this.scrollToBottom()
     this.messageElements.changes.subscribe(() => { this.scrollToBottom() })
   }
 

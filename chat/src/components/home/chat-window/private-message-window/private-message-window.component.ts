@@ -1,4 +1,4 @@
-import { type AfterViewInit, Component, type ElementRef, Inject, type QueryList, ViewChild, ViewChildren, type OnDestroy } from '@angular/core'
+import { Component, Inject, type OnDestroy } from '@angular/core'
 import { type ChatMessage, type User } from '../../../../models/chatroom'
 import { ChatService } from '../../../../services/chat-service'
 import { BehaviorSubject, type Subscription } from 'rxjs'
@@ -15,27 +15,24 @@ import { MessageAreaComponent } from '../message-area/message-area.component'
   styleUrls: ['./private-message-window.component.css'],
   imports: [CommonModule, FormsModule, ChatMessageComponent, WindowIconComponent, MessageAreaComponent]
 })
-export class PrivateMessageWindowComponent implements OnDestroy, AfterViewInit {
+export class PrivateMessageWindowComponent implements OnDestroy {
   pmUser?: User
+
+  // Used to update the messages
   userSubscription: Subscription
 
   message: string
   messages$ = new BehaviorSubject<ChatMessage[] | undefined>([])
 
-  @ViewChildren('messages') messageElements!: QueryList<ChatMessageComponent>
-  @ViewChild('scroller') content!: ElementRef
-
   constructor (@Inject(ChatService) private readonly chatService: ChatService) {
     this.message = ''
     this.userSubscription = this.chatService.privateMessageUser$.subscribe((val) => {
       this.pmUser = val
+
+      // Initialize the array if it doesn't exist so the observable can update when we receive a message
       this.chatService.initPrivateMessages(val)
       this.messages$.next(this.chatService.getPrivateMessages(val) ?? [] as ChatMessage[])
     })
-  }
-
-  ngAfterViewInit (): void {
-    this.messageElements.changes.subscribe(() => { this.scrollToBottom() })
   }
 
   ngOnDestroy (): void {
@@ -50,12 +47,5 @@ export class PrivateMessageWindowComponent implements OnDestroy, AfterViewInit {
     if (this.pmUser !== undefined) {
       this.chatService.sendPrivateMessage({ socketId: this.pmUser?.socketId, message })
     }
-    this.scrollToBottom()
-  }
-
-  scrollToBottom (): void {
-    try {
-      this.content.nativeElement.scrollTop = this.content.nativeElement.scrollHeight
-    } catch (err) {}
   }
 }

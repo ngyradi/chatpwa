@@ -1,4 +1,4 @@
-import { type AfterViewInit, Component, type ElementRef, Inject, type QueryList, ViewChild, ViewChildren } from '@angular/core'
+import { Component, Inject } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { type ChatRoom, type ChatMessage } from '../../../models/chatroom'
 import { type BehaviorSubject } from 'rxjs'
@@ -14,37 +14,22 @@ import { MessageAreaComponent } from './message-area/message-area.component'
   styleUrls: ['./chat-window.component.css'],
   imports: [CommonModule, ChatMessageComponent, WindowIconComponent, MessageAreaComponent]
 })
-export class ChatWindowComponent implements AfterViewInit {
+export class ChatWindowComponent {
   connectedRoom$?: BehaviorSubject<ChatRoom | undefined>
   messages$: BehaviorSubject<ChatMessage[] | undefined>
-
-  @ViewChildren('messages') messageElements!: QueryList<ChatMessageComponent>
-  @ViewChild('scroller') content!: ElementRef
 
   constructor (@Inject(ChatService) private readonly chatService: ChatService) {
     this.connectedRoom$ = this.chatService.connectedRoom$
     this.messages$ = this.chatService.messages$
   }
 
-  ngAfterViewInit (): void {
-    this.messageElements.changes.subscribe(() => { this.scrollToBottom() })
-  }
-
   sendMessage (message: string): void {
     if (message.trim() !== undefined && message.length > 0) {
       this.chatService.sendMessage(message)
     }
-
-    this.scrollToBottom()
   }
 
   leaveRoom (): void {
     this.chatService.leaveRoom()
-  }
-
-  scrollToBottom (): void {
-    try {
-      this.content.nativeElement.scrollTop = this.content.nativeElement.scrollHeight
-    } catch (err) {}
   }
 }

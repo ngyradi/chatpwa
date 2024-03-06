@@ -1,18 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.privateMessageEvent = exports.chatMessageEvent = void 0;
+// When a user sends a message send it to all other users connected to the same room
 const chatMessageEvent = (socket, io, data, rooms, users, connectedRoomId) => {
     var _a;
     if (connectedRoomId !== -1 && data.length > 0) {
-        console.log(`${socket.id}: ${data} - ${connectedRoomId}`);
         const msg = { username: (_a = users.get(socket.id)) === null || _a === void 0 ? void 0 : _a.username, message: data };
-        console.log(`broadcast to ${connectedRoomId} - ${rooms[connectedRoomId].joinCode}`);
         io.to(connectedRoomId.toString()).emit('new message', msg);
     }
 };
 exports.chatMessageEvent = chatMessageEvent;
+// Send the private message to the sender and the receiver
+// We send it back to the sender so they can only see their message if it is successful
 const privateMessageEvent = (socket, users, data) => {
-    console.log(`message from: ${socket.id} to ${data.socketId}  ${data.message}`);
     if (data.socketId !== undefined) {
         const user = users.get(socket.id);
         if (user !== undefined) {

@@ -1,17 +1,17 @@
 import { type Socket, type Server } from 'socket.io'
 import { type ChatMessage, type ChatRoom, type PrivateMessage, type User } from '../model/chatroom'
 
+// When a user sends a message send it to all other users connected to the same room
 export const chatMessageEvent = (socket: Socket, io: Server, data: string, rooms: ChatRoom[], users: Map<string, User>, connectedRoomId: number): void => {
   if (connectedRoomId !== -1 && data.length > 0) {
-    console.log(`${socket.id}: ${data} - ${connectedRoomId}`)
     const msg: ChatMessage = { username: users.get(socket.id)?.username, message: data }
-    console.log(`broadcast to ${connectedRoomId} - ${rooms[connectedRoomId].joinCode}`)
     io.to(connectedRoomId.toString()).emit('new message', msg)
   }
 }
 
+// Send the private message to the sender and the receiver
+// We send it back to the sender so they can only see their message if it is successful
 export const privateMessageEvent = (socket: Socket, users: Map<string, User>, data: PrivateMessage): void => {
-  console.log(`message from: ${socket.id} to ${data.socketId}  ${data.message}`)
   if (data.socketId !== undefined) {
     const user = users.get(socket.id)
     if (user !== undefined) {

@@ -37,6 +37,8 @@ export class HomeComponent implements AfterViewInit {
     this.innerWidth = window.innerWidth
   }
 
+  // Used to update the home screen
+  // If the width is too small switch to a mobile home screen
   @HostListener('window:resize', ['$event'])
   onResize (event: any): void {
     this.innerWidth = window.innerWidth
@@ -47,7 +49,7 @@ export class HomeComponent implements AfterViewInit {
   }
 
   logout (): void {
-    this.chatService.exit()
+    this.chatService.destroyConnection()
     this.userService.logout()
   }
 }

@@ -38,6 +38,7 @@ export class HomeMobileComponent implements OnDestroy {
     this.isMenuOpen = false
     this.selectedPage = PageState.ROOMS
 
+    // Switch to the chat page when joining a room or starting a private message
     this.chatStateSubscription = this.chatService.chatState$.subscribe((state) => {
       switch (state) {
         case ChatState.ROOM:{
@@ -47,9 +48,6 @@ export class HomeMobileComponent implements OnDestroy {
         case ChatState.PRIVATE:{
           this.selectedPage = PageState.CHAT
           break
-        }
-        default: {
-          // this.selectedPage = PageState.ROOMS
         }
       }
     })
@@ -63,7 +61,7 @@ export class HomeMobileComponent implements OnDestroy {
     this.logoutEvent.emit()
   }
 
-  openMenu (): void {
+  toggleMenu (): void {
     this.isMenuOpen = !this.isMenuOpen
   }
 
